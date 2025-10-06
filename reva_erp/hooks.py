@@ -45,6 +45,12 @@ fixtures = [
 		]
           
     },
+    {
+        "dt": "Email Template",
+        "filters": [
+            ["name", "in", ["RFQ Template"]]
+        ]
+    }
 ]
 
 

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>RFQ Email</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            color: #333;
+            line-height: 1.6;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 15px;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f8f8f8;
+        }
+        p {
+            margin: 8px 0;
+        }
+        a {
+            color: #1a73e8;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+<p>Dear {{ supplier_name or "" }},</p>
+
+<p>Please find below the details of the Request for Quotation (RFQ).</p>
+
+<p><strong>Portal Link:</strong> <a href="{{ portal_link }}">{{ portal_link }}</a></p>
+
+{% if terms %}
+<p><strong>Terms & Conditions:</strong><br>
+{{ terms }}</p>
+{% endif %}
+
+{% if doc.items %}
+<p><strong>Items in this RFQ:</strong></p>
+<table>
+    <tr>
+        <th>Item</th>
+        <th>Quantity</th>
+        <th>Rate</th>
+        <th>Amount</th>
+    </tr>
+    {% for item in doc.items %}
+    <tr>
+        <td>{{ item.item_name or "" }}</td>
+        <td>{{ item.qty or 0 }}</td>
+        <td>{{ item.rate or 0 }}</td>
+        <td>{{ item.amount or 0 }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>No items in this RFQ.</p>
+{% endif %}
+
+{% if project_managers %}
+<p><strong>Project Managers:</strong></p>
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Mobile No</th>
+    </tr>
+    {% for user in project_managers %}
+    <tr>
+        <td>{{ user.full_name }}</td>
+        <td>{{ user.mobile_no }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>No Project Managers found for this Project.</p>
+{% endif %}
+
+<p>Best regards,</p>
+<p>"Your Team"</p>
+
+</body>
+</html>
