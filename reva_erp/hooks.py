@@ -5,6 +5,47 @@ app_description = "Reva Erp Next"
 app_email = "rutuja.somvanshi@excellminds.com"
 app_license = "mit"
 
+# hooks.py
+fixtures = [
+    {
+        "dt": "Custom Field",
+        "filters": [
+            ["dt", "in", ["Task", "Request for Quotation"]]
+        ]
+    },
+    {
+        "dt": "Workflow",
+        "filters": [["document_type", "in", [
+            "Task","Purchase Order"
+            ]]
+        ]
+    },
+    {
+        "dt": "Client Script",
+        "filters": [
+            ["name", "in", [
+                "Add supplier group and item filter in RFQ",
+                            "Check work flow of task",
+                            "Purchase Order Approved Suplier Disply in Supplier"
+                        ]]
+        ]
+    },
+	{
+        "dt": "Server Script",
+        "filters": [
+
+            ["name", "in", [
+                "Trigger Mail For Supplier When RFQ getting Created",
+                "Supplier filtered records", 
+                "Get Supplier list as per item filter"
+            ]]
+		]
+          
+    },
+]
+
+
+
 # Apps
 # ------------------
 

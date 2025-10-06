@@ -1,0 +1,1592 @@
+[
+ {
+  "completed_by": "Administrator",
+  "completed_by_role": "Administrator",
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-18 14:45:58.966679",
+  "name": "2glnmjfgpc",
+  "permitted_roles": [
+   {
+    "parent": "2glnmjfgpc",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   }
+  ],
+  "reference_doctype": "Supplier",
+  "reference_name": "ncwe",
+  "status": "Completed",
+  "user": null,
+  "workflow_state": "Draft"
+ },
+ {
+  "completed_by": "Administrator",
+  "completed_by_role": "Administrator",
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-18 14:46:46.214971",
+  "name": "2ve36nnvio",
+  "permitted_roles": [
+   {
+    "parent": "2ve36nnvio",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   }
+  ],
+  "reference_doctype": "Supplier",
+  "reference_name": "ncwe",
+  "status": "Completed",
+  "user": null,
+  "workflow_state": "Submit"
+ },
+ {
+  "completed_by": "Administrator",
+  "completed_by_role": "Administrator",
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-19 10:27:55.236139",
+  "name": "n20rfv7qi5",
+  "permitted_roles": [
+   {
+    "parent": "n20rfv7qi5",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   }
+  ],
+  "reference_doctype": "Supplier",
+  "reference_name": "Summit Traders Ltd.",
+  "status": "Completed",
+  "user": null,
+  "workflow_state": "Submit"
+ },
+ {
+  "completed_by": "Administrator",
+  "completed_by_role": "Administrator",
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-20 12:33:11.945158",
+  "name": "c6vgpa5fi3",
+  "permitted_roles": [
+   {
+    "parent": "c6vgpa5fi3",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   }
+  ],
+  "reference_doctype": "Supplier",
+  "reference_name": "Tejraj",
+  "status": "Completed",
+  "user": null,
+  "workflow_state": "Draft"
+ },
+ {
+  "completed_by": "Administrator",
+  "completed_by_role": "Administrator",
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-20 12:38:05.033755",
+  "name": "f2i2ekeo15",
+  "permitted_roles": [
+   {
+    "parent": "f2i2ekeo15",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   }
+  ],
+  "reference_doctype": "Supplier",
+  "reference_name": "Tejraj",
+  "status": "Completed",
+  "user": null,
+  "workflow_state": "Submit"
+ },
+ {
+  "completed_by": "Administrator",
+  "completed_by_role": "Administrator",
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-24 12:30:11.477253",
+  "name": "peimcn4083",
+  "permitted_roles": [
+   {
+    "parent": "peimcn4083",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   }
+  ],
+  "reference_doctype": "Supplier",
+  "reference_name": "Zuckerman Security Ltd.",
+  "status": "Completed",
+  "user": null,
+  "workflow_state": "Submit"
+ },
+ {
+  "completed_by": "Administrator",
+  "completed_by_role": "Administrator",
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-24 12:31:03.874810",
+  "name": "puu9crt6j3",
+  "permitted_roles": [
+   {
+    "parent": "puu9crt6j3",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   }
+  ],
+  "reference_doctype": "Supplier",
+  "reference_name": "MA Inc.",
+  "status": "Completed",
+  "user": null,
+  "workflow_state": "Submit"
+ },
+ {
+  "completed_by": "Administrator",
+  "completed_by_role": "Administrator",
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-29 18:09:43.308728",
+  "name": "r4pvdvn5g2",
+  "permitted_roles": [
+   {
+    "parent": "r4pvdvn5g2",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   }
+  ],
+  "reference_doctype": "Supplier",
+  "reference_name": "cawe",
+  "status": "Completed",
+  "user": null,
+  "workflow_state": "Draft"
+ },
+ {
+  "completed_by": "Administrator",
+  "completed_by_role": "Administrator",
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-29 18:09:49.293710",
+  "name": "r6ko0lq0sr",
+  "permitted_roles": [
+   {
+    "parent": "r6ko0lq0sr",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   }
+  ],
+  "reference_doctype": "Supplier",
+  "reference_name": "cawe",
+  "status": "Completed",
+  "user": null,
+  "workflow_state": "Submit"
+ },
+ {
+  "completed_by": "Administrator",
+  "completed_by_role": "Administrator",
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-17 12:04:28.898669",
+  "name": "o4hlmlmbu3",
+  "permitted_roles": [
+   {
+    "parent": "o4hlmlmbu3",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   }
+  ],
+  "reference_doctype": "Supplier",
+  "reference_name": "Akki",
+  "status": "Completed",
+  "user": null,
+  "workflow_state": "Draft"
+ },
+ {
+  "completed_by": "Administrator",
+  "completed_by_role": "Administrator",
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-17 12:04:48.450704",
+  "name": "oaknurcvkj",
+  "permitted_roles": [
+   {
+    "parent": "oaknurcvkj",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   }
+  ],
+  "reference_doctype": "Supplier",
+  "reference_name": "Akki",
+  "status": "Completed",
+  "user": null,
+  "workflow_state": "Submit"
+ },
+ {
+  "completed_by": "Administrator",
+  "completed_by_role": "Administrator",
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-17 13:10:56.917349",
+  "name": "v2pc4ekmct",
+  "permitted_roles": [
+   {
+    "parent": "v2pc4ekmct",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   }
+  ],
+  "reference_doctype": "Supplier",
+  "reference_name": "Sami",
+  "status": "Completed",
+  "user": null,
+  "workflow_state": "Draft"
+ },
+ {
+  "completed_by": "Administrator",
+  "completed_by_role": "Administrator",
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-17 13:11:13.324095",
+  "name": "v7t771cadr",
+  "permitted_roles": [
+   {
+    "parent": "v7t771cadr",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   }
+  ],
+  "reference_doctype": "Supplier",
+  "reference_name": "Sami",
+  "status": "Completed",
+  "user": null,
+  "workflow_state": "Submit"
+ },
+ {
+  "completed_by": "Administrator",
+  "completed_by_role": "Administrator",
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-18 14:55:06.161963",
+  "name": "7rlncre4oh",
+  "permitted_roles": [
+   {
+    "parent": "7rlncre4oh",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   }
+  ],
+  "reference_doctype": "Supplier",
+  "reference_name": "sachi",
+  "status": "Completed",
+  "user": null,
+  "workflow_state": "Draft"
+ },
+ {
+  "completed_by": "Administrator",
+  "completed_by_role": "Administrator",
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-18 14:55:14.882692",
+  "name": "7uchpu1co8",
+  "permitted_roles": [
+   {
+    "parent": "7uchpu1co8",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   }
+  ],
+  "reference_doctype": "Supplier",
+  "reference_name": "sachi",
+  "status": "Completed",
+  "user": null,
+  "workflow_state": "Submit"
+ },
+ {
+  "completed_by": "Administrator",
+  "completed_by_role": "Administrator",
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-18 14:56:55.711470",
+  "name": "8ttkuiiqgr",
+  "permitted_roles": [
+   {
+    "parent": "8ttkuiiqgr",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   }
+  ],
+  "reference_doctype": "Supplier",
+  "reference_name": "surbhi",
+  "status": "Completed",
+  "user": null,
+  "workflow_state": "Draft"
+ },
+ {
+  "completed_by": "Administrator",
+  "completed_by_role": "Administrator",
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-18 14:57:02.851767",
+  "name": "904272o2gk",
+  "permitted_roles": [
+   {
+    "parent": "904272o2gk",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   }
+  ],
+  "reference_doctype": "Supplier",
+  "reference_name": "surbhi",
+  "status": "Completed",
+  "user": null,
+  "workflow_state": "Submit"
+ },
+ {
+  "completed_by": "Administrator",
+  "completed_by_role": "Administrator",
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-18 15:31:22.940323",
+  "name": "t3tfrb366u",
+  "permitted_roles": [
+   {
+    "parent": "t3tfrb366u",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   }
+  ],
+  "reference_doctype": "Supplier",
+  "reference_name": "cs",
+  "status": "Completed",
+  "user": null,
+  "workflow_state": "Draft"
+ },
+ {
+  "completed_by": "Administrator",
+  "completed_by_role": "Administrator",
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-18 15:31:33.559603",
+  "name": "t77ro38vfk",
+  "permitted_roles": [
+   {
+    "parent": "t77ro38vfk",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   }
+  ],
+  "reference_doctype": "Supplier",
+  "reference_name": "cs",
+  "status": "Completed",
+  "user": null,
+  "workflow_state": "Submit"
+ },
+ {
+  "completed_by": "Administrator",
+  "completed_by_role": "Administrator",
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-19 10:24:18.527128",
+  "name": "ku944g9cn2",
+  "permitted_roles": [
+   {
+    "parent": "ku944g9cn2",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   }
+  ],
+  "reference_doctype": "Supplier",
+  "reference_name": "abhijuit",
+  "status": "Completed",
+  "user": null,
+  "workflow_state": "Draft"
+ },
+ {
+  "completed_by": "Administrator",
+  "completed_by_role": "Administrator",
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-19 10:29:41.814073",
+  "name": "o3ac975ij0",
+  "permitted_roles": [
+   {
+    "parent": "o3ac975ij0",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   }
+  ],
+  "reference_doctype": "Supplier",
+  "reference_name": "akhi",
+  "status": "Completed",
+  "user": null,
+  "workflow_state": "Draft"
+ },
+ {
+  "completed_by": "Administrator",
+  "completed_by_role": "Administrator",
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-19 11:37:44.887149",
+  "name": "vv8n61aegn",
+  "permitted_roles": [
+   {
+    "parent": "vv8n61aegn",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   }
+  ],
+  "reference_doctype": "Supplier",
+  "reference_name": "rohhini",
+  "status": "Completed",
+  "user": null,
+  "workflow_state": "Draft"
+ },
+ {
+  "completed_by": "Administrator",
+  "completed_by_role": "Administrator",
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-19 11:38:01.138219",
+  "name": "04b69oej7o",
+  "permitted_roles": [
+   {
+    "parent": "04b69oej7o",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   }
+  ],
+  "reference_doctype": "Supplier",
+  "reference_name": "rohhini",
+  "status": "Completed",
+  "user": null,
+  "workflow_state": "Submit"
+ },
+ {
+  "completed_by": "Administrator",
+  "completed_by_role": "Administrator",
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-19 11:39:23.365060",
+  "name": "0u1210o9h7",
+  "permitted_roles": [
+   {
+    "parent": "0u1210o9h7",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   }
+  ],
+  "reference_doctype": "Supplier",
+  "reference_name": "akhi",
+  "status": "Completed",
+  "user": null,
+  "workflow_state": "Submit"
+ },
+ {
+  "completed_by": "Administrator",
+  "completed_by_role": "Administrator",
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-20 10:48:33.161715",
+  "name": "esr8su7b2p",
+  "permitted_roles": [
+   {
+    "parent": "esr8su7b2p",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   }
+  ],
+  "reference_doctype": "Supplier",
+  "reference_name": "Jaya",
+  "status": "Completed",
+  "user": null,
+  "workflow_state": "Draft"
+ },
+ {
+  "completed_by": "Administrator",
+  "completed_by_role": "Administrator",
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-20 16:10:57.440277",
+  "name": "bpun1179t3",
+  "permitted_roles": [
+   {
+    "parent": "bpun1179t3",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   }
+  ],
+  "reference_doctype": "Purchase Order",
+  "reference_name": "PUR-ORD-2025-00001",
+  "status": "Completed",
+  "user": null,
+  "workflow_state": "Draft"
+ },
+ {
+  "completed_by": "Administrator",
+  "completed_by_role": "Administrator",
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-20 16:11:01.185868",
+  "name": "br3au69cbk",
+  "permitted_roles": [
+   {
+    "parent": "br3au69cbk",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   }
+  ],
+  "reference_doctype": "Purchase Order",
+  "reference_name": "PUR-ORD-2025-00001",
+  "status": "Completed",
+  "user": null,
+  "workflow_state": "Submit"
+ },
+ {
+  "completed_by": "Administrator",
+  "completed_by_role": "Administrator",
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-20 16:12:41.751496",
+  "name": "cqh12kt2ek",
+  "permitted_roles": [
+   {
+    "parent": "cqh12kt2ek",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   }
+  ],
+  "reference_doctype": "Purchase Order",
+  "reference_name": "PUR-ORD-2025-00002",
+  "status": "Completed",
+  "user": null,
+  "workflow_state": "Draft"
+ },
+ {
+  "completed_by": "Administrator",
+  "completed_by_role": "Administrator",
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-23 12:32:49.466411",
+  "name": "f7ulk0e7l9",
+  "permitted_roles": [
+   {
+    "parent": "f7ulk0e7l9",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   }
+  ],
+  "reference_doctype": "Purchase Order",
+  "reference_name": "PUR-ORD-2025-00003",
+  "status": "Completed",
+  "user": null,
+  "workflow_state": "Draft"
+ },
+ {
+  "completed_by": "Administrator",
+  "completed_by_role": "Administrator",
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-23 12:33:28.959454",
+  "name": "fk9hkm62vv",
+  "permitted_roles": [
+   {
+    "parent": "fk9hkm62vv",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   }
+  ],
+  "reference_doctype": "Purchase Order",
+  "reference_name": "PUR-ORD-2025-00003",
+  "status": "Completed",
+  "user": null,
+  "workflow_state": "Submit"
+ },
+ {
+  "completed_by": "Administrator",
+  "completed_by_role": "Administrator",
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-23 12:36:28.950689",
+  "name": "hchs6ltf5c",
+  "permitted_roles": [
+   {
+    "parent": "hchs6ltf5c",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   }
+  ],
+  "reference_doctype": "Purchase Order",
+  "reference_name": "PUR-ORD-2025-00002",
+  "status": "Completed",
+  "user": null,
+  "workflow_state": "Submit"
+ },
+ {
+  "completed_by": "Administrator",
+  "completed_by_role": "Administrator",
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-23 12:41:03.782138",
+  "name": "k2ddp66u6q",
+  "permitted_roles": [
+   {
+    "parent": "k2ddp66u6q",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   }
+  ],
+  "reference_doctype": "Purchase Order",
+  "reference_name": "PUR-ORD-2025-00004",
+  "status": "Completed",
+  "user": null,
+  "workflow_state": "Draft"
+ },
+ {
+  "completed_by": "Administrator",
+  "completed_by_role": "Administrator",
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-23 12:41:35.675519",
+  "name": "kcc3bpu7k6",
+  "permitted_roles": [
+   {
+    "parent": "kcc3bpu7k6",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   }
+  ],
+  "reference_doctype": "Purchase Order",
+  "reference_name": "PUR-ORD-2025-00004",
+  "status": "Completed",
+  "user": null,
+  "workflow_state": "Submit"
+ },
+ {
+  "completed_by": null,
+  "completed_by_role": null,
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-23 12:49:25.892443",
+  "name": "ova19l540e",
+  "permitted_roles": [
+   {
+    "parent": "ova19l540e",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   }
+  ],
+  "reference_doctype": "Purchase Order",
+  "reference_name": "PUR-ORD-2025-00005",
+  "status": "Open",
+  "user": null,
+  "workflow_state": "Draft"
+ },
+ {
+  "completed_by": "Administrator",
+  "completed_by_role": "Administrator",
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-23 14:36:51.795960",
+  "name": "ntmmle7es4",
+  "permitted_roles": [
+   {
+    "parent": "ntmmle7es4",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   }
+  ],
+  "reference_doctype": "Supplier Quotation",
+  "reference_name": "PUR-SQTN-2025-00007",
+  "status": "Completed",
+  "user": null,
+  "workflow_state": "Draft"
+ },
+ {
+  "completed_by": "Administrator",
+  "completed_by_role": "Administrator",
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-23 14:39:22.305618",
+  "name": "pcnqvvfl69",
+  "permitted_roles": [
+   {
+    "parent": "pcnqvvfl69",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   }
+  ],
+  "reference_doctype": "Supplier Quotation",
+  "reference_name": "PUR-SQTN-2025-00005",
+  "status": "Completed",
+  "user": null,
+  "workflow_state": "Submit"
+ },
+ {
+  "completed_by": "Administrator",
+  "completed_by_role": "Administrator",
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-23 14:50:05.531626",
+  "name": "vlnat3t0rn",
+  "permitted_roles": [
+   {
+    "parent": "vlnat3t0rn",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   }
+  ],
+  "reference_doctype": "Supplier Quotation",
+  "reference_name": "PUR-SQTN-2025-00004",
+  "status": "Completed",
+  "user": null,
+  "workflow_state": "Submit"
+ },
+ {
+  "completed_by": "Administrator",
+  "completed_by_role": "Administrator",
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-23 14:50:20.089321",
+  "name": "vq8dvrk677",
+  "permitted_roles": [
+   {
+    "parent": "vq8dvrk677",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   }
+  ],
+  "reference_doctype": "Supplier Quotation",
+  "reference_name": "PUR-SQTN-2025-00003",
+  "status": "Completed",
+  "user": null,
+  "workflow_state": "Submit"
+ },
+ {
+  "completed_by": "Administrator",
+  "completed_by_role": "Administrator",
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-23 15:02:21.987257",
+  "name": "6rrorppjmv",
+  "permitted_roles": [
+   {
+    "parent": "6rrorppjmv",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   }
+  ],
+  "reference_doctype": "Supplier",
+  "reference_name": "abhijuit",
+  "status": "Completed",
+  "user": null,
+  "workflow_state": "Submit"
+ },
+ {
+  "completed_by": "Administrator",
+  "completed_by_role": "Administrator",
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-23 15:56:58.994767",
+  "name": "6rthv64m16",
+  "permitted_roles": [
+   {
+    "parent": "6rthv64m16",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   }
+  ],
+  "reference_doctype": "Purchase Order",
+  "reference_name": "PUR-ORD-2025-00006",
+  "status": "Completed",
+  "user": null,
+  "workflow_state": "Draft"
+ },
+ {
+  "completed_by": "Administrator",
+  "completed_by_role": "Administrator",
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-23 15:57:02.763877",
+  "name": "6t3tnggstp",
+  "permitted_roles": [
+   {
+    "parent": "6t3tnggstp",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   }
+  ],
+  "reference_doctype": "Purchase Order",
+  "reference_name": "PUR-ORD-2025-00006",
+  "status": "Completed",
+  "user": null,
+  "workflow_state": "Submit"
+ },
+ {
+  "completed_by": "Administrator",
+  "completed_by_role": "Administrator",
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-23 17:21:08.305838",
+  "name": "o5rpa9ctu8",
+  "permitted_roles": [
+   {
+    "parent": "o5rpa9ctu8",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   }
+  ],
+  "reference_doctype": "Supplier",
+  "reference_name": "Jaya",
+  "status": "Completed",
+  "user": null,
+  "workflow_state": "Submit"
+ },
+ {
+  "completed_by": "Administrator",
+  "completed_by_role": "Administrator",
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-23 19:26:23.674032",
+  "name": "1ic4p5c8k5",
+  "permitted_roles": [
+   {
+    "parent": "1ic4p5c8k5",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   }
+  ],
+  "reference_doctype": "Supplier Quotation",
+  "reference_name": "PUR-SQTN-2025-00008",
+  "status": "Completed",
+  "user": null,
+  "workflow_state": "Draft"
+ },
+ {
+  "completed_by": "Administrator",
+  "completed_by_role": "Administrator",
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-24 11:49:39.529704",
+  "name": "1mj9fo9lit",
+  "permitted_roles": [
+   {
+    "parent": "1mj9fo9lit",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   }
+  ],
+  "reference_doctype": "Supplier Quotation",
+  "reference_name": "PUR-SQTN-2025-00008",
+  "status": "Completed",
+  "user": null,
+  "workflow_state": "Submit"
+ },
+ {
+  "completed_by": "Administrator",
+  "completed_by_role": "Administrator",
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-24 11:50:04.563838",
+  "name": "1udk7o1re6",
+  "permitted_roles": [
+   {
+    "parent": "1udk7o1re6",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   }
+  ],
+  "reference_doctype": "Supplier Quotation",
+  "reference_name": "PUR-SQTN-2025-00009",
+  "status": "Completed",
+  "user": null,
+  "workflow_state": "Draft"
+ },
+ {
+  "completed_by": "Administrator",
+  "completed_by_role": "Administrator",
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-24 11:50:07.485936",
+  "name": "1val3ovh3p",
+  "permitted_roles": [
+   {
+    "parent": "1val3ovh3p",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   }
+  ],
+  "reference_doctype": "Supplier Quotation",
+  "reference_name": "PUR-SQTN-2025-00009",
+  "status": "Completed",
+  "user": null,
+  "workflow_state": "Submit"
+ },
+ {
+  "completed_by": "Administrator",
+  "completed_by_role": "Administrator",
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-24 18:13:06.839195",
+  "name": "2ccs0froq1",
+  "permitted_roles": [
+   {
+    "parent": "2ccs0froq1",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   }
+  ],
+  "reference_doctype": "Supplier",
+  "reference_name": "nayan",
+  "status": "Completed",
+  "user": null,
+  "workflow_state": "Draft"
+ },
+ {
+  "completed_by": "Administrator",
+  "completed_by_role": "Administrator",
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-24 18:13:20.193749",
+  "name": "2ghs5fhu96",
+  "permitted_roles": [
+   {
+    "parent": "2ghs5fhu96",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   }
+  ],
+  "reference_doctype": "Supplier",
+  "reference_name": "nayan",
+  "status": "Completed",
+  "user": null,
+  "workflow_state": "Submit"
+ },
+ {
+  "completed_by": "Administrator",
+  "completed_by_role": "Administrator",
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-25 12:49:27.532731",
+  "name": "gfr3r14af2",
+  "permitted_roles": [
+   {
+    "parent": "gfr3r14af2",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   }
+  ],
+  "reference_doctype": "Supplier Quotation",
+  "reference_name": "PUR-SQTN-2025-00010",
+  "status": "Completed",
+  "user": null,
+  "workflow_state": "Draft"
+ },
+ {
+  "completed_by": "Administrator",
+  "completed_by_role": "Administrator",
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-25 12:49:32.167190",
+  "name": "gh9r7q7sjn",
+  "permitted_roles": [
+   {
+    "parent": "gh9r7q7sjn",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   }
+  ],
+  "reference_doctype": "Supplier Quotation",
+  "reference_name": "PUR-SQTN-2025-00010",
+  "status": "Completed",
+  "user": null,
+  "workflow_state": "Submit"
+ },
+ {
+  "completed_by": "Administrator",
+  "completed_by_role": "Administrator",
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-25 12:50:36.898222",
+  "name": "h5hprvdbih",
+  "permitted_roles": [
+   {
+    "parent": "h5hprvdbih",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   }
+  ],
+  "reference_doctype": "Supplier Quotation",
+  "reference_name": "PUR-SQTN-2025-00011",
+  "status": "Completed",
+  "user": null,
+  "workflow_state": "Draft"
+ },
+ {
+  "completed_by": "Administrator",
+  "completed_by_role": "Administrator",
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-25 12:50:40.173191",
+  "name": "h6htffov9h",
+  "permitted_roles": [
+   {
+    "parent": "h6htffov9h",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   }
+  ],
+  "reference_doctype": "Supplier Quotation",
+  "reference_name": "PUR-SQTN-2025-00011",
+  "status": "Completed",
+  "user": null,
+  "workflow_state": "Submit"
+ },
+ {
+  "completed_by": "Administrator",
+  "completed_by_role": "Administrator",
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-25 12:51:12.501539",
+  "name": "hgloh0cuns",
+  "permitted_roles": [
+   {
+    "parent": "hgloh0cuns",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   }
+  ],
+  "reference_doctype": "Supplier Quotation",
+  "reference_name": "PUR-SQTN-2025-00012",
+  "status": "Completed",
+  "user": null,
+  "workflow_state": "Draft"
+ },
+ {
+  "completed_by": "Administrator",
+  "completed_by_role": "Administrator",
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-25 12:51:15.246199",
+  "name": "hhg4o4rsb6",
+  "permitted_roles": [
+   {
+    "parent": "hhg4o4rsb6",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   }
+  ],
+  "reference_doctype": "Supplier Quotation",
+  "reference_name": "PUR-SQTN-2025-00012",
+  "status": "Completed",
+  "user": null,
+  "workflow_state": "Submit"
+ },
+ {
+  "completed_by": "Administrator",
+  "completed_by_role": "Administrator",
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-25 14:12:32.449005",
+  "name": "15kto4vdb5",
+  "permitted_roles": [
+   {
+    "parent": "15kto4vdb5",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   }
+  ],
+  "reference_doctype": "Supplier Quotation",
+  "reference_name": "PUR-SQTN-2025-00013",
+  "status": "Completed",
+  "user": null,
+  "workflow_state": "Draft"
+ },
+ {
+  "completed_by": "Administrator",
+  "completed_by_role": "Administrator",
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-25 14:12:35.258263",
+  "name": "16gh69ifla",
+  "permitted_roles": [
+   {
+    "parent": "16gh69ifla",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   }
+  ],
+  "reference_doctype": "Supplier Quotation",
+  "reference_name": "PUR-SQTN-2025-00013",
+  "status": "Completed",
+  "user": null,
+  "workflow_state": "Submit"
+ },
+ {
+  "completed_by": "Administrator",
+  "completed_by_role": "Administrator",
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-25 14:12:54.085544",
+  "name": "1ccc67avoo",
+  "permitted_roles": [
+   {
+    "parent": "1ccc67avoo",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   }
+  ],
+  "reference_doctype": "Supplier Quotation",
+  "reference_name": "PUR-SQTN-2025-00014",
+  "status": "Completed",
+  "user": null,
+  "workflow_state": "Draft"
+ },
+ {
+  "completed_by": "Administrator",
+  "completed_by_role": "Administrator",
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-25 14:12:56.397926",
+  "name": "1d4aihgs6q",
+  "permitted_roles": [
+   {
+    "parent": "1d4aihgs6q",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   }
+  ],
+  "reference_doctype": "Supplier Quotation",
+  "reference_name": "PUR-SQTN-2025-00014",
+  "status": "Completed",
+  "user": null,
+  "workflow_state": "Submit"
+ },
+ {
+  "completed_by": null,
+  "completed_by_role": null,
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-25 17:35:40.326456",
+  "name": "o6b1kpu9jd",
+  "permitted_roles": [
+   {
+    "parent": "o6b1kpu9jd",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   }
+  ],
+  "reference_doctype": "Supplier",
+  "reference_name": "Rutuja",
+  "status": "Open",
+  "user": null,
+  "workflow_state": "Draft"
+ },
+ {
+  "completed_by": "sherkards03@gmail.com",
+  "completed_by_role": "Purchase Manager",
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-25 18:12:08.563015",
+  "name": "di6gm5sg18",
+  "permitted_roles": [
+   {
+    "parent": "di6gm5sg18",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Purchase Master Manager"
+   },
+   {
+    "parent": "di6gm5sg18",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   },
+   {
+    "parent": "di6gm5sg18",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Purchase Manager"
+   }
+  ],
+  "reference_doctype": "Supplier",
+  "reference_name": "Rutuja",
+  "status": "Completed",
+  "user": null,
+  "workflow_state": "Submit"
+ },
+ {
+  "completed_by": "sherkards03@gmail.com",
+  "completed_by_role": "Purchase Manager",
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-25 18:17:06.141394",
+  "name": "gf59ejd9mj",
+  "permitted_roles": [
+   {
+    "parent": "gf59ejd9mj",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Purchase Master Manager"
+   },
+   {
+    "parent": "gf59ejd9mj",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   },
+   {
+    "parent": "gf59ejd9mj",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Purchase Manager"
+   }
+  ],
+  "reference_doctype": "Supplier",
+  "reference_name": "Rutu",
+  "status": "Completed",
+  "user": null,
+  "workflow_state": "Draft"
+ },
+ {
+  "completed_by": "sherkards03@gmail.com",
+  "completed_by_role": "Purchase Manager",
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-25 18:19:21.741798",
+  "name": "hph9simirc",
+  "permitted_roles": [
+   {
+    "parent": "hph9simirc",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Purchase Master Manager"
+   },
+   {
+    "parent": "hph9simirc",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   },
+   {
+    "parent": "hph9simirc",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Purchase Manager"
+   }
+  ],
+  "reference_doctype": "Supplier",
+  "reference_name": "Rutu",
+  "status": "Completed",
+  "user": null,
+  "workflow_state": "Submit"
+ },
+ {
+  "completed_by": null,
+  "completed_by_role": null,
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-26 16:21:58.549677",
+  "name": "oohdog2qud",
+  "permitted_roles": [
+   {
+    "parent": "oohdog2qud",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   }
+  ],
+  "reference_doctype": "Quotation",
+  "reference_name": "SAL-QTN-2025-00005",
+  "status": "Open",
+  "user": null,
+  "workflow_state": "Draft"
+ },
+ {
+  "completed_by": null,
+  "completed_by_role": null,
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-26 17:55:10.378459",
+  "name": "fbv4ia04gr",
+  "permitted_roles": [
+   {
+    "parent": "fbv4ia04gr",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   }
+  ],
+  "reference_doctype": "Quotation",
+  "reference_name": "QUO-2025-00001",
+  "status": "Open",
+  "user": null,
+  "workflow_state": "Draft"
+ },
+ {
+  "completed_by": null,
+  "completed_by_role": null,
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-29 11:16:58.563957",
+  "name": "99pbv2hfa3",
+  "permitted_roles": [
+   {
+    "parent": "99pbv2hfa3",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   }
+  ],
+  "reference_doctype": "Quotation",
+  "reference_name": "QUO-2025-00002",
+  "status": "Open",
+  "user": null,
+  "workflow_state": "Draft"
+ },
+ {
+  "completed_by": null,
+  "completed_by_role": null,
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-29 15:22:21.873675",
+  "name": "p2qj7bq8ir",
+  "permitted_roles": [
+   {
+    "parent": "p2qj7bq8ir",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   }
+  ],
+  "reference_doctype": "Quotation",
+  "reference_name": "QUO-2025-00003",
+  "status": "Open",
+  "user": null,
+  "workflow_state": "Draft"
+ },
+ {
+  "completed_by": null,
+  "completed_by_role": null,
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-29 15:47:41.772203",
+  "name": "7tpej4akc0",
+  "permitted_roles": [
+   {
+    "parent": "7tpej4akc0",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   }
+  ],
+  "reference_doctype": "Quotation",
+  "reference_name": "QUO-2025-00004",
+  "status": "Open",
+  "user": null,
+  "workflow_state": "Draft"
+ },
+ {
+  "completed_by": null,
+  "completed_by_role": null,
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-29 16:51:42.268614",
+  "name": "ddugpt41bl",
+  "permitted_roles": [
+   {
+    "parent": "ddugpt41bl",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   }
+  ],
+  "reference_doctype": "Quotation",
+  "reference_name": "QUO-2025-00007",
+  "status": "Open",
+  "user": null,
+  "workflow_state": "Draft"
+ },
+ {
+  "completed_by": "Administrator",
+  "completed_by_role": "Administrator",
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-30 11:39:48.403241",
+  "name": "2ds7v03528",
+  "permitted_roles": [
+   {
+    "parent": "2ds7v03528",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   }
+  ],
+  "reference_doctype": "Supplier",
+  "reference_name": "Reva",
+  "status": "Completed",
+  "user": null,
+  "workflow_state": "Draft"
+ },
+ {
+  "completed_by": "Administrator",
+  "completed_by_role": "Administrator",
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-09-30 11:39:55.677117",
+  "name": "2g4r8rgjg5",
+  "permitted_roles": [
+   {
+    "parent": "2g4r8rgjg5",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Administrator"
+   }
+  ],
+  "reference_doctype": "Supplier",
+  "reference_name": "Reva",
+  "status": "Completed",
+  "user": null,
+  "workflow_state": "Submit"
+ },
+ {
+  "completed_by": null,
+  "completed_by_role": null,
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-10-01 09:48:40.842456",
+  "name": "d28l8lb230",
+  "permitted_roles": [
+   {
+    "parent": "d28l8lb230",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Employee"
+   }
+  ],
+  "reference_doctype": "Task",
+  "reference_name": "TASK-2025-00006",
+  "status": "Open",
+  "user": null,
+  "workflow_state": "Draft"
+ },
+ {
+  "completed_by": null,
+  "completed_by_role": null,
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-10-01 09:49:58.387454",
+  "name": "dqgs71toh0",
+  "permitted_roles": [
+   {
+    "parent": "dqgs71toh0",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Employee"
+   }
+  ],
+  "reference_doctype": "Task",
+  "reference_name": "TASK-2025-00007",
+  "status": "Open",
+  "user": null,
+  "workflow_state": "Draft"
+ },
+ {
+  "completed_by": null,
+  "completed_by_role": null,
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-10-01 09:51:11.558268",
+  "name": "ehbginupth",
+  "permitted_roles": [
+   {
+    "parent": "ehbginupth",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Employee"
+   }
+  ],
+  "reference_doctype": "Task",
+  "reference_name": "TASK-2025-00008",
+  "status": "Open",
+  "user": null,
+  "workflow_state": "Draft"
+ },
+ {
+  "completed_by": null,
+  "completed_by_role": null,
+  "docstatus": 0,
+  "doctype": "Workflow Action",
+  "modified": "2025-10-01 09:53:06.483958",
+  "name": "fl8hgnku80",
+  "permitted_roles": [
+   {
+    "parent": "fl8hgnku80",
+    "parentfield": "permitted_roles",
+    "parenttype": "Workflow Action",
+    "role": "Employee"
+   }
+  ],
+  "reference_doctype": "Task",
+  "reference_name": "TASK-2025-00009",
+  "status": "Open",
+  "user": null,
+  "workflow_state": "Draft"
+ }
+]
