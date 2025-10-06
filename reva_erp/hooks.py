@@ -10,7 +10,10 @@ fixtures = [
     {
         "dt": "Custom Field",
         "filters": [
-            ["dt", "in", ["Task", "Request for Quotation"]]
+            ["dt", "in", [
+                "Task", "Request for Quotation",
+                "Terms and Conditions"
+            ]]
         ]
     },
     {
