@@ -28,9 +28,9 @@ fixtures = [
         "filters": [
             ["name", "in", [
                 "Add supplier group and item filter in RFQ",
-                            "Check work flow of task",
-                            "Purchase Order Approved Suplier Disply in Supplier"
-                        ]]
+                "Check work flow of task",
+                "Purchase Order Approved Suplier Disply in Supplier"
+            ]]
         ]
     },
 	{
@@ -40,7 +40,9 @@ fixtures = [
             ["name", "in", [
                 "Trigger Mail For Supplier When RFQ getting Created",
                 "Supplier filtered records", 
-                "Get Supplier list as per item filter"
+                "Get Supplier list as per item filter",
+                "Send RFQ mail on submit",
+                "Unlock RFQ after record submitted"
             ]]
 		]
           

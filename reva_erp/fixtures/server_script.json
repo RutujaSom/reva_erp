@@ -55,5 +55,43 @@
   "reference_doctype": null,
   "script": "def get_suppliers_by_item(item):\n    \"\"\"\n    Get all suppliers linked to a given Item.\n    \"\"\"\n    suppliers = frappe.db.sql(\"\"\"\n        SELECT name, supplier \n        FROM `tabItem Supplier`\n        WHERE parent = %s\n    \"\"\", item, as_dict=True)\n\n    frappe.response['message'] = suppliers\n\n    \nitems = frappe.form_dict.get(\"item\",\"\")\n\nget_suppliers_by_item(items)",
   "script_type": "API"
+ },
+ {
+  "allow_guest": 1,
+  "api_method": "unlock_rfq_after_submit",
+  "cron_format": null,
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Server Script",
+  "doctype_event": "Before Insert",
+  "enable_rate_limit": 0,
+  "event_frequency": "All",
+  "modified": "2025-10-06 12:36:19.574986",
+  "module": null,
+  "name": "Unlock RFQ after record submitted",
+  "rate_limit_count": 5,
+  "rate_limit_seconds": 86400,
+  "reference_doctype": null,
+  "script": "def unlock_rfq_after_submit(rfq_name):\n    rfq = frappe.get_doc(\"Request for Quotation\", rfq_name)\n    if rfq.docstatus != 1:\n        frappe.throw(\"Only submitted RFQs can be unlocked.\")\n\n    # Instead of a new field → downgrade docstatus temporarily\n    rfq.db_set(\"docstatus\", 0)\n    \n    \n    # Downgrade all child table rows (if needed)\n    # Child table doctype: \"Request for Quotation Item\"\n    for item in rfq.items:  # \"items\" is default fieldname for child table\n        item.db_set(\"docstatus\", 0)  # ensures db reflects draft\n        \n    frappe.response['message'] = True\n\n    \nrfq_name = frappe.form_dict.get(\"rfq_name\",\"\")\n\nunlock_rfq_after_submit(rfq_name)",
+  "script_type": "API"
+ },
+ {
+  "allow_guest": 0,
+  "api_method": null,
+  "cron_format": null,
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Server Script",
+  "doctype_event": "After Submit",
+  "enable_rate_limit": 0,
+  "event_frequency": "All",
+  "modified": "2025-10-06 17:34:24.252873",
+  "module": null,
+  "name": "Send RFQ mail on submit",
+  "rate_limit_count": 5,
+  "rate_limit_seconds": 86400,
+  "reference_doctype": "Request for Quotation",
+  "script": "if doc.doctype == \"Request for Quotation\":\n    if doc.suppliers:\n        project_managers = []\n\n        # --- Get Project Managers ---\n        if doc.custom_project:\n            try:\n                project = frappe.get_doc(\"Project\", doc.custom_project)\n                for u in project.get(\"users\"):\n                    if not u.user:\n                        continue\n                    user_doc = frappe.get_doc(\"User\", u.user)\n                    frappe.msgprint(f\"user_doc ....{user_doc.name}\")\n                    # user_roles = frappe.get_roles(user_doc)\n                    frappe.msgprint(f'user_roles ....{user_doc.roles}')\n                    # for i in user_doc.roles:\n                    #     frappe.msgprint(f\" role .... {i.role}\")\n                    roles = [r.role for r in user_doc.roles]\n                    if \"Projects Manager\" in roles:\n                        frappe.msgprint(\"in role ....\")\n                        project_managers.append({\n                            \"full_name\": user_doc.full_name,\n                            \"mobile_no\": user_doc.mobile_no or \"N/A\"\n                        })\n            except Exception as e:\n                frappe.log_error(\"Error fetching project managers: \" + str(e))\n\n        # --- Portal link ---\n        portal_link = frappe.utils.get_url(\"/app/supplier-quotation/\" + doc.name)\n\n        # --- Attachments ---\n        attachments = []\n        for f in frappe.get_all(\"File\", filters={\n            \"attached_to_doctype\": \"Request for Quotation\",\n            \"attached_to_name\": doc.name\n        }):\n            file_doc = frappe.get_doc(\"File\", f.name)\n            attachments.append(file_doc.file_url)\n\n        # --- Loop through all suppliers ---\n        for supplier_row in doc.suppliers:\n            supplier_email = supplier_row.supplier_email or frappe.db.get_value(\"Supplier\", supplier_row.supplier, \"email_id\")\n            supplier_name = supplier_row.supplier_name or supplier_row.supplier\n            if not supplier_email:\n                continue\n\n            # Build email body safely using list join\n            html_parts = []\n\n            html_parts.append(\"<p>Dear \" + supplier_name + \",</p>\")\n            html_parts.append(\"<p>Please find below the details of the RFQ.</p>\")\n            html_parts.append(\"<p><strong>Portal Link:</strong> <a href='\" + portal_link + \"'>Click Here</a></p>\")\n            html_parts.append(\"<p><strong>Terms & Conditions:</strong><br>\" + (doc.terms or \"\") + \"</p>\")\n\n            # Items Table\n            if doc.items:\n                html_parts.append(\"<table border='1' cellpadding='5' cellspacing='0'>\")\n                html_parts.append(\"<tr><th>Item</th><th>Qty</th><th>Rate</th><th>Amount</th></tr>\")\n                for item in doc.items:\n                    row = \"<tr>\"\n                    row = row + \"<td>\" + (item.item_name or \"\") + \"</td>\"\n                    row = row +  \"<td>\" + str(item.qty or 0) + \"</td>\"\n                    row = row +  \"<td>\" + str(item.rate or 0) + \"</td>\"\n                    row = row +  \"<td>\" + str(item.amount or 0) + \"</td>\"\n                    row = row +  \"</tr>\"\n                    html_parts.append(row)\n                html_parts.append(\"</table>\")\n            frappe.msgprint(f\"project_managers ....{project_managers}\")\n            # Project Managers Table\n            if project_managers:\n                html_parts.append(\"<p><strong>Project Managers:</strong></p>\")\n                html_parts.append(\"<table border='1' cellpadding='5' cellspacing='0'>\")\n                html_parts.append(\"<tr><th>Name</th><th>Mobile No</th></tr>\")\n                for pm in project_managers:\n                    pm_row = \"<tr>\"\n                    pm_row = pm_row +\"<td>\" + (pm.get(\"full_name\") or \"\") + \"</td>\"\n                    pm_row = pm_row + \"<td>\" + (pm.get(\"mobile_no\") or \"N/A\") + \"</td>\"\n                    pm_row  = pm_row + \"</tr>\"\n                    html_parts.append(pm_row)\n                html_parts.append(\"</table>\")\n\n            html_content = \"\".join(html_parts)\n\n            # --- Send Email ---\n            frappe.sendmail(\n                recipients=[supplier_email],\n                subject=\"RFQ: \" + doc.name,\n                content=html_content,\n                attachments=attachments,\n                now=True\n            )\n",
+  "script_type": "DocType Event"
  }
 ]
