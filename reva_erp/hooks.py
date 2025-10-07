@@ -19,7 +19,8 @@ fixtures = [
     {
         "dt": "Workflow",
         "filters": [["document_type", "in", [
-            "Task","Purchase Order"
+            "Task","Purchase Order",
+            "Supplier"
             ]]
         ]
     },
@@ -42,7 +43,8 @@ fixtures = [
                 "Supplier filtered records", 
                 "Get Supplier list as per item filter",
                 "Send RFQ mail on submit",
-                "Unlock RFQ after record submitted"
+                "Unlock RFQ after record submitted",
+                "Send Mail on Supplier Approval"
             ]]
 		]
           
