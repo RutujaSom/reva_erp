@@ -58,7 +58,18 @@ fixtures = [
         "filters": [
             ["name", "in", ["RFQ Template"]]
         ]
+    },
+    
+    # server script for registration form
+    
+    {
+        "dt": "Server Script",
+        "filters": [
+            ["name", "in", ["Trigger Mail For Supplier When Registration Save"]]
+        ]
     }
+
+
 ]
 
 
