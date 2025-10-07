@@ -49,6 +49,7 @@ fixtures = [
                 "Unlock RFQ after record submitted",
                 "Send Mail on Supplier Approval",
                 "Send Mail On Purchase Order",
+                "Trigger Mail For Supplier When Registration Save"
             ]]
 		]
           
@@ -59,6 +60,12 @@ fixtures = [
             ["name", "in", ["RFQ Template"]]
         ]
     }
+    
+    # server script for registration form
+    
+   
+
+
 ]
 
 
