@@ -257,7 +257,7 @@
   "doctype": "Workflow",
   "document_type": "Supplier",
   "is_active": 1,
-  "modified": "2025-10-07 09:21:42.195601",
+  "modified": "2025-10-07 11:29:01.920100",
   "name": "Supplier Work FLow",
   "override_status": 0,
   "send_email_alert": 0,
@@ -297,7 +297,7 @@
    {
     "allow_edit": "Projects Manager",
     "avoid_status_override": 0,
-    "doc_status": "1",
+    "doc_status": "0",
     "is_optional_state": 0,
     "message": null,
     "next_action_email_template": null,
