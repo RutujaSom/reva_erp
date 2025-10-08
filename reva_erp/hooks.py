@@ -59,9 +59,14 @@ fixtures = [
         "filters": [
             ["name", "in", ["RFQ Template"]]
         ]
-    }
+    },
     
-    # server script for registration form
+    {
+        "doctype": "Web Form",
+        "filters": [
+            ["name", "in", ["Supplier Registration"]]
+        ]
+    }
     
    
 
