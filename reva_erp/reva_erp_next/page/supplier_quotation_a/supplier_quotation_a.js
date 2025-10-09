@@ -96,15 +96,6 @@ frappe.pages['supplier-quotation-a'].on_page_load = function(wrapper) {
     let $data_wrapper = $('<div class="mt-4"></div>');
     $(page.main).append($data_wrapper);
 
-    // --- Submit button ---
-    // let $submit_btn = $(`<button class="btn btn-primary mt-3">${__("Submit")}</button>`);
-    // $(page.main).append($submit_btn);
-	
-
-    // $submit_btn.on('click', function() {
-    //     frappe.confirm(__('Are you sure you want to submit?'), process_records);
-    // });
-
 	// --- Submit button (aligned right) ---
 	let $button_container = $(`
 		<div class="d-flex justify-content-end mt-3">
@@ -121,55 +112,55 @@ frappe.pages['supplier-quotation-a'].on_page_load = function(wrapper) {
 
 
     // --- Fetch & render data ---
-    // function load_data() {
-    //     let args = {};
-    //     Object.keys(filters).forEach(key => args[key] = filters[key].get_value());
+    function load_data() {
+        let args = {};
+        Object.keys(filters).forEach(key => args[key] = filters[key].get_value());
 
-    //     frappe.call({
-    //         method: "frappe.desk.query_report.run",
-    //         args: { report_name: "Supplier Quotation Comparison", filters: args },
-    //         freeze: true,
-    //         freeze_message: __("Loading data..."),
-    //         callback: function(r) {
-    //             if (r.message && r.message.result && r.message.result.length > 0) {
-    //                 render_table(r.message.result);
-    //             } else {
-    //                 $data_wrapper.html(`<div class="text-muted mt-3">${__("No data found")}</div>`);
-    //             }
-    //         }
-    //     });
-    // }
+        frappe.call({
+            method: "frappe.desk.query_report.run",
+            args: { report_name: "Supplier Quotation Comparison", filters: args },
+            freeze: true,
+            freeze_message: __("Loading data..."),
+            callback: function(r) {
+                if (r.message && r.message.result && r.message.result.length > 0) {
+                    render_table(r.message.result);
+                } else {
+                    $data_wrapper.html(`<div class="text-muted mt-3">${__("No data found")}</div>`);
+                }
+            }
+        });
+    }
 
-	function load_data() {
-		let args = {};
-		Object.keys(filters).forEach(key => {
-			let val = filters[key].get_value();
+	// function load_data() {
+	// 	let args = {};
+	// 	Object.keys(filters).forEach(key => {
+	// 		let val = filters[key].get_value();
 
-			// ✅ Convert array to comma-separated string for report API
-			if (Array.isArray(val)) {
-				val = val.join(", ");
-			}
+	// 		// ✅ Convert array to comma-separated string for report API
+	// 		if (Array.isArray(val)) {
+	// 			val = val.join(", ");
+	// 		}
 
-			args[key] = val;
-		});
+	// 		args[key] = val;
+	// 	});
 
-		frappe.call({
-			method: "frappe.desk.query_report.run",
-			args: {
-				report_name: "Supplier Quotation Comparison",
-				filters: args
-			},
-			freeze: true,
-			freeze_message: __("Loading data..."),
-			callback: function (r) {
-				if (r.message && r.message.result && r.message.result.length > 0) {
-					render_table(r.message.result);
-				} else {
-					$data_wrapper.html(`<div class="text-muted mt-3">${__("No data found")}</div>`);
-				}
-			}
-		});
-	}
+	// 	frappe.call({
+	// 		method: "frappe.desk.query_report.run",
+	// 		args: {
+	// 			report_name: "Supplier Quotation Comparison",
+	// 			filters: args
+	// 		},
+	// 		freeze: true,
+	// 		freeze_message: __("Loading data..."),
+	// 		callback: function (r) {
+	// 			if (r.message && r.message.result && r.message.result.length > 0) {
+	// 				render_table(r.message.result);
+	// 			} else {
+	// 				$data_wrapper.html(`<div class="text-muted mt-3">${__("No data found")}</div>`);
+	// 			}
+	// 		}
+	// 	});
+	// }
 
 
     function render_table(data) {
@@ -221,7 +212,7 @@ frappe.pages['supplier-quotation-a'].on_page_load = function(wrapper) {
 
         frappe.call({
             method: "reva_erp.api.supplier_quotation_com.process_supplier_quotations",
-            args: { approved_quotations: approve_list, rejected_quotations: reject_list },
+            args: { approve: approve_list, reject: reject_list },
             freeze: true,
             freeze_message: __("Processing..."),
             callback: function(r) {
