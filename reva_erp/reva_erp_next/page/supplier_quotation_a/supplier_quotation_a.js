@@ -77,6 +77,8 @@ frappe.pages['supplier-quotation-a'].on_page_load = function(wrapper) {
     // --- Render filters dynamically with uniform width and spacing ---
     let filters = {};
     filters_def.forEach(f => {
+        console.log('This should show');  // <--- Not showing
+
         let ctrl = frappe.ui.form.make_control({ parent: $filter_area[0], df: f, render_input: true });
         filters[f.fieldname] = ctrl;
         if (f.default) ctrl.set_value(f.default);
@@ -89,7 +91,16 @@ frappe.pages['supplier-quotation-a'].on_page_load = function(wrapper) {
 			'margin-right': '15px',
         });
 
-        ctrl.$input.on('change', () => load_data());
+        // ctrl.$input.on('change', () => load_data());
+        if (f.fieldtype === "MultiSelectList") {
+            ctrl.df.on_change = function() {
+                console.log(f.fieldname + " changed:", ctrl.get_value());
+                load_data(); // trigger data reload
+            };
+        } else {
+            console.log(f.fieldname + " changed:");
+            ctrl.$input.on('change', () => load_data());
+        }
     });
 
     // --- Data Table Wrapper ---
@@ -115,6 +126,8 @@ frappe.pages['supplier-quotation-a'].on_page_load = function(wrapper) {
     function load_data() {
         let args = {};
         Object.keys(filters).forEach(key => args[key] = filters[key].get_value());
+        args["status"] = "Draft";
+        // alert("args ...."+JSON.stringify(args))
 
         frappe.call({
             method: "frappe.desk.query_report.run",
@@ -130,38 +143,6 @@ frappe.pages['supplier-quotation-a'].on_page_load = function(wrapper) {
             }
         });
     }
-
-	// function load_data() {
-	// 	let args = {};
-	// 	Object.keys(filters).forEach(key => {
-	// 		let val = filters[key].get_value();
-
-	// 		// ✅ Convert array to comma-separated string for report API
-	// 		if (Array.isArray(val)) {
-	// 			val = val.join(", ");
-	// 		}
-
-	// 		args[key] = val;
-	// 	});
-
-	// 	frappe.call({
-	// 		method: "frappe.desk.query_report.run",
-	// 		args: {
-	// 			report_name: "Supplier Quotation Comparison",
-	// 			filters: args
-	// 		},
-	// 		freeze: true,
-	// 		freeze_message: __("Loading data..."),
-	// 		callback: function (r) {
-	// 			if (r.message && r.message.result && r.message.result.length > 0) {
-	// 				render_table(r.message.result);
-	// 			} else {
-	// 				$data_wrapper.html(`<div class="text-muted mt-3">${__("No data found")}</div>`);
-	// 			}
-	// 		}
-	// 	});
-	// }
-
 
     function render_table(data) {
         $data_wrapper.empty();
