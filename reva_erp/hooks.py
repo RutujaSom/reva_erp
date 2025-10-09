@@ -74,6 +74,12 @@ fixtures = [
     
 ]
 
+# hooks.py
+
+page_js = {
+    "supplier-quotation-a": "reva_erp_next/page/supplier_quotation_a/supplier_quotation_a.js"
+}
+
 
     
    
