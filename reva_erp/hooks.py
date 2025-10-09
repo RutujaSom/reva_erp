@@ -63,15 +63,23 @@ fixtures = [
     
     {
         "doctype": "Web Form",
-        "filters": [
-            ["name", "in", ["Supplier Registration"]]
-        ]
-    }
+        "name": "Supplier Registration",
+        
+    },
+    {
+        "doctype": "Website Settings"
+       
+    },
+   
+    
+]
+
+
     
    
 
 
-]
+
 
 
 
