@@ -1,7 +1,7 @@
 {% extends "templates/web.html" %}
 
 {% block header %}
-<h1 style="margin-top: 10px;">{{ doc.name }}</h1>
+<h1 style="margin-top: 10px; font-size: 24px;">{{ doc.name }}</h1>
 {% endblock %}
 
 {% block script %}
@@ -71,6 +71,18 @@
 			</div>
 		</div>
         {% endif %}
+        <hr>
+
+    
+		<div class="row terms" style="margin-top: -40px;">
+			<div class="col-6">
+				<br><br>
+				<p><strong>{{ _("Notes: ") }}</strong></p>
+				<textarea class="form-control terms-feedback" style="height: 100px;"></textarea>
+			</div>
+		</div>
+                <hr>
+
 
         <!-- ✅ Terms & Conditions -->
 		<div class="row mt-3">
@@ -81,15 +93,6 @@
                 </div>
             </div>
         </div> 
-    
-
-		<div class="row terms">
-			<div class="col-6">
-				<br><br>
-				<p class="text-muted small">{{ _("Notes: ") }}</p>
-				<textarea class="form-control terms-feedback" style="height: 100px;"></textarea>
-			</div>
-		</div>
 
 		     
     </div>
