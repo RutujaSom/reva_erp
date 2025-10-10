@@ -1,4 +1,5 @@
 
+
 frappe.pages['supplier-quotation-a'].on_page_load = function(wrapper) {
     let page = frappe.ui.make_app_page({
         parent: wrapper,
@@ -6,7 +7,7 @@ frappe.pages['supplier-quotation-a'].on_page_load = function(wrapper) {
         single_column: true
     });
 
-    // --- Add custom toggle switch CSS ---
+    // --- Add CSS ---
     let style = `
     <style>
     .toggle-switch {
@@ -51,17 +52,55 @@ frappe.pages['supplier-quotation-a'].on_page_load = function(wrapper) {
     .toggle-switch.approve .toggle-slider { left: 52px; }
     .toggle-switch.approve .approve-label { color: white; }
     .toggle-switch.reject .reject-label { color: white; }
+
+    /* Scrollable wrapper */
+    .table-scroll-wrapper {
+        overflow-x: auto;
+        position: relative;
+        width: 100%;
+    }
+
+    /* Sticky Decision column (header + cells) */
+    .table-scroll-wrapper table th.sticky-col,
+    .table-scroll-wrapper table td.sticky-col {
+        position: sticky;
+        right: 0;
+        background-color: #f8f9fa;
+        z-index: 12; /* higher than body cells */
+        min-width: 120px;
+        max-width: 150px;
+    }
+
+    /* Sticky header row */
+    .table-scroll-wrapper table thead th {
+        position: sticky;
+        top: 0;
+        background-color: #f8f9fa;
+        z-index: 15; /* higher than sticky-col to overlap cells */
+    }
+
+    /* Optional: Increase z-index for sticky last column header */
+    .table-scroll-wrapper table thead th.sticky-col {
+        z-index: 20; /* ensures top-right cell overlaps both header and body */
+    }
+
+    /* Set column widths */
+    .table-scroll-wrapper table th, .table-scroll-wrapper table td {
+        min-width: 150px;
+        max-width: 250px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+
     </style>
     `;
     $('head').append(style);
 
-    // --- Create filter area with flex gap and row gap ---
-    let $filter_area = $(`
-        <div class="report-filter-area d-flex flex-wrap gap-3 mb-4" style="row-gap: 15px;"></div>
-    `);
+    // --- Filter area ---
+    let $filter_area = $('<div class="report-filter-area d-flex flex-wrap gap-3 mb-4" style="row-gap: 15px;"></div>');
     $(page.main).append($filter_area);
 
-    // --- Define filters ---
     const filters_def = [
         { fieldtype: "Link", label: __("Company"), options: "Company", fieldname: "company", default: frappe.defaults.get_user_default("Company"), reqd: 1 },
         { fieldname: "from_date", label: __("From Date"), fieldtype: "Date", reqd: 1, default: frappe.datetime.add_months(frappe.datetime.get_today(), -1) },
@@ -74,60 +113,55 @@ frappe.pages['supplier-quotation-a'].on_page_load = function(wrapper) {
         { fieldtype: "Check", label: __("Include Expired"), fieldname: "include_expired", default: 0 },
     ];
 
-    // --- Render filters dynamically with uniform width and spacing ---
+    // store filters here
     let filters = {};
+
+    // Example: loop over your filters_def
     filters_def.forEach(f => {
-        console.log('This should show');  // <--- Not showing
+        let field = page.add_field({
+            label: f.label,
+            fieldname: f.fieldname,
+            fieldtype: f.fieldtype,
+            options: f.options,
+            default: f.default,
+            reqd: f.reqd,
+            get_data: f.get_data,        // for MultiSelectList
+            get_query: f.get_query,      // for Link filters
+            change() {                   // triggers automatically for Link, MultiSelectList, Select, Date, Check
+                load_data();
+            },
+            dropdown_parent: 'body' // <-- ensures dropdown is appended to body
+        });
 
-        let ctrl = frappe.ui.form.make_control({ parent: $filter_area[0], df: f, render_input: true });
-        filters[f.fieldname] = ctrl;
-        if (f.default) ctrl.set_value(f.default);
+        filters[f.fieldname] = field;
 
-        // Set uniform width and spacing
-        $(ctrl.wrapper).css({
+        // optional: apply custom CSS to wrapper
+        $(field.wrapper).css({
             'min-width': '220px',
             'max-width': '280px',
             'flex': '1 1 250px',
-			'margin-right': '15px',
+            'margin-right': '15px',
         });
-
-        // ctrl.$input.on('change', () => load_data());
-        if (f.fieldtype === "MultiSelectList") {
-            ctrl.df.on_change = function() {
-                console.log(f.fieldname + " changed:", ctrl.get_value());
-                load_data(); // trigger data reload
-            };
-        } else {
-            console.log(f.fieldname + " changed:");
-            ctrl.$input.on('change', () => load_data());
-        }
     });
 
-    // --- Data Table Wrapper ---
+
+    // --- Data wrapper ---
     let $data_wrapper = $('<div class="mt-4"></div>');
     $(page.main).append($data_wrapper);
 
-	// --- Submit button (aligned right) ---
-	let $button_container = $(`
-		<div class="d-flex justify-content-end mt-3">
-			<button class="btn btn-primary">${__("Submit")}</button>
-		</div>
-	`);
-	$(page.main).append($button_container);
+    // --- Submit button ---
+    let $button_container = $('<div class="d-flex justify-content-end mt-3"><button class="btn btn-primary">'+__("Submit")+'</button></div>');
+    $(page.main).append($button_container);
+    let $submit_btn = $button_container.find("button");
+    $submit_btn.on('click', function() {
+        frappe.confirm(__('Are you sure you want to submit?'), process_records);
+    });
 
-	let $submit_btn = $button_container.find("button");
-
-	$submit_btn.on('click', function() {
-		frappe.confirm(__('Are you sure you want to submit?'), process_records);
-	});
-
-
-    // --- Fetch & render data ---
+    // --- Load data ---
     function load_data() {
         let args = {};
         Object.keys(filters).forEach(key => args[key] = filters[key].get_value());
-        args["status"] = "Draft";
-        // alert("args ...."+JSON.stringify(args))
+        args["workflow_status"] = "Pending";
 
         frappe.call({
             method: "frappe.desk.query_report.run",
@@ -138,29 +172,30 @@ frappe.pages['supplier-quotation-a'].on_page_load = function(wrapper) {
                 if (r.message && r.message.result && r.message.result.length > 0) {
                     render_table(r.message.result);
                 } else {
-                    $data_wrapper.html(`<div class="text-muted mt-3">${__("No data found")}</div>`);
+                    $data_wrapper.html('<div class="text-muted mt-3">'+__("No data found")+'</div>');
                 }
             }
         });
     }
 
+    // --- Render table ---
     function render_table(data) {
         $data_wrapper.empty();
+        let scroll_wrapper = $('<div class="table-scroll-wrapper"></div>');
+        let table = $('<table class="table table-bordered table-hover"><thead class="table-light"></thead><tbody></tbody></table>');
 
-        let table = $(`<table class="table table-bordered table-hover"><thead class="table-light"></thead><tbody></tbody></table>`);
         let columns = Object.keys(data[0]);
         let thead = table.find('thead');
         let tr_head = $('<tr></tr>');
-        columns.forEach(c => tr_head.append(`<th>${frappe.utils.to_title_case(c.replace(/_/g, ' '))}</th>`));
-        tr_head.append('<th>Decision</th>');
+        columns.forEach(c => tr_head.append('<th>'+frappe.utils.to_title_case(c.replace(/_/g,' '))+'</th>'));
+        tr_head.append('<th class="sticky-col">Decision</th>');
         thead.append(tr_head);
 
         let tbody = table.find('tbody');
         data.forEach(row => {
             let tr = $('<tr></tr>');
-            columns.forEach(c => tr.append(`<td>${row[c] ?? ""}</td>`));
+            columns.forEach(c => tr.append('<td>'+ (row[c] ?? "") +'</td>'));
 
-            // Toggle switch inside table
             let toggle = $(`
                 <div class="toggle-switch reject" data-name="${row.quotation}">
                     <div class="toggle-slider"></div>
@@ -168,23 +203,18 @@ frappe.pages['supplier-quotation-a'].on_page_load = function(wrapper) {
                     <div class="toggle-label reject-label">Reject</div>
                 </div>
             `);
+            toggle.on('click', function() { $(this).toggleClass('approve reject'); });
+            tr.append($('<td class="sticky-col"></td>').append(toggle));
 
-            toggle.on('click', function() {
-                $(this).toggleClass('approve reject');
-            });
-
-            tr.append($('<td></td>').append(toggle));
             tbody.append(tr);
         });
 
-        $data_wrapper.append(table);
+        scroll_wrapper.append(table);
+        $data_wrapper.append(scroll_wrapper);
     }
 
-    // --- Process all records on Submit ---
     function process_records() {
-        let approve_list = [];
-        let reject_list = [];
-
+        let approve_list = [], reject_list = [];
         $data_wrapper.find('.toggle-switch').each(function() {
             let name = $(this).data('name');
             if ($(this).hasClass('approve')) approve_list.push(name);
@@ -207,6 +237,5 @@ frappe.pages['supplier-quotation-a'].on_page_load = function(wrapper) {
         });
     }
 
-    // --- Initial load after small timeout to ensure filters have default values ---
     setTimeout(load_data, 200);
 };
