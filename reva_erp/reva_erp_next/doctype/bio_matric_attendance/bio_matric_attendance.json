@@ -1,0 +1,112 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-10-13 17:52:18.465910",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "attendance_id",
+  "enroll_id",
+  "event",
+  "io_status",
+  "in_out",
+  "column_break_ixxu",
+  "device_ser_no",
+  "record_time",
+  "temperature",
+  "flag",
+  "mode"
+ ],
+ "fields": [
+  {
+   "fieldname": "device_ser_no",
+   "fieldtype": "Data",
+   "label": "Device Serial No."
+  },
+  {
+   "fieldname": "event",
+   "fieldtype": "Data",
+   "label": "Event"
+  },
+  {
+   "fieldname": "flag",
+   "fieldtype": "Data",
+   "label": "Flag"
+  },
+  {
+   "fieldname": "io_status",
+   "fieldtype": "Data",
+   "label": "IO Status"
+  },
+  {
+   "fieldname": "in_out",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "In Out"
+  },
+  {
+   "fieldname": "mode",
+   "fieldtype": "Data",
+   "label": "Mode"
+  },
+  {
+   "fieldname": "column_break_ixxu",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "enroll_id",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Enroll Id"
+  },
+  {
+   "fieldname": "record_time",
+   "fieldtype": "Datetime",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Record Time"
+  },
+  {
+   "fieldname": "temperature",
+   "fieldtype": "Data",
+   "label": "Temperature"
+  },
+  {
+   "fieldname": "attendance_id",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Attendance Id",
+   "read_only": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-10-13 18:05:04.710080",
+ "modified_by": "Administrator",
+ "module": "Reva Erp Next",
+ "name": "Bio Matric Attendance",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
