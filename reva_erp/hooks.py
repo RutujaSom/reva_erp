@@ -81,6 +81,24 @@ page_js = {
 }
 
 
+scheduler_events = {
+    "daily": [
+        "reva_erp.api.attendance.fetch_attendance_from_middleware"
+    ],
+    "hourly": [
+        # Or you can schedule hourly instead of daily
+        "reva_erp.api.attendance.fetch_attendance_from_middleware",
+        "reva_erp.api.task.auto_close_incomplete_working_tasks"
+    ],
+    "cron": {
+        "*/1 * * * *": [  # every 2 minutes
+            "reva_erp.api.task.auto_close_incomplete_working_tasks"
+        ]
+    }
+    
+}
+
+
 # Apps
 # ------------------
 
