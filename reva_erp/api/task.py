@@ -187,3 +187,24 @@ def auto_close_incomplete_working_tasks():
                         message=f"Incomplete Timesheet for Task {task_doc.name} auto-updated to shift end for employee {emp}.",
                         title="Auto Shift End Timesheet Update"
                     )
+
+
+
+def execute():
+    task_status_field = frappe.get_doc("DocField", {
+        "parent": "Task",
+        "fieldname": "status"
+    })
+
+    # Current options
+    options = task_status_field.options.split("\n") if task_status_field.options else []
+
+    # Add new options safely
+    new_options = ["Stopped","On Hold"]
+    for opt in new_options:
+        if opt not in options:
+            options.append(opt)
+
+    # Save back
+    task_status_field.options = "\n".join(options)
+    task_status_field.save(ignore_permissions=True)
