@@ -60,14 +60,35 @@ class TaskApproval(Document):
                 frappe.db.set_value("Task Approval", approval.name, "discarded_by", rejecting_employee)
 
             frappe.db.set_value("Task", doc.task, "workflow_state", "Returned")
-            frappe.db.set_value("Task", doc.status, "workflow_state", "Open")
+            frappe.db.set_value("Task", doc.status, "status", "Open")
 
             frappe.msgprint(f"All other pending approvals for this task have been discarded.")
 
 
 
+import frappe
+
+def get_permission_query_conditions(user):
+    # If Administrator, no restriction
+    if not user or user == "Administrator":
+        return ""
+
+    # Get Employee linked to this User
+    employee = frappe.db.get_value("Employee", {"user_id": user}, "name")
+    if not employee:
+        # No linked employee, deny all
+        return "1=0"
+    print("employee .....",employee)
 
 
+    # Count records in Task Approval table
+    records = frappe.get_all("Task Approval", filters={"approver": employee}, fields=["name", "approver"])
+    for r in records:
+        print(r)
+    print("Total:", len(records))
+
+    # Only show records where approver (Employee) matches
+    return f"`tabTask Approval`.approver = '{employee}'"
 
 def on_update_task_approval(doc, method=None):
    
@@ -104,27 +125,16 @@ def on_update_task_approval(doc, method=None):
 
 
 
-def get_permission_query_conditions(user):
-    print("user .........",user)
-    frappe.msgprint(f"user = {user}")
+import frappe
 
-    if not user or user == "Administrator":
-        return ""
+def execute(filters=None):
+    employee = frappe.db.get_value("Employee", {"user_id": frappe.session.user}, "name")
 
-    # Apply restriction only for Task Approver doctype
-    return f"`tabTask Approval`.`approver` = '{user}'"
+    # Get all Task Approval records for this employee, regardless of other permissions
+    records = frappe.get_all(
+        "Task Approval",
+        filters={"approver": employee},  # or any other custom filter
+        fields=["name", "workflow_state", "docstatus", "project"]
+    )
 
-
-def has_permission(doc, user):
-    print("in has ......",user)
-    frappe.msgprint(f"user has  = {user}")
-
-    # Allow access if Administrator
-    if user == "Administrator":
-        return True
-
-    # Allow access if the logged-in user is the approver
-    if doc.approver == user:
-        return True
-
-    return False
+    return records

@@ -99,6 +99,11 @@ scheduler_events = {
     }
 }
 
+permission_query_conditions = {
+ "Task Approval": "reva_erp.reva_erp_next.doctype.task_approval.task_approval.get_permission_query_conditions",
+
+}
+
 
 
 # Apps
