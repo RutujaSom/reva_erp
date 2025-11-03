@@ -52,6 +52,9 @@ fixtures = [
                 "Trigger Mail For Supplier When Registration Save",
                 "Check Existing Working Task For Logged In User",
                 "Auto Create Child Tasks For Task",
+                "Send Task For Approval",
+                "Validate Task Status",
+                
             ]]
 		]
           
