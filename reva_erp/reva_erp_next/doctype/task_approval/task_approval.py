@@ -105,6 +105,9 @@ def on_update_task_approval(doc, method=None):
 
 
 def get_permission_query_conditions(user):
+    print("user .........",user)
+    frappe.msgprint(f"user = {user}")
+
     if not user or user == "Administrator":
         return ""
 
@@ -113,6 +116,9 @@ def get_permission_query_conditions(user):
 
 
 def has_permission(doc, user):
+    print("in has ......",user)
+    frappe.msgprint(f"user has  = {user}")
+
     # Allow access if Administrator
     if user == "Administrator":
         return True
