@@ -226,5 +226,24 @@
   "reference_doctype": "Task",
   "script": "\n# Skip if this task is a child task (parent_status check happens for parent only)\nif not doc.is_group:\n    # Check if parent exists\n    if doc.parent_task:\n        parent_task = frappe.get_doc(\"Task\", doc.parent_task)\n\n        # Get all child tasks of this parent\n        child_tasks = frappe.get_all(\n            \"Task\",\n            filters={\"parent_task\": doc.parent_task},\n            fields=[\"status\"]\n        )\n\n        # If all child tasks are complete\n        if all(c.status == \"Completed\" for c in child_tasks):\n            parent_task.status = \"Completed\"\n            parent_task.completed_on = frappe.utils.nowdate()\n            parent_task.save(ignore_permissions=True)\nfrappe.msgprint(f\"doc.is_group .....{doc.is_group}\")\nif doc.is_group and doc.status == \"Completed\":\n    # Get all child tasks\n    child_tasks = frappe.get_all(\n        \"Task\",\n        filters={\"parent_task\": doc.name},\n        fields=[\"status\"]\n    )\n\n    # Check if any child task is not complete\n    if any(c.status != \"Complete\" for c in child_tasks):\n        frappe.throw(\"Parent tasks cannot be marked Complete until all child tasks are complete.\")\n",
   "script_type": "DocType Event"
+ },
+ {
+  "allow_guest": 1,
+  "api_method": "emp_list",
+  "cron_format": null,
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Server Script",
+  "doctype_event": "Before Insert",
+  "enable_rate_limit": 0,
+  "event_frequency": "All",
+  "modified": "2025-11-03 18:50:23.050849",
+  "module": null,
+  "name": "employee list",
+  "rate_limit_count": 5,
+  "rate_limit_seconds": 86400,
+  "reference_doctype": "Employee",
+  "script": "\n# emp_name = frappe.get_value(\"Employee\", {\"user_id\": frappe.session.user}, \"name\", ignore_permissions=True)\nemp = frappe.get_all(\"Employee\", filters={\"user_id\": frappe.session.user}, fields=[\"name\"])\nif emp:\n    emp_name = emp[0].name\nelse:\n    emp_name = None\n\nfrappe.msgprint(f\".....emp .....{emp_name}\")\nfrappe.response['message'] = emp_name\n",
+  "script_type": "API"
  }
 ]
