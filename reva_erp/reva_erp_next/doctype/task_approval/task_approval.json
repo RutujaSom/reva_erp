@@ -1,0 +1,241 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-10-31 14:55:09.616365",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_m8ff",
+  "approval_level",
+  "column_break_ahoi",
+  "approver",
+  "employee",
+  "section_break_badr",
+  "task",
+  "subject",
+  "project",
+  "issue",
+  "type",
+  "column_break_mnqf",
+  "status",
+  "priority",
+  "weight",
+  "parent_task",
+  "completed_by",
+  "completed_on",
+  "discarded_by",
+  "timeline_section",
+  "exp_start_date",
+  "expected_time",
+  "start",
+  "column_break_urjn",
+  "exp_end_date",
+  "progress",
+  "duration",
+  "section_break_krnh",
+  "description",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_m8ff",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "task",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Task",
+   "no_copy": 1,
+   "options": "Task",
+   "print_hide": 1,
+   "reqd": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "approver",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Approver",
+   "options": "Employee",
+   "reqd": 1
+  },
+  {
+   "fieldname": "approval_level",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Approval Level",
+   "reqd": 1
+  },
+  {
+   "fieldname": "employee",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Employee",
+   "options": "Employee",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_badr",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "subject",
+   "fieldtype": "Data",
+   "label": "Subject"
+  },
+  {
+   "fieldname": "project",
+   "fieldtype": "Link",
+   "label": "Project",
+   "options": "Project"
+  },
+  {
+   "fieldname": "issue",
+   "fieldtype": "Link",
+   "label": "Issue",
+   "options": "Issue"
+  },
+  {
+   "fieldname": "column_break_mnqf",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "type",
+   "fieldtype": "Link",
+   "label": "Type",
+   "options": "Task Type"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Data",
+   "label": "Status"
+  },
+  {
+   "fieldname": "priority",
+   "fieldtype": "Data",
+   "label": "Priority"
+  },
+  {
+   "fieldname": "weight",
+   "fieldtype": "Data",
+   "label": "Weight"
+  },
+  {
+   "fieldname": "parent_task",
+   "fieldtype": "Link",
+   "label": "parent_task",
+   "options": "Task"
+  },
+  {
+   "fieldname": "completed_by",
+   "fieldtype": "Link",
+   "label": "completed_by",
+   "options": "User"
+  },
+  {
+   "fieldname": "completed_on",
+   "fieldtype": "Date",
+   "label": "completed_on"
+  },
+  {
+   "collapsible": 1,
+   "collapsible_depends_on": "eval:doc.__islocal",
+   "fieldname": "timeline_section",
+   "fieldtype": "Section Break",
+   "label": "Timeline"
+  },
+  {
+   "fieldname": "exp_start_date",
+   "fieldtype": "Date",
+   "label": "exp_start_date"
+  },
+  {
+   "fieldname": "expected_time",
+   "fieldtype": "Float",
+   "label": "expected_time"
+  },
+  {
+   "fieldname": "start",
+   "fieldtype": "Int",
+   "label": "Begin On (Days)"
+  },
+  {
+   "fieldname": "column_break_urjn",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "exp_end_date",
+   "fieldtype": "Date",
+   "label": "exp_end_date"
+  },
+  {
+   "fieldname": "progress",
+   "fieldtype": "Percent",
+   "label": "progress"
+  },
+  {
+   "fieldname": "duration",
+   "fieldtype": "Int",
+   "label": "duration"
+  },
+  {
+   "fieldname": "section_break_krnh",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Text Editor",
+   "label": "description"
+  },
+  {
+   "fieldname": "column_break_ahoi",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Task Approval",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "discarded_by",
+   "fieldtype": "Link",
+   "label": "Discarded By",
+   "options": "Employee"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2025-11-03 13:12:01.342851",
+ "modified_by": "Administrator",
+ "module": "Reva Erp Next",
+ "name": "Task Approval",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
