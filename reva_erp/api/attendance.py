@@ -8,6 +8,8 @@ from frappe.utils import get_datetime
 def fetch_attendance_from_middleware():
     try:
         response = requests.get("http://192.168.1.21:5000/import_attendance", timeout=30)
+        # response = requests.get("http://172.31.28.159:5000/import_attendance", timeout=30)
+
         data = response.json()
         print("data ....",data)
 

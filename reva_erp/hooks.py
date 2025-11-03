@@ -12,7 +12,7 @@ fixtures = [
         "filters": [
             ["dt", "in", [
                 "Task", "Request for Quotation",
-                "Terms and Conditions"
+                "Terms and Conditions", "Employee"
             ]]
         ]
     },
@@ -23,7 +23,7 @@ fixtures = [
             "Purchase Order",
             "Supplier",
             "Supplier Quotation",
-            # ""
+            "Task Approval",
             ]]
         ]
     },
@@ -49,7 +49,9 @@ fixtures = [
                 "Unlock RFQ after record submitted",
                 "Send Mail on Supplier Approval",
                 "Send Mail On Purchase Order",
-                "Trigger Mail For Supplier When Registration Save"
+                "Trigger Mail For Supplier When Registration Save",
+                "Check Existing Working Task For Logged In User",
+                "Auto Create Child Tasks For Task",
             ]]
 		]
           
@@ -84,13 +86,13 @@ page_js = {
 scheduler_events = {
     "hourly": [
         "reva_erp.api.attendance.fetch_attendance_from_middleware",
-        "reva_erp.api.task.auto_close_incomplete_working_tasks"
+        # "reva_erp.api.task.auto_close_incomplete_working_tasks"
     ],
-    # "cron": {
-    #     "*/2 * * * *": [
-    #         "reva_erp.api.task.auto_close_incomplete_working_tasks"
-    #     ]
-    # }
+    "cron": {
+        "0/2 * * * *": [
+            "reva_erp.api.task.auto_close_incomplete_working_tasks"
+        ]
+    }
 }
 
 
