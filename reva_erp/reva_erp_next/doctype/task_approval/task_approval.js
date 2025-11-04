@@ -1,21 +1,8 @@
-// Copyright (c) 2025, Excellminds and contributors
-// For license information, please see license.txt
-
-// frappe.ui.form.on("Task Approval", {
-// 	refresh(frm) {
-
-// 	},
-// });
-
-
-
-
 frappe.ui.form.on('Task Approval', {
     refresh(frm) {
         if (frm.doc.task) {
             fetch_task_details(frm);
         }
-
         make_form_read_only(frm);
     }
 });
@@ -25,7 +12,7 @@ function fetch_task_details(frm) {
 
     frappe.db.get_doc('Task', frm.doc.task)
         .then(task => {
-            // Use silent assignment — does NOT mark doc dirty
+            // Function to set task fields
             const field_map = {
                 subject: task.subject,
                 project: task.project,
@@ -35,7 +22,7 @@ function fetch_task_details(frm) {
                 priority: task.priority,
                 weight: task.weight,
                 parent_task: task.parent_task,
-                completed_by: task.completed_by,
+                completed_by: '', // will be filled below
                 completed_on: task.completed_on,
                 exp_start_date: task.exp_start_date,
                 expected_time: task.expected_time,
@@ -45,16 +32,32 @@ function fetch_task_details(frm) {
                 duration: task.duration,
                 description: task.description,
             };
+            // Fetch User full name if completed_by exists
+            if (task.completed_by) {
+                frappe.db.get_value('User', task.completed_by, 'full_name')
+                    .then(r => {
+                        const full_name = r.message ? r.message.full_name : task.completed_by;
+                        field_map.completed_by = full_name;
 
-            Object.entries(field_map).forEach(([key, value]) => {
-                if (frm.fields_dict[key]) {
-                    frm.doc[key] = value || '';
-                    frm.refresh_field(key);
-                }
-            });
-
-            // Ensure doc is clean again
-            frm.dirty = false;
+                        // Now assign all fields
+                        Object.entries(field_map).forEach(([key, value]) => {
+                            if (frm.fields_dict[key]) {
+                                frm.doc[key] = value || '';
+                                frm.refresh_field(key);
+                            }
+                        });
+                        frm.dirty = false;
+                    });
+            } else {
+                // Assign all fields directly if no completed_by
+                Object.entries(field_map).forEach(([key, value]) => {
+                    if (frm.fields_dict[key]) {
+                        frm.doc[key] = value || '';
+                        frm.refresh_field(key);
+                    }
+                });
+                frm.dirty = false;
+            }
         });
 }
 
@@ -70,6 +73,4 @@ function make_form_read_only(frm) {
             frm.set_df_property(f, 'read_only', 1);
         }
     });
-
-    // ✅ Don’t disable save, don’t mark form dirty
 }
