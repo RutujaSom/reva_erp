@@ -60,35 +60,32 @@ class TaskApproval(Document):
                 frappe.db.set_value("Task Approval", approval.name, "discarded_by", rejecting_employee)
 
             frappe.db.set_value("Task", doc.task, "workflow_state", "Returned")
-            frappe.db.set_value("Task", doc.status, "status", "Open")
+            frappe.db.set_value("Task", doc.task, "status", "Open")
 
             frappe.msgprint(f"All other pending approvals for this task have been discarded.")
 
 
 
-import frappe
 
 def get_permission_query_conditions(user):
-    # If Administrator, no restriction
+    # Administrator - no restriction
     if not user or user == "Administrator":
         return ""
 
-    # Get Employee linked to this User
+    # Find Employee ID linked to this User
     employee = frappe.db.get_value("Employee", {"user_id": user}, "name")
+
     if not employee:
-        # No linked employee, deny all
-        return "1=0"
-    print("employee .....",employee)
+        # If no employee linked, do not restrict by approver
+        return ""
 
+    # Escape the value to avoid SQL injection
+    emp = frappe.db.escape(employee)
 
-    # Count records in Task Approval table
-    records = frappe.get_all("Task Approval", filters={"approver": employee}, fields=["name", "approver"])
-    for r in records:
-        print(r)
-    print("Total:", len(records))
+    # Approver is a Data field storing Employee ID
+    # Also handle workflow_state being NULL
+    return f"(approver = {emp} AND (workflow_state IS NULL OR workflow_state != 'Draft'))"
 
-    # Only show records where approver (Employee) matches
-    return f"`tabTask Approval`.approver = '{employee}'"
 
 def on_update_task_approval(doc, method=None):
    

@@ -7,11 +7,13 @@
  "field_order": [
   "section_break_m8ff",
   "approval_level",
+  "approver_name",
   "column_break_ahoi",
   "approver",
   "employee",
   "section_break_badr",
   "task",
+  "emp_name",
   "subject",
   "project",
   "issue",
@@ -39,7 +41,8 @@
  "fields": [
   {
    "fieldname": "section_break_m8ff",
-   "fieldtype": "Section Break"
+   "fieldtype": "Section Break",
+   "hidden": 1
   },
   {
    "fieldname": "task",
@@ -54,10 +57,8 @@
   },
   {
    "fieldname": "approver",
-   "fieldtype": "Link",
-   "in_list_view": 1,
+   "fieldtype": "Data",
    "label": "Approver",
-   "options": "Employee",
    "reqd": 1
   },
   {
@@ -69,10 +70,8 @@
   },
   {
    "fieldname": "employee",
-   "fieldtype": "Link",
-   "in_list_view": 1,
+   "fieldtype": "Data",
    "label": "Employee",
-   "options": "Employee",
    "reqd": 1
   },
   {
@@ -129,9 +128,8 @@
   },
   {
    "fieldname": "completed_by",
-   "fieldtype": "Link",
-   "label": "completed_by",
-   "options": "User"
+   "fieldtype": "Data",
+   "label": "completed_by"
   },
   {
    "fieldname": "completed_on",
@@ -204,17 +202,28 @@
   },
   {
    "fieldname": "discarded_by",
-   "fieldtype": "Link",
+   "fieldtype": "Data",
    "hidden": 1,
-   "label": "Discarded By",
-   "options": "Employee"
+   "label": "Discarded By"
+  },
+  {
+   "fieldname": "approver_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Approver Name"
+  },
+  {
+   "fieldname": "emp_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Employee Name"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-11-03 20:33:42.370945",
+ "modified": "2025-11-04 09:14:49.068041",
  "modified_by": "Administrator",
  "module": "Reva Erp Next",
  "name": "Task Approval",
@@ -230,11 +239,10 @@
    "report": 1,
    "role": "System Manager",
    "share": 1,
+   "submit": 1,
    "write": 1
   },
   {
-   "create": 1,
-   "delete": 1,
    "email": 1,
    "export": 1,
    "print": 1,
@@ -242,11 +250,10 @@
    "report": 1,
    "role": "Employee",
    "share": 1,
+   "submit": 1,
    "write": 1
   },
   {
-   "create": 1,
-   "delete": 1,
    "email": 1,
    "export": 1,
    "print": 1,
@@ -254,6 +261,7 @@
    "report": 1,
    "role": "Projects User",
    "share": 1,
+   "submit": 1,
    "write": 1
   }
  ],
