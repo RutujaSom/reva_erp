@@ -44,7 +44,8 @@ class TaskApproval(Document):
 
         if doc.workflow_state == "Rejected":
             # The employee who rejected
-            rejecting_employee = doc.employee
+            emp_id = doc.employee
+            emp_name = doc.emp_name
             # Find all other Task Approval records for the same task
             other_approvals = frappe.get_all(
                 "Task Approval",
@@ -57,7 +58,7 @@ class TaskApproval(Document):
 
             for approval in other_approvals:
                 frappe.db.set_value("Task Approval", approval.name, "workflow_state", "Discard")
-                frappe.db.set_value("Task Approval", approval.name, "discarded_by", rejecting_employee)
+                frappe.db.set_value("Task Approval", approval.name, "discarded_by", f"{emp_name} [{emp_id}]")
 
             frappe.db.set_value("Task", doc.task, "workflow_state", "Returned")
             frappe.db.set_value("Task", doc.task, "status", "Open")

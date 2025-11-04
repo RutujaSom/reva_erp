@@ -123,18 +123,18 @@
   {
    "fieldname": "parent_task",
    "fieldtype": "Link",
-   "label": "parent_task",
+   "label": "Parent Task",
    "options": "Task"
   },
   {
    "fieldname": "completed_by",
    "fieldtype": "Data",
-   "label": "completed_by"
+   "label": "Completed By"
   },
   {
    "fieldname": "completed_on",
    "fieldtype": "Date",
-   "label": "completed_on"
+   "label": "Completed On"
   },
   {
    "collapsible": 1,
@@ -146,12 +146,12 @@
   {
    "fieldname": "exp_start_date",
    "fieldtype": "Date",
-   "label": "exp_start_date"
+   "label": "Expected Start Date"
   },
   {
    "fieldname": "expected_time",
    "fieldtype": "Float",
-   "label": "expected_time"
+   "label": "Expected Time (in hours)"
   },
   {
    "fieldname": "start",
@@ -165,17 +165,17 @@
   {
    "fieldname": "exp_end_date",
    "fieldtype": "Date",
-   "label": "exp_end_date"
+   "label": "Expected End Date"
   },
   {
    "fieldname": "progress",
    "fieldtype": "Percent",
-   "label": "progress"
+   "label": "% Progress"
   },
   {
    "fieldname": "duration",
    "fieldtype": "Int",
-   "label": "duration"
+   "label": "Duration (Days)"
   },
   {
    "fieldname": "section_break_krnh",
@@ -203,8 +203,8 @@
   {
    "fieldname": "discarded_by",
    "fieldtype": "Data",
-   "hidden": 1,
-   "label": "Discarded By"
+   "label": "Discarded By",
+   "read_only": 1
   },
   {
    "fieldname": "approver_name",
@@ -223,7 +223,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-11-04 09:14:49.068041",
+ "modified": "2025-11-04 09:36:43.567630",
  "modified_by": "Administrator",
  "module": "Reva Erp Next",
  "name": "Task Approval",
