@@ -85,7 +85,7 @@ def get_permission_query_conditions(user):
 
     # Approver is a Data field storing Employee ID
     # Also handle workflow_state being NULL
-    return f"(approver = {emp} AND (workflow_state IS NULL OR workflow_state != 'Draft'))"
+    return f"(`tabTask Approval`.`approver` = {emp} AND (`tabTask Approval`.`workflow_state` IS NULL OR `tabTask Approval`.`workflow_state` != 'Draft'))"
 
 
 def on_update_task_approval(doc, method=None):

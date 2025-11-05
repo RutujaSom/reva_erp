@@ -4,9 +4,9 @@
   "doctype": "Workflow",
   "document_type": "Task",
   "is_active": 1,
-  "modified": "2025-11-03 15:24:34.279817",
+  "modified": "2025-11-04 10:20:25.919260",
   "name": "Send Completed task to review to RM",
-  "override_status": 0,
+  "override_status": 1,
   "send_email_alert": 0,
   "states": [
    {
