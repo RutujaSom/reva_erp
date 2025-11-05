@@ -3,7 +3,7 @@ from frappe.utils import now_datetime
 
 def execute(filters=None):
     columns = [
-        {"label": "Employee", "fieldname": "employee", "fieldtype": "Link", "options": "Employee", "width": 200},
+        {"label": "Employee ID", "fieldname": "employee", "fieldtype": "Link", "options": "Employee", "width": 200},
         {"label": "Employee Name", "fieldname": "employee_name", "fieldtype": "Data", "width": 200},
         {"label": "Project Name", "fieldname": "project_name", "fieldtype": "Data", "width": 200},
         {"label": "Task ID", "fieldname": "task", "fieldtype": "Link", "options": "Task", "width": 180},
@@ -28,8 +28,8 @@ def execute(filters=None):
 
     query = f"""
         SELECT
-            t.employee,
-            t.employee_name,
+            e.name AS employee,
+            e.employee_name AS employee_name,
             p.project_name AS project_name,
             d.task,
             ts.subject,
@@ -39,17 +39,19 @@ def execute(filters=None):
         INNER JOIN
             `tabTimesheet Detail` d ON d.parent = t.name
         LEFT JOIN
+            `tabEmployee` e ON e.name = t.employee
+        LEFT JOIN
             `tabProject` p ON p.name = d.project
         LEFT JOIN
             `tabTask` ts ON ts.name = d.task
         WHERE
             t.docstatus = 1
-			AND (d.hours IS NOT NULL AND d.hours > 0.0)
+            AND (d.hours IS NOT NULL AND d.hours > 0.0)
             {conditions}
         GROUP BY
-            t.employee, t.employee_name, p.project_name, d.task, ts.subject
+            e.name, e.employee_name, p.project_name, d.task, ts.subject
         ORDER BY
-            t.employee_name, p.project_name, ts.subject
+            e.employee_name, p.project_name, ts.subject
     """
 
     data = frappe.db.sql(query, values, as_dict=True)
