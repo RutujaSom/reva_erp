@@ -12,7 +12,8 @@ fixtures = [
         "filters": [
             ["dt", "in", [
                 "Task", "Request for Quotation",
-                "Terms and Conditions", "Employee"
+                "Terms and Conditions", "Employee",
+                "Timesheet Detail",
             ]]
         ]
     },
