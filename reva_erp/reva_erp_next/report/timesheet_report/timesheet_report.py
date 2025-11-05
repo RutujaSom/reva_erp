@@ -3,7 +3,7 @@ from frappe.utils import now_datetime
 
 def execute(filters=None):
     columns = [
-        {"label": "Employee ID", "fieldname": "employee", "fieldtype": "Link", "options": "Employee", "width": 200},
+        {"label": "Employee ID", "fieldname": "employee", "fieldtype": "Data", "width": 180},  # changed to Data
         {"label": "Employee Name", "fieldname": "employee_name", "fieldtype": "Data", "width": 200},
         {"label": "Project Name", "fieldname": "project_name", "fieldtype": "Data", "width": 200},
         {"label": "Task ID", "fieldname": "task", "fieldtype": "Link", "options": "Task", "width": 180},
@@ -55,5 +55,4 @@ def execute(filters=None):
     """
 
     data = frappe.db.sql(query, values, as_dict=True)
-    
     return columns, data
