@@ -86,6 +86,7 @@ fixtures = [
 page_js = {
     "supplier-quotation-a": "reva_erp_next/page/supplier_quotation_a/supplier_quotation_a.js"
 }
+
 app_include_js = [
     "/assets/reva_erp/js/supplier_portal_redirect.js"
 ]

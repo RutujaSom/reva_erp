@@ -51,3 +51,93 @@ def process_supplier_quotations(approve=None, reject=None):
         "rejected": success_rejected,
         "message": _("Processed Supplier Quotations successfully")
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import frappe
+
+@frappe.whitelist()
+def get_supplier_quotation_comparison(filters=None):
+    print("in func ...............////////////////")
+    import json
+    filters = json.loads(filters) if isinstance(filters, str) else (filters or {})
+
+    conditions = []
+    values = {}
+
+    # Optional filters
+    if filters.get("company"):
+        conditions.append("sq.company = %(company)s")
+        values["company"] = filters["company"]
+
+    if filters.get("from_date"):
+        conditions.append("sq.transaction_date >= %(from_date)s")
+        values["from_date"] = filters["from_date"]
+
+    if filters.get("to_date"):
+        conditions.append("sq.transaction_date <= %(to_date)s")
+        values["to_date"] = filters["to_date"]
+
+    if filters.get("supplier"):
+        conditions.append("sq.supplier IN %(supplier)s")
+        values["supplier"] = tuple(filters["supplier"])
+
+    if filters.get("item_code"):
+        conditions.append("sq_item.item_code = %(item_code)s")
+        values["item_code"] = filters["item_code"]
+
+    if filters.get("supplier_quotation"):
+        conditions.append("sq.name IN %(supplier_quotation)s")
+        values["supplier_quotation"] = tuple(filters["supplier_quotation"])
+
+    if filters.get("request_for_quotation"):
+        conditions.append("sq.request_for_quotation = %(request_for_quotation)s")
+        values["request_for_quotation"] = filters["request_for_quotation"]
+
+    if filters.get("workflow_state"):
+        conditions.append("sq.workflow_state = %(workflow_state)s")
+        values["workflow_state"] = filters["workflow_state"]
+
+    if not conditions:
+        conditions_sql = ""
+    else:
+        conditions_sql = "WHERE " + " AND ".join(conditions)
+    print("conditions_sql ......",conditions_sql)
+    query = f"""
+        SELECT
+            sq.name AS quotation,
+            sq.transaction_date,
+            sq.supplier,
+            sq.company,
+            sq_item.item_code,
+            item.item_name,
+            sq_item.qty,
+            sq_item.rate,
+            sq_item.amount,
+            sq.workflow_state
+        FROM
+            `tabSupplier Quotation` sq
+        JOIN
+            `tabSupplier Quotation Item` sq_item ON sq.name = sq_item.parent
+        LEFT JOIN
+            `tabItem` item ON sq_item.item_code = item.name
+        {conditions_sql}
+        ORDER BY sq.transaction_date DESC
+    """
+
+    data = frappe.db.sql(query, values, as_dict=True)
+    print("data .....",data)
+    return data

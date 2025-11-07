@@ -161,10 +161,12 @@ frappe.pages['supplier-quotation-a'].on_page_load = function(wrapper) {
     function load_data() {
         let args = {};
         Object.keys(filters).forEach(key => args[key] = filters[key].get_value());
-        args["workflow_status"] = "Pending";
+        args["workflow_state"] = "Pending";
+
 
         frappe.call({
             method: "frappe.desk.query_report.run",
+            // method: "reva_erp.api.supplier_quotation_com.get_supplier_quotation_comparison",
             args: { report_name: "Supplier Quotation Comparison", filters: args },
             freeze: true,
             freeze_message: __("Loading data..."),
