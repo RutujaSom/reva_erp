@@ -5,11 +5,29 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
+  "supplier_details",
   "supplier_name",
-  "email",
+  "email_id",
+  "supplier_detail",
+  "column_break_tusz",
   "supplier_group",
-  "registration_link",
-  "registration_token"
+  "mobile_no",
+  "website",
+  "address_details",
+  "address_line_1",
+  "city",
+  "county",
+  "column_break_gmvr",
+  "address_line_2",
+  "state",
+  "pincode",
+  "tab_2_tab",
+  "gst_details_section",
+  "gst",
+  "gst_state",
+  "column_break_kffk",
+  "gst_category",
+  "gst_state_number"
  ],
  "fields": [
   {
@@ -19,34 +37,124 @@
    "label": "Supplier Name"
   },
   {
-   "fieldname": "email",
-   "fieldtype": "Data",
-   "in_list_view": 1,
-   "label": "Email"
-  },
-  {
    "fieldname": "supplier_group",
    "fieldtype": "Link",
    "label": "Supplier Group",
    "options": "Supplier Group"
   },
   {
-   "fieldname": "registration_link",
-   "fieldtype": "Data",
-   "in_list_view": 1,
-   "label": "Registration Link"
+   "fieldname": "county",
+   "fieldtype": "Link",
+   "label": "Country",
+   "options": "Country"
   },
   {
-   "fieldname": "registration_token",
+   "fieldname": "column_break_tusz",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "mobile_no",
+   "fieldtype": "Int",
+   "label": "Mobile No",
+   "length": 10
+  },
+  {
+   "fieldname": "website",
+   "fieldtype": "Data",
+   "label": "Website"
+  },
+  {
+   "fieldname": "supplier_details",
+   "fieldtype": "Section Break",
+   "label": "Details"
+  },
+  {
+   "fieldname": "address_details",
+   "fieldtype": "Section Break",
+   "label": "Address"
+  },
+  {
+   "fieldname": "address_line_1",
+   "fieldtype": "Data",
+   "label": "Address Line 1"
+  },
+  {
+   "fieldname": "city",
+   "fieldtype": "Data",
+   "label": "City"
+  },
+  {
+   "fieldname": "pincode",
+   "fieldtype": "Int",
+   "label": "Postal Code"
+  },
+  {
+   "fieldname": "column_break_gmvr",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "address_line_2",
+   "fieldtype": "Data",
+   "label": "Address Line 2"
+  },
+  {
+   "fieldname": "state",
+   "fieldtype": "Data",
+   "label": "State"
+  },
+  {
+   "fieldname": "tab_2_tab",
+   "fieldtype": "Tab Break",
+   "label": "Tab 2"
+  },
+  {
+   "fieldname": "gst_details_section",
+   "fieldtype": "Section Break",
+   "label": "GST Details"
+  },
+  {
+   "fieldname": "gst",
+   "fieldtype": "Data",
+   "label": "GSTIN / UIN"
+  },
+  {
+   "fieldname": "gst_state",
+   "fieldtype": "Select",
+   "label": "GST State",
+   "options": "\nAndaman and Nicobar Islands\nAndhra Pradesh\nArunachal Pradesh\nAssam\nBihar\nChandigarh\nChhattisgarh\nDadra and Nagar Haveli and Daman and Diu\nDelhi\nGoa\nGujarat\nHaryana\nHimachal Pradesh\nJammu and Kashmir\nJharkhand\nKarnataka\nKerala\nLadakh\nLakshadweep Islands\nMadhya Pradesh\nMaharashtra\nManipur\nMeghalaya\nMizoram\nNagaland\nOdisha\nOther Countries\nOther Territory\nPuducherry\nPunjab\nRajasthan\nSikkim\nTamil Nadu\nTelangana\nTripura\nUttar Pradesh\nUttarakhand\nWest Bengal"
+  },
+  {
+   "fieldname": "column_break_kffk",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "Unregistered",
+   "fieldname": "gst_category",
+   "fieldtype": "Select",
+   "label": "GST Category",
+   "options": "Registered Regular\nRegistered Composition\nUnregistered\nSEZ\nOverseas\nDeemed Export\nUIN Holders\nTax Deductor\nTax Collector\nInput Service Distributor"
+  },
+  {
+   "fieldname": "gst_state_number",
+   "fieldtype": "Data",
+   "label": "GST State Number"
+  },
+  {
+   "fieldname": "supplier_detail",
+   "fieldtype": "Small Text",
+   "label": "Supplier Details"
+  },
+  {
+   "fieldname": "email_id",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "Registration Token"
+   "label": "Email"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-10-07 15:00:25.938728",
+ "modified": "2025-11-06 16:13:29.270040",
  "modified_by": "Administrator",
  "module": "Reva Erp Next",
  "name": "Supplier Registration",

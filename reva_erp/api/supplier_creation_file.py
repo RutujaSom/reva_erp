@@ -62,3 +62,16 @@ def after_supplier_approved(self):
             message=message
         )
 
+
+
+@frappe.whitelist()
+def get_supplier_for_user(user):
+    return frappe.db.sql("""
+        SELECT s.name, s.workflow_state
+        FROM `tabSupplier` s
+        INNER JOIN `tabPortal User` p ON p.parent = s.name
+        WHERE p.user = %s
+        LIMIT 1
+    """, user, as_dict=True)
+
+
