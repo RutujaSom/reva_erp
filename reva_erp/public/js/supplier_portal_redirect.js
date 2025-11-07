@@ -14,7 +14,7 @@ $(document).on('app_ready', function() {
             callback: function (res) {
                 if (res.message && res.message.length > 0) {
                     const supplier = res.message[0];
-                    console.log("Supplier data:", supplier);
+                    console.log("Supplier data:", supplier, '.....supplier.workflow_state ..',supplier.workflow_state);
 
                     // Check if supplier has an approval status field
                     // (assuming fieldname = "approval_status")

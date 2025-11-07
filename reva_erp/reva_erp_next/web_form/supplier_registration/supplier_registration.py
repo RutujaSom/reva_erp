@@ -20,6 +20,7 @@ def register_supplier(data):
     state = data.get("state")
     country = data.get("country")
     pincode = data.get("pincode")
+    data["country"] = "India"
 
     # ----------- Step 1: Create User -----------
     frappe.set_user("Administrator")
@@ -34,6 +35,9 @@ def register_supplier(data):
         })
         user.insert(ignore_permissions=True)
         user.add_roles("Pre Supplier")
+        
+        # Remove Allow Modules if any default entries got added
+        frappe.db.delete("Has Role", {"parent": user.name})
     else:
         user = frappe.get_doc("User", email_id)
 
