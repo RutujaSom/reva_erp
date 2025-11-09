@@ -176,6 +176,12 @@ frappe.pages['supplier-quotation-a'].on_page_load = function(wrapper) {
                 } else {
                     $data_wrapper.html('<div class="text-muted mt-3">'+__("No data found")+'</div>');
                 }
+
+                // if (r.message && r.message && r.message.length > 0) {
+                //     render_table(r.message);
+                // } else {
+                //     $data_wrapper.html('<div class="text-muted mt-3">'+__("No data found")+'</div>');
+                // }
             }
         });
     }

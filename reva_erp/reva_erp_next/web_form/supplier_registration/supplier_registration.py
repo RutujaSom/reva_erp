@@ -1,5 +1,6 @@
 import frappe
 import json
+import socket
 
 def get_context(context):
     """Add context data for Web Form"""
@@ -31,13 +32,16 @@ def register_supplier(data):
             "email": email_id,
             "first_name": supplier_name,
             "mobile_no": mobile_no,
-            "send_welcome_email": 0
+            "send_welcome_email": 0,
+            "roles": [
+                {"role": "Pre Supplier"}   # ✅ Add role directly before insert
+            ]
         })
         user.insert(ignore_permissions=True)
         user.add_roles("Pre Supplier")
         
         # Remove Allow Modules if any default entries got added
-        frappe.db.delete("Has Role", {"parent": user.name})
+        # frappe.db.delete("Has Role", {"parent": user.name})
     else:
         user = frappe.get_doc("User", email_id)
 
@@ -100,6 +104,25 @@ def register_supplier(data):
 
     # ----------- Step 6: Send Confirmation Email -----------
     subject = f"Welcome {supplier_name}!"
+
+    reset_link = frappe.utils.password.get_reset_password_url(user.name)
+    print("reset_link ....",reset_link)
+    # Replace site name with your server IP
+    # Get current server IP
+    try:
+        hostname = socket.gethostname()
+        server_ip = socket.gethostbyname(hostname)
+    except Exception:
+        print("in ex ....")
+        server_ip = "127.0.0.1"
+
+    print("server_ip ....",server_ip)
+
+    # Replace site name or hostname in the reset link
+    site_url = frappe.utils.get_url()
+    reset_link = reset_link.replace(site_url, f"http://{server_ip}")
+
+
     message = f"""
         <p>Dear {supplier_name},</p>
         <p>Thank you for registering as a supplier on our portal.</p>

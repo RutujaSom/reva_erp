@@ -34,7 +34,11 @@ fixtures = [
             ["name", "in", [
                 "Add supplier group and item filter in RFQ",
                 "Check work flow of task",
-                "Purchase Order Approved Suplier Disply in Supplier"
+                "Purchase Order Approved Suplier Disply in Supplier",
+                "Hide address fields for pre supplier login",
+                "Supplier list filter",
+                "Hide fields for Pre Supplier Role",
+                "Restrict Form Fields",
             ]]
         ]
     },
@@ -107,7 +111,15 @@ scheduler_events = {
 
 permission_query_conditions = {
  "Task Approval": "reva_erp.reva_erp_next.doctype.task_approval.task_approval.get_permission_query_conditions",
+ "Task": "reva_erp.api.task.get_permission_query_conditions",
 
+}
+
+
+doc_events = {
+    "Supplier": {
+        "after_insert": "reva_erp.api.supplier_creation_file.create_user_for_supplier"
+    }
 }
 
 

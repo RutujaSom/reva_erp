@@ -75,3 +75,64 @@ def get_supplier_for_user(user):
     """, user, as_dict=True)
 
 
+
+
+
+import frappe
+
+@frappe.whitelist()
+def create_user_for_supplier(doc, method):
+    """
+    Automatically create a User for the Supplier when a new Supplier is saved,
+    and send a confirmation email like the web registration process.
+    """
+    supplier_name = doc.supplier_name
+    email_id =  doc.email_id or None  # Adjust fieldname if different
+    mobile_no =  doc.mobile_no or None  # Adjust if needed
+
+    if not email_id:
+        frappe.logger().warning(f"Supplier {supplier_name} has no email; skipping user creation.")
+        return
+
+    frappe.set_user("Administrator")
+
+    # --- Step 1: Create User if not exists ---
+    if not frappe.db.exists("User", email_id):
+        user = frappe.get_doc({
+            "doctype": "User",
+            "email": email_id,
+            "first_name": supplier_name,
+            "mobile_no": mobile_no,
+            "send_welcome_email": 0,
+            "roles": [
+                {"role": "Pre Supplier"}   # ✅ Add role directly before insert
+            ]
+        })
+        user.insert(ignore_permissions=True)
+        user.add_roles("Pre Supplier")
+    else:
+        user = frappe.get_doc("User", email_id)
+
+    # --- Step 2: Link User in Supplier portal_users child table ---
+    if not any(u.user == user.name for u in doc.portal_users):
+        doc.append("portal_users", {"user": user.name})
+        doc.save(ignore_permissions=True)
+
+    frappe.set_user("Guest")
+
+    # --- Step 3: Send Confirmation Email ---
+    subject = f"Welcome {supplier_name}!"
+    message = f"""
+        <p>Dear {supplier_name},</p>
+        <p>Thank you for registering as a supplier on our portal.</p>
+        <p>Your Supplier ID: <b>{doc.name}</b></p>
+        <p>You can log in using your email: <b>{email_id}</b></p>
+        <p>Our team will review and approve your supplier account shortly.</p>
+        <p>Best regards,<br>Supplier Management Team</p>
+    """
+
+    frappe.sendmail(
+        recipients=[email_id],
+        subject=subject,
+        message=message
+    )
