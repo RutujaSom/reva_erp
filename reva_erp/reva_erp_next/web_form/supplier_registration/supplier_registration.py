@@ -1,6 +1,8 @@
 import frappe
 import json
 import socket
+from frappe.utils import get_url
+from frappe.utils.password import reset_password
 
 def get_context(context):
     """Add context data for Web Form"""
@@ -105,22 +107,33 @@ def register_supplier(data):
     # ----------- Step 6: Send Confirmation Email -----------
     subject = f"Welcome {supplier_name}!"
 
-    reset_link = frappe.utils.password.get_reset_password_url(user.name)
-    print("reset_link ....",reset_link)
+    # import frappe
+    # from frappe.utils import get_url
+
+    # # Generate reset key manually
+    # reset_key = frappe.generate_hash(length=20)
+
+    # # Store the reset key in the user record
+    # frappe.db.set_value("User", user.name, "reset_password_key", reset_key)
+    # frappe.db.commit()
+
+    # # Build full reset link
+    # reset_link = f"{get_url()}/update-password?key={reset_key}"
+
     # Replace site name with your server IP
     # Get current server IP
-    try:
-        hostname = socket.gethostname()
-        server_ip = socket.gethostbyname(hostname)
-    except Exception:
-        print("in ex ....")
-        server_ip = "127.0.0.1"
+    # try:
+    #     hostname = socket.gethostname()
+    #     server_ip = socket.gethostbyname(hostname)
+    # except Exception:
+    #     print("in ex ....")
+    #     server_ip = "127.0.0.1"
 
-    print("server_ip ....",server_ip)
+    # print("server_ip ....",server_ip)
 
-    # Replace site name or hostname in the reset link
-    site_url = frappe.utils.get_url()
-    reset_link = reset_link.replace(site_url, f"http://{server_ip}")
+    # # Replace site name or hostname in the reset link
+    # site_url = frappe.utils.get_url()
+    # reset_link = reset_link.replace(site_url, f"http://{server_ip}")
 
 
     message = f"""
