@@ -108,6 +108,7 @@ def create_user_for_supplier(doc, method):
                 {"role": "Pre Supplier"}   # ✅ Add role directly before insert
             ]
         })
+        user.block_modules = []
         user.insert(ignore_permissions=True)
         user.add_roles("Pre Supplier")
     else:
@@ -152,3 +153,41 @@ def create_user_for_supplier(doc, method):
         subject=subject,
         message=message
     )
+
+
+
+def handle_supplier_approval(doc, method):
+    print("in handle_supplier_approval .....", doc.workflow_state)
+    """When supplier is approved, remove 'Pre Supplier' role and all module access permissions."""
+
+    # ✅ Only act when supplier is marked approved
+    if doc.workflow_state == "Approved":
+        # Get linked user
+        user = frappe.db.get_value("User", {"email": doc.email_id}, "name")
+        if not user:
+            frappe.log_error(f"No User found for Supplier {doc.name}")
+            return
+
+        # Get user doc
+        user_doc = frappe.get_doc("User", user)
+
+        # Remove 'Pre Supplier' role
+        roles_before = [r.role for r in user_doc.roles]
+        user_doc.roles = [r for r in user_doc.roles if r.role != "Pre Supplier"]
+
+        # Remove all module access
+        user_doc.block_modules = []  # or use user_doc.block_modules = all_modules_list to block all
+
+        # Optionally, you can also revoke other roles or add the final supplier role
+        if "Supplier" not in [r.role for r in user_doc.roles]:
+            user_doc.append("roles", {"role": "Supplier"})
+
+        # Save without recursion
+        user_doc.flags.ignore_permissions = True
+        user_doc.save()
+
+        frappe.logger().info(f"Supplier {doc.name} approved: Removed Pre Supplier role from {user}.")
+
+    else:
+        # Optional: Handle when supplier is not approved
+        pass
