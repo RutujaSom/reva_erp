@@ -72,7 +72,7 @@ def register_supplier(data):
         "city": city,
         "state": state,
         "country": country,
-        "pincode": pincode,
+        "pincode": str(pincode) if pincode else "",
         "custom_gstin__uin": data.get("gst"),
         "custom_gst_state": data.get("gst_state"),
         "custom_gst_category": data.get("gst_category"),
