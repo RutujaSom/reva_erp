@@ -55,6 +55,10 @@ def register_supplier(data):
         "supplier_type": data.get("supplier_type"),
         "supplier_details": data.get("supplier_details"),
         "website": data.get("website"),
+        
+        # fields from server
+        "gstin": data.get("gst"),
+        "gst_category": data.get("gst_category"),
     })
     supplier.insert(ignore_permissions=True)
 
@@ -71,12 +75,20 @@ def register_supplier(data):
         "address_line1": address_line1,
         "city": city,
         "state": state,
-        "country": country,
+        "country": "India",
         "pincode": str(pincode) if pincode else "",
+        
+        # fields from local server
         "custom_gstin__uin": data.get("gst"),
         "custom_gst_state": data.get("gst_state"),
         "custom_gst_category": data.get("gst_category"),
         "custom_gst_state_number": data.get("gst_state_number"),
+        
+        # fields from server
+        "gstin": data.get("gst"),
+        "gst_state": data.get("gst_state"),
+        "gst_category": data.get("gst_category"),
+        "gst_state_number": data.get("gst_state_number"),
         "links": [{
             "link_doctype": "Supplier",
             "link_name": supplier.name
