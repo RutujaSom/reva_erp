@@ -111,6 +111,7 @@ frappe.pages['supplier-quotation-a'].on_page_load = function(wrapper) {
         { fieldtype: "Link", label: __("Request for Quotation"), options: "Request for Quotation", fieldname: "request_for_quotation", get_query: () => ({ filters: { docstatus: ["<", 2] } }) },
         { fieldname: "categorize_by", label: __("Categorize by"), fieldtype: "Select", options: [ { label: __("Categorize by Supplier"), value: "Categorize by Supplier" }, { label: __("Categorize by Item"), value: "Categorize by Item" } ], default: "Categorize by Supplier" },
         { fieldtype: "Check", label: __("Include Expired"), fieldname: "include_expired", default: 0 },
+        { fieldname: "workflow_state", label: __("Workflow State"), fieldtype: "Data", default: "Pending", hidden: 1 },
     ];
 
     // store filters here
@@ -161,8 +162,7 @@ frappe.pages['supplier-quotation-a'].on_page_load = function(wrapper) {
     function load_data() {
         let args = {};
         Object.keys(filters).forEach(key => args[key] = filters[key].get_value());
-        args["workflow_state"] = "Pending";
-
+        // args["workflow_state"] = "Pending";
 
         frappe.call({
             method: "frappe.desk.query_report.run",
@@ -184,6 +184,54 @@ frappe.pages['supplier-quotation-a'].on_page_load = function(wrapper) {
                 // }
             }
         });
+
+    //     frappe.call({
+    //     method: "frappe.desk.query_report.run",
+    //     args: { 
+    //         report_name: "Supplier Quotation Comparison", 
+    //         filters: args 
+    //     },
+    //     freeze: true,
+    //     freeze_message: __("Loading data..."),
+    //     callback: function(r) {
+    //         if (r.message && r.message.result && r.message.result.length > 0) {
+    //             let rows = r.message.result;
+    //             let quotationNames = [...new Set(rows.map(row => row.quotation))].filter(q => q);
+
+    //             // Check workflow states from backend
+    //             frappe.call({
+    //                 method: "frappe.client.get_list",
+    //                 args: {
+    //                     doctype: "Supplier Quotation",
+    //                     filters: { name: ["in", quotationNames] },
+    //                     fields: ["name", "workflow_state"]
+    //                 },
+    //                 callback: function(res) {
+    //                     if (res.message && res.message.length > 0) {
+    //                         let allowed = res.message
+    //                             .filter(q => q.workflow_state === "Pending")
+    //                             .map(q => q.name);
+
+    //                         // Filter only pending quotations
+    //                         let filtered = rows.filter(row => allowed.includes(row.quotation));
+
+    //                         if (filtered.length > 0) {
+    //                             render_table(filtered);
+    //                         } else {
+    //                             $data_wrapper.html('<div class="text-muted mt-3">'+__("No pending quotations found")+'</div>');
+    //                         }
+    //                     } else {
+    //                         $data_wrapper.html('<div class="text-muted mt-3">'+__("No quotations found")+'</div>');
+    //                     }
+    //                 }
+    //             });
+
+    //         } else {
+    //             $data_wrapper.html('<div class="text-muted mt-3">'+__("No data found")+'</div>');
+    //         }
+    //     }
+    // });
+
     }
 
     // --- Render table ---
