@@ -120,6 +120,15 @@ def create_user_for_supplier(doc, method):
 
     frappe.set_user("Guest")
 
+    reset_link = user.reset_password()
+    # Derive login link from the same base as reset link
+    from urllib.parse import urlparse
+    parsed = urlparse(reset_link)
+    base_url = f"{parsed.scheme}://{parsed.netloc}"
+    login_link = f"{base_url}/login"
+
+
+
     # --- Step 3: Send Confirmation Email ---
     subject = f"Welcome {supplier_name}!"
     message = f"""
@@ -127,6 +136,13 @@ def create_user_for_supplier(doc, method):
         <p>Thank you for registering as a supplier on our portal.</p>
         <p>Your Supplier ID: <b>{doc.name}</b></p>
         <p>You can log in using your email: <b>{email_id}</b></p>
+
+        <p>🔑 <b>Set Your Password:</b> 
+        <a href="{reset_link}" style="color:#1a73e8;">Click here to set your password</a></p>
+
+        <p>🌐 <b>Login to Portal:</b> 
+        <a href="{login_link}" style="color:#1a73e8;">Go to Login Page</a></p>
+        
         <p>Our team will review and approve your supplier account shortly.</p>
         <p>Best regards,<br>Supplier Management Team</p>
     """
