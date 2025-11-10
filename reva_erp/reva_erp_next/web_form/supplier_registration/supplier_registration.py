@@ -1,8 +1,8 @@
 import frappe
 import json
 import socket
-from frappe.utils import get_url
-from frappe.utils.password import reset_password
+# from frappe.utils import get_url
+# from frappe.utils.password import reset_password
 
 def get_context(context):
     """Add context data for Web Form"""
