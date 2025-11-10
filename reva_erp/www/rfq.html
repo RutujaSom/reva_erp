@@ -5,7 +5,52 @@
 {% endblock %}
 
 {% block script %}
-<script>{% include "templates/includes/rfq.js" %}</script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const makeQuotationBtn = document.querySelector(".btn.btn-primary.btn-sm");
+
+    if (makeQuotationBtn) {
+        makeQuotationBtn.addEventListener("click", function() {
+            // Select all rate input fields (if editable)
+            let rates = document.querySelectorAll(".rfq-items input[name='rate'], .rfq-items .rate-value");
+            alert("rates ....",rates)
+            let hasValidItem = false;
+            rates.forEach(rateInput => {
+                alert("in .......")
+                let value = parseFloat(rateInput.value || rateInput.innerText || 0);
+                alert("value .....",value)
+                if (value > 0) {
+                    hasValidItem = true;
+                }
+            });
+
+            if (!hasValidItem) {
+                frappe.msgprint({
+                    title: __("Error"),
+                    message: __("Please enter rate greater than 0 for at least one item before submitting quotation."),
+                    indicator: "red"
+                });
+                return; // stop further action
+            }
+
+            // ✅ Proceed to create quotation
+            // You can redirect or trigger quotation creation here
+            frappe.call({
+                method: "your_app.api.create_supplier_quotation",
+                args: {
+                    rfq_name: "{{ doc.name }}"
+                },
+                callback: function(r) {
+                    if (!r.exc) {
+                        frappe.msgprint("Quotation created successfully!");
+                        window.location.reload();
+                    }
+                }
+            });
+        });
+    }
+});
+</script>
 {% endblock %}
 
 {% block breadcrumbs %}
@@ -44,9 +89,6 @@
     </div>
 </div>
 
-
-
-
 <div class="rfq-content" style="margin-top:15px">
 	<div id="order-container">
 		<div id="rfq-items">
@@ -73,19 +115,16 @@
         {% endif %}
         <hr>
 
-    
-		<div class="row terms" style="margin-top: -40px;">
+        <div class="row terms" style="margin-top: -40px;">
 			<div class="col-6">
 				<br><br>
 				<p><strong>{{ _("Notes: ") }}</strong></p>
 				<textarea class="form-control terms-feedback" style="height: 100px;"></textarea>
 			</div>
 		</div>
-                <hr>
+        <hr>
 
-
-        <!-- ✅ Terms & Conditions -->
-		<div class="row mt-3">
+        <div class="row mt-3">
             <div class="col-12">
                 <strong>Terms & Conditions:</strong>
                 <div class="text-muted mt-1">
@@ -93,8 +132,6 @@
                 </div>
             </div>
         </div> 
-
-		     
     </div>
 </div>
 {% endblock %}

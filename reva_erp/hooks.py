@@ -119,8 +119,12 @@ permission_query_conditions = {
 doc_events = {
     "Supplier": {
         "after_insert": "reva_erp.api.supplier_creation_file.create_user_for_supplier"
+    },
+    "Supplier Quotation": {
+        "on_update": "reva_erp.api.supplier_quotaion.supplier_quotation_status_update"
     }
 }
+
 
 
 

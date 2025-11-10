@@ -3,8 +3,8 @@
  "creation": "2025-10-08 15:03:26.592188",
  "docstatus": 0,
  "doctype": "Page",
- "idx": 0,
- "modified": "2025-10-08 15:03:26.592188",
+ "idx": 2,
+ "modified": "2025-11-10 12:21:45.384942",
  "modified_by": "Administrator",
  "module": "Reva Erp Next",
  "name": "supplier-quotation-a",
@@ -14,5 +14,6 @@
  "script": null,
  "standard": "Yes",
  "style": null,
- "system_page": 0
+ "system_page": 0,
+ "title": "Supplier Quotation Comparison"
 }
