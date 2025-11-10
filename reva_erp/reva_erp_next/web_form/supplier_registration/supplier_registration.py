@@ -106,34 +106,14 @@ def register_supplier(data):
 
     # ----------- Step 6: Send Confirmation Email -----------
     subject = f"Welcome {supplier_name}!"
+    reset_link = user.reset_password()
 
-    # import frappe
-    # from frappe.utils import get_url
 
-    # # Generate reset key manually
-    # reset_key = frappe.generate_hash(length=20)
-
-    # # Store the reset key in the user record
-    # frappe.db.set_value("User", user.name, "reset_password_key", reset_key)
-    # frappe.db.commit()
-
-    # # Build full reset link
-    # reset_link = f"{get_url()}/update-password?key={reset_key}"
-
-    # Replace site name with your server IP
-    # Get current server IP
-    # try:
-    #     hostname = socket.gethostname()
-    #     server_ip = socket.gethostbyname(hostname)
-    # except Exception:
-    #     print("in ex ....")
-    #     server_ip = "127.0.0.1"
-
-    # print("server_ip ....",server_ip)
-
-    # # Replace site name or hostname in the reset link
-    # site_url = frappe.utils.get_url()
-    # reset_link = reset_link.replace(site_url, f"http://{server_ip}")
+    # Derive login link from the same base as reset link
+    from urllib.parse import urlparse
+    parsed = urlparse(reset_link)
+    base_url = f"{parsed.scheme}://{parsed.netloc}"
+    login_link = f"{base_url}/login"
 
 
     message = f"""
@@ -141,6 +121,13 @@ def register_supplier(data):
         <p>Thank you for registering as a supplier on our portal.</p>
         <p>Your Supplier ID: <b>{supplier.name}</b></p>
         <p>You can log in using your email: <b>{email_id}</b></p>
+        
+        <p>🔑 <b>Set Your Password:</b> 
+        <a href="{reset_link}" style="color:#1a73e8;">Click here to set your password</a></p>
+
+        <p>🌐 <b>Login to Portal:</b> 
+        <a href="{login_link}" style="color:#1a73e8;">Go to Login Page</a></p>
+        
         <p>Our team will review and approve your supplier account shortly.</p>
         <p>Best regards,<br>Supplier Management Team</p>
     """
