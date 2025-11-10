@@ -164,74 +164,73 @@ frappe.pages['supplier-quotation-a'].on_page_load = function(wrapper) {
         Object.keys(filters).forEach(key => args[key] = filters[key].get_value());
         // args["workflow_state"] = "Pending";
 
-
-        // frappe.call({
-        //     method: "frappe.desk.query_report.run",
-        //     // method: "reva_erp.api.supplier_quotation_com.get_supplier_quotation_comparison",
-        //     args: { report_name: "Supplier Quotation Comparison", filters: args },
-        //     freeze: true,
-        //     freeze_message: __("Loading data..."),
-        //     callback: function(r) {
-        //         if (r.message && r.message.result && r.message.result.length > 0) {
-        //             render_table(r.message.result);
-        //         } else {
-        //             $data_wrapper.html('<div class="text-muted mt-3">'+__("No data found")+'</div>');
-        //         }
-
-        //         // if (r.message && r.message && r.message.length > 0) {
-        //         //     render_table(r.message);
-        //         // } else {
-        //         //     $data_wrapper.html('<div class="text-muted mt-3">'+__("No data found")+'</div>');
-        //         // }
-        //     }
-        // });
-
         frappe.call({
-        method: "frappe.desk.query_report.run",
-        args: { 
-            report_name: "Supplier Quotation Comparison", 
-            filters: args 
-        },
-        freeze: true,
-        freeze_message: __("Loading data..."),
-        callback: function(r) {
-            if (r.message && r.message.result && r.message.result.length > 0) {
-                let rows = r.message.result;
-                let quotationNames = [...new Set(rows.map(row => row.quotation))].filter(q => q);
+            method: "frappe.desk.query_report.run",
+            // method: "reva_erp.api.supplier_quotation_com.get_supplier_quotation_comparison",
+            args: { report_name: "Supplier Quotation Comparison", filters: args },
+            freeze: true,
+            freeze_message: __("Loading data..."),
+            callback: function(r) {
+                if (r.message && r.message.result && r.message.result.length > 0) {
+                    render_table(r.message.result);
+                } else {
+                    $data_wrapper.html('<div class="text-muted mt-3">'+__("No data found")+'</div>');
+                }
 
-                // Check workflow states from backend
-                frappe.call({
-                    method: "frappe.client.get_list",
-                    args: {
-                        doctype: "Supplier Quotation",
-                        filters: { name: ["in", quotationNames] },
-                        fields: ["name", "workflow_state"]
-                    },
-                    callback: function(res) {
-                        if (res.message && res.message.length > 0) {
-                            let allowed = res.message
-                                .filter(q => q.workflow_state === "Pending")
-                                .map(q => q.name);
-
-                            // Filter only pending quotations
-                            let filtered = rows.filter(row => allowed.includes(row.quotation));
-
-                            if (filtered.length > 0) {
-                                render_table(filtered);
-                            } else {
-                                $data_wrapper.html('<div class="text-muted mt-3">'+__("No pending quotations found")+'</div>');
-                            }
-                        } else {
-                            $data_wrapper.html('<div class="text-muted mt-3">'+__("No quotations found")+'</div>');
-                        }
-                    }
-                });
-
-            } else {
-                $data_wrapper.html('<div class="text-muted mt-3">'+__("No data found")+'</div>');
+                // if (r.message && r.message && r.message.length > 0) {
+                //     render_table(r.message);
+                // } else {
+                //     $data_wrapper.html('<div class="text-muted mt-3">'+__("No data found")+'</div>');
+                // }
             }
-        }
-    });
+        });
+
+    //     frappe.call({
+    //     method: "frappe.desk.query_report.run",
+    //     args: { 
+    //         report_name: "Supplier Quotation Comparison", 
+    //         filters: args 
+    //     },
+    //     freeze: true,
+    //     freeze_message: __("Loading data..."),
+    //     callback: function(r) {
+    //         if (r.message && r.message.result && r.message.result.length > 0) {
+    //             let rows = r.message.result;
+    //             let quotationNames = [...new Set(rows.map(row => row.quotation))].filter(q => q);
+
+    //             // Check workflow states from backend
+    //             frappe.call({
+    //                 method: "frappe.client.get_list",
+    //                 args: {
+    //                     doctype: "Supplier Quotation",
+    //                     filters: { name: ["in", quotationNames] },
+    //                     fields: ["name", "workflow_state"]
+    //                 },
+    //                 callback: function(res) {
+    //                     if (res.message && res.message.length > 0) {
+    //                         let allowed = res.message
+    //                             .filter(q => q.workflow_state === "Pending")
+    //                             .map(q => q.name);
+
+    //                         // Filter only pending quotations
+    //                         let filtered = rows.filter(row => allowed.includes(row.quotation));
+
+    //                         if (filtered.length > 0) {
+    //                             render_table(filtered);
+    //                         } else {
+    //                             $data_wrapper.html('<div class="text-muted mt-3">'+__("No pending quotations found")+'</div>');
+    //                         }
+    //                     } else {
+    //                         $data_wrapper.html('<div class="text-muted mt-3">'+__("No quotations found")+'</div>');
+    //                     }
+    //                 }
+    //             });
+
+    //         } else {
+    //             $data_wrapper.html('<div class="text-muted mt-3">'+__("No data found")+'</div>');
+    //         }
+    //     }
+    // });
 
     }
 
