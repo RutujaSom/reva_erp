@@ -14,9 +14,19 @@
 
 {% block header_actions %}
 {% if doc.items %}
-<button class="btn btn-primary btn-sm" type="button">
-    {{ _("Make Quotation") }}
-</button>
+    <button class="btn btn-primary btn-sm" type="button">
+        {{ _("Make Quotation") }}
+    </button>
+    <button class="btn btn-secondary add-supplier-attachment" type="button">
+            {{ _("Add Attachment") }}
+    </button>
+    <button class="btn btn-secondary" type="button" title="Download">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
+            <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5"/>
+            <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708z"/>
+        </svg>
+    </button>
+
 {% endif %}
 {% endblock %}
 
@@ -45,8 +55,6 @@
 </div>
 
 
-
-
 <div class="rfq-content" style="margin-top:15px">
 	<div id="order-container">
 		<div id="rfq-items">
@@ -71,9 +79,67 @@
 			</div>
 		</div>
         {% endif %}
+        
+
+        {% if doc.custom_addendum %}
+        <hr>
+        <div class="row mt-3">
+            <div class="col-12">
+                <h5><strong>{{ _("Attachments") }}</strong></h5>
+                <table class="table table-bordered mt-2">
+                    <thead>
+                        <tr>
+                            <th>{{ _("Attachment Type") }}</th>
+                            <th>{{ _("File") }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for file in doc.custom_addendum %}
+                        <tr>
+                            <td>{{ file.attachment_type or "-" }}</td>
+                            <td>
+                                {% if file.attachment %}
+                                    <a href="{{ file.attachment }}" target="_blank" class="btn btn-link p-0">
+                                        <i class="fa fa-paperclip"></i> {{ _("View") }}
+                                    </a>
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% endif %}
         <hr>
 
-    
+        <!-- 📎 Supplier Attachments Section -->
+       
+       <!-- <div class="row mt-4"> -->
+        <div class="row mt-4" id="supplier-attachments-section" style="display:none;">
+            <div class="col-12">
+                <h5><strong>{{ _("Supplier Attachments") }}</strong></h5>
+                <p class="text-muted small mb-2">{{ _("Upload your quotation-related files here") }}</p>
+                <table class="table table-bordered" id="supplier-attachments-table">
+                    <thead>
+                        <tr>
+                            <th>{{ _("Attachment Type") }}</th>
+                            <th>{{ _("File") }}</th>
+                            <th>{{ _("Remark") }}</th>
+                            <th>{{ _("Action") }}</th>
+                        </tr>
+                    </thead>
+                    <tbody id="supplier-attachments-body">
+                    </tbody>
+                </table>
+                
+            </div>
+        </div>
+        <hr>
+
+
 		<div class="row terms" style="margin-top: -40px;">
 			<div class="col-6">
 				<br><br>
@@ -85,16 +151,55 @@
 
 
         <!-- ✅ Terms & Conditions -->
-		<div class="row mt-3">
+        <!--<div class="row mt-3">
             <div class="col-12">
                 <strong>Terms & Conditions:</strong>
                 <div class="text-muted mt-1">
                     {{ doc.terms or doc.terms_html or "-" }}
                 </div>
             </div>
-        </div> 
+        </div> -->
+
+
 
 		     
     </div>
 </div>
+
+<!-- 📎 Attachment Modal -->
+<div class="modal fade" id="attachmentModal" tabindex="-1" aria-labelledby="attachmentModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-lg shadow">
+      <div class="modal-header">
+        <h5 class="modal-title" id="attachmentModalLabel">Add Attachment</h5>
+        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group mb-3">
+          <label for="attachmentType">Attachment Type</label>
+          <select id="attachmentType" class="form-control">
+            <option value="">Select Type</option>
+            <option value="Technical">Technical</option>
+            <option value="Commercial">Commercial</option>
+            <option value="Terms and Conditions">Terms and Conditions</option>
+            <option value="Unpriced">Unpriced</option>
+          </select>
+        </div>
+        <div class="form-group mb-3">
+          <label for="attachmentFile">File</label>
+          <input type="file" id="attachmentFile" class="form-control">
+        </div>
+        <div class="form-group mb-3">
+          <label for="attachmentRemark">Remark</label>
+          <input type="text" id="attachmentRemark" class="form-control" placeholder="Remark">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-secondary" id="saveAttachment">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 {% endblock %}

@@ -10,7 +10,7 @@ def get_permission_query_conditions(user):
     roles = frappe.get_roles(user)
 
     # Administrator → see all tasks
-    if "Administrator" in roles:
+    if "Administrator" in roles or "System Manager" in roles:
         return ""
 
     # HR Manager → see tasks assigned to their team + themselves
