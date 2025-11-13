@@ -74,60 +74,6 @@ rfq = class rfq {
 		})
 	}
 
-	// supplier_attachments() {
-	// 	const me = this;
-
-	// 	// Open modal on click
-	// 	$(document).on("click", ".add-supplier-attachment", function () {
-	// 		// Reset modal fields
-	// 		$("#attachmentType").val("");
-	// 		$("#attachmentFile").val("");
-	// 		$("#attachmentRemark").val("");
-	// 		$("#attachmentModal").modal("show");
-	// 	});
-
-	// 	// Save from modal to table
-	// 	$(document).on("click", "#saveAttachment", function () {
-	// 		const type = $("#attachmentType").val();
-	// 		const file = $("#attachmentFile")[0].files[0];
-	// 		const remark = $("#attachmentRemark").val();
-
-	// 		if (!type || !file) {
-	// 			frappe.msgprint("Please select Attachment Type and File.");
-	// 			return;
-	// 		}
-
-	// 		const row = `
-	// 			<tr data-type="${type}" data-remark="${remark}">
-	// 				<td>${type}</td>
-	// 				<td>
-	// 					<input type="file" class="form-control supplier-file" style="display:none">
-	// 					<span>${file.name}</span>
-	// 				</td>
-	// 				<td>${remark || "-"}</td>
-	// 				<td><button type="button" class="btn btn-sm btn-danger remove-row">Remove</button></td>
-	// 			</tr>`;
-
-
-	// 		// Append to table
-	// 		$("#supplier-attachments-body").append(row);
-
-	// 		// Add hidden file input (clone) to preserve file object
-	// 		const lastRow = $("#supplier-attachments-body tr:last");
-	// 		const hiddenInput = lastRow.find(".supplier-file")[0];
-	// 		const dataTransfer = new DataTransfer();
-	// 		dataTransfer.items.add(file);
-	// 		hiddenInput.files = dataTransfer.files;
-
-	// 		$("#attachmentModal").modal("hide");
-	// 	});
-
-	// 	// Remove attachment row
-	// 	$(document).on("click", ".remove-row", function () {
-	// 		$(this).closest("tr").remove();
-	// 	});
-	// }
-
 
 	supplier_attachments() {
 		// Open modal on click
