@@ -59,10 +59,10 @@
   "doctype": "Client Script",
   "dt": "Supplier",
   "enabled": 1,
-  "modified": "2025-11-11 12:59:44.876630",
+  "modified": "2025-11-13 15:02:29.411981",
   "module": null,
   "name": "Supplier list filter",
-  "script": "// frappe.listview_settings['Supplier'] = {\n//     onload(listview) {\n//         frappe.after_ajax(() => {\n//             const user = frappe.session.user;\n//             const roles = frappe.boot.user && frappe.boot.user.roles || [];\n\n//             // Apply only for Supplier / Pre Supplier roles (optional)\n//             if (roles.includes(\"Supplier\") || roles.includes(\"Pre Supplier\")) {\n\n//                 // Check if filter already applied manually\n//                 const existing_filters = listview.filter_area.get();\n//                 const has_workflow_filter = existing_filters.some(f => f[1] === \"workflow_state\");\n\n//                 if (!has_workflow_filter) {\n//                     // Add \"Pending\" filter visibly in the filter bar\n//                     listview.filter_area.add([\n//                         [\"Supplier\", \"workflow_state\", \"=\", \"Pending\"]\n//                     ]);\n\n//                     // This makes it visible like other filters\n//                     listview.filter_area.refresh();\n//                 }\n//             }\n//         });\n//     }\n// };\n\n\nfrappe.listview_settings['Supplier'] = frappe.listview_settings['Supplier'] || {};\n\nfrappe.listview_settings['Supplier'].onload = function(listview) {\n    // Check if current URL has the ?status=Pending param\n    const route = frappe.get_route();\n    const query = frappe.utils.get_query_params(window.location.search);\n\n    if (query.status === \"Pending\") {\n        // Clear and apply filter\n        listview.filter_area.clear();\n        listview.filter_area.add([[\"Supplier\", \"status\", \"=\", \"Pending\"]]);\n        listview.run();\n\n        // Hide filter controls (make it fixed)\n        listview.page.wrapper.find('.filter-button').hide();\n        listview.page.wrapper.find('.filter-selector').hide();\n    }\n};\n\n",
+  "script": "frappe.listview_settings['Supplier'] = {\n    onload: function(listview) {\n        frappe.after_ajax(() => {\n             $('.filter-selector').hide();\n        });\n    }\n};\n",
   "view": "List"
  },
  {
