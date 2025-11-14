@@ -26,7 +26,7 @@ $(document).on('app_ready', function() {
                         // Allowed routes:
                         const isSupplierForm = route[0] === "Form" && route[1] === "Supplier" && route[2] === supplier.name;
                         const isSupplierAddress = route[0] === "Form" && route[1] === "Address" && supplier.supplier_primary_address && route[2] === supplier.supplier_primary_address;
-
+                        console.log("isSupplierForm ....",isSupplierForm, "  isSupplierAddress .....  ",isSupplierAddress)
                         if (!isSupplierForm && !isSupplierAddress) {
                             frappe.show_alert({
                                 message: __("Navigation is locked until your supplier profile is approved."),

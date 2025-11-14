@@ -40,6 +40,7 @@ fixtures = [
                 "Supplier list filter",
                 "Hide fields for Pre Supplier Role",
                 "Restrict Form Fields",
+                "Add attachment type filter in RFQ",
             ]]
         ]
     },
