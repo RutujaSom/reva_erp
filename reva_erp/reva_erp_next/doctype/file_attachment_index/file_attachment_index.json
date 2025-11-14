@@ -7,7 +7,7 @@
  "field_order": [
   "module",
   "attachment_type",
-  "index"
+  "idx"
  ],
  "fields": [
   {
@@ -15,6 +15,7 @@
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Module",
+   "options": "\nRequest for Quotation\nPurchase Order",
    "reqd": 1
   },
   {
@@ -22,10 +23,11 @@
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Attachment Type",
+   "options": "Technical\nCommercial\nUnpriced\nTerms and Conditions",
    "reqd": 1
   },
   {
-   "fieldname": "index",
+   "fieldname": "idx",
    "fieldtype": "Int",
    "in_list_view": 1,
    "label": "Index",
@@ -35,7 +37,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-11-11 17:46:05.742246",
+ "modified": "2025-11-14 18:02:59.637977",
  "modified_by": "Administrator",
  "module": "Reva Erp Next",
  "name": "File Attachment Index",
