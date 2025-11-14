@@ -154,50 +154,130 @@ rfq = class rfq {
 	// 	})
 	// }
 
-	submit_rfq(){
-		$('.btn-primary').click(function(){  // "Make Quotation" button
-			frappe.freeze();
+	// submit_rfq(){
+	// 	$('.btn-primary').click(function(){  // "Make Quotation" button
+	// 		frappe.freeze();
 
-			// Step 1: Create quotation
+	// 		// Step 1: Create quotation
+	// 		frappe.call({
+	// 			type: "POST",
+	// 			method: "erpnext.buying.doctype.request_for_quotation.request_for_quotation.create_supplier_quotation",
+	// 			args: { doc: doc },
+	// 			btn: this,
+	// 			callback: function(r){
+	// 				frappe.unfreeze();
+	// 				if(r.message){
+	// 					const quotation_name = r.message;
+
+	// 					// Step 2: Add attachments after quotation is created
+	// 					let attachments = [];
+						
+	// 					$('#supplier-attachments-body tr').each(function(){
+	// 						const type = $(this).data('type') || "";
+	// 						const file_input = $(this).find('.supplier-file')[0];
+	// 						const remark = $(this).data('remark') || "";
+
+	// 						if(file_input && file_input.files.length > 0){
+	// 							attachments.push({
+	// 								attachment_type: type,
+	// 								file: file_input.files[0],
+	// 								remark: remark
+	// 							});
+	// 						}
+	// 					});
+
+
+	// 					if(attachments.length > 0){
+	// 						add_attachments_to_quotation(quotation_name, attachments);
+	// 					} else {
+	// 						// No attachments, just redirect
+	// 						window.location.href = "/supplier-quotations/" + encodeURIComponent(quotation_name);
+	// 					}
+	// 				}
+	// 			}
+	// 		})
+	// 	});
+	// }
+
+
+	submit_rfq() {
+		$('.btn-primary').click(function () {  // "Make Quotation" button
+
+			// Collect attachments
+			let attachments = [];
+			let has_technical_attachment = false;
+			let has_commercial_or_unpriced = false;
+
+			$('#supplier-attachments-body tr').each(function () {
+				const type = ($(this).data('type') || "").trim().toLowerCase();
+				const file_input = $(this).find('.supplier-file')[0];
+				const remark = $(this).data('remark') || "";
+
+				if (file_input && file_input.files.length > 0) {
+					attachments.push({
+						attachment_type: type,
+						file: file_input.files[0],
+						remark: remark
+					});
+
+					if (type === "technical") {
+						has_technical_attachment = true;
+					}
+					if (type === "commercial" || type === "unpriced") {
+						has_commercial_or_unpriced = true;
+					}
+				}
+			});
+
+			// ✅ Validation 1: Require at least one Technical attachment
+			if (!has_technical_attachment) {
+				frappe.msgprint({
+					title: "Missing Attachment",
+					message: "Please add at least one Technical attachment before submitting the quotation.",
+					indicator: "red"
+				});
+				return;
+			}
+
+			// ✅ Validation 2: Require at least one Commercial OR Unpriced attachment
+			if (!has_commercial_or_unpriced) {
+				frappe.msgprint({
+					title: "Missing Attachment",
+					message: "Please add at least one Commercial or Unpriced attachment before submitting the quotation.",
+					indicator: "red"
+				});
+				return;
+			}
+
+			// Proceed with quotation creation
+			frappe.freeze("Creating quotation...");
+
 			frappe.call({
 				type: "POST",
 				method: "erpnext.buying.doctype.request_for_quotation.request_for_quotation.create_supplier_quotation",
 				args: { doc: doc },
 				btn: this,
-				callback: function(r){
+				callback: function (r) {
 					frappe.unfreeze();
-					if(r.message){
+
+					if (r.message) {
 						const quotation_name = r.message;
 
-						// Step 2: Add attachments after quotation is created
-						let attachments = [];
-						
-						$('#supplier-attachments-body tr').each(function(){
-							const type = $(this).data('type') || "";
-							const file_input = $(this).find('.supplier-file')[0];
-							const remark = $(this).data('remark') || "";
-
-							if(file_input && file_input.files.length > 0){
-								attachments.push({
-									attachment_type: type,
-									file: file_input.files[0],
-									remark: remark
-								});
-							}
-						});
-
-
-						if(attachments.length > 0){
+						// Upload attachments after quotation creation
+						if (attachments.length > 0) {
 							add_attachments_to_quotation(quotation_name, attachments);
 						} else {
-							// No attachments, just redirect
+							frappe.msgprint("Quotation created successfully.");
 							window.location.href = "/supplier-quotations/" + encodeURIComponent(quotation_name);
 						}
+					} else {
+						frappe.msgprint("Failed to create quotation. Please try again.");
 					}
 				}
-			})
+			});
 		});
 	}
+
 
 
 	navigate_quotations() {

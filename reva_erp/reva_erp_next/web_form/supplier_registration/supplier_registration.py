@@ -21,7 +21,6 @@ def register_supplier(data):
     address_line1 = data.get("address_line_1")
     city = data.get("city")
     state = data.get("state")
-    country = data.get("country")
     pincode = data.get("pincode")
     data["country"] = "India"
 
@@ -76,6 +75,7 @@ def register_supplier(data):
         "city": city,
         "state": state,
         "country": "India",
+        "county": "India",
         "pincode": str(pincode) if pincode else "",
         
         # fields from local server
