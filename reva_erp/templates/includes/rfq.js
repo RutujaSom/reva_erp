@@ -21,6 +21,7 @@ rfq = class rfq {
 		this.submit_rfq();
 		this.navigate_quotations();
 		this.supplier_attachments(); 
+		this.rfq_pdf(); 
 	}
 	
 
@@ -132,72 +133,23 @@ rfq = class rfq {
 	}
 
 
+	rfq_pdf(){
+		$('.download-rfq').click(function () {
+		// on("click", ".download-rfq", function() {
+		let rfq_name = "{{ doc.name }}";
 
-	// submit_rfq(){
-	// 	$('.btn-sm').click(function(){
-	// 		frappe.freeze();
-	// 		frappe.call({
-	// 			type: "POST",
-	// 			method: "erpnext.buying.doctype.request_for_quotation.request_for_quotation.create_supplier_quotation",
-	// 			args: {
-	// 				doc: doc
-	// 			},
-	// 			btn: this,
-	// 			callback: function(r){
-	// 				frappe.unfreeze();
-	// 				if(r.message){
-	// 					$('.btn-sm').hide()
-	// 					window.location.href = "/supplier-quotations/" + encodeURIComponent(r.message);
-	// 				}
-	// 			}
-	// 		})
-	// 	})
-	// }
-
-	// submit_rfq(){
-	// 	$('.btn-primary').click(function(){  // "Make Quotation" button
-	// 		frappe.freeze();
-
-	// 		// Step 1: Create quotation
-	// 		frappe.call({
-	// 			type: "POST",
-	// 			method: "erpnext.buying.doctype.request_for_quotation.request_for_quotation.create_supplier_quotation",
-	// 			args: { doc: doc },
-	// 			btn: this,
-	// 			callback: function(r){
-	// 				frappe.unfreeze();
-	// 				if(r.message){
-	// 					const quotation_name = r.message;
-
-	// 					// Step 2: Add attachments after quotation is created
-	// 					let attachments = [];
-						
-	// 					$('#supplier-attachments-body tr').each(function(){
-	// 						const type = $(this).data('type') || "";
-	// 						const file_input = $(this).find('.supplier-file')[0];
-	// 						const remark = $(this).data('remark') || "";
-
-	// 						if(file_input && file_input.files.length > 0){
-	// 							attachments.push({
-	// 								attachment_type: type,
-	// 								file: file_input.files[0],
-	// 								remark: remark
-	// 							});
-	// 						}
-	// 					});
-
-
-	// 					if(attachments.length > 0){
-	// 						add_attachments_to_quotation(quotation_name, attachments);
-	// 					} else {
-	// 						// No attachments, just redirect
-	// 						window.location.href = "/supplier-quotations/" + encodeURIComponent(quotation_name);
-	// 					}
-	// 				}
-	// 			}
-	// 		})
-	// 	});
-	// }
+		frappe.call({
+			method: "reva_erp.api.rfq_pdf.download_rfq_pdf",
+			args: { rfq_name },
+			callback: function(r) {
+				if (r.message) {
+					window.location.href = r.message;
+				} else {
+					frappe.msgprint("Failed to download RFQ");
+				}
+			}
+		});
+	})};
 
 
 	submit_rfq() {
