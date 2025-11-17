@@ -18,6 +18,8 @@ def send_mail_to_employee(employee_id, subject, message):
 # -----------------------------
 def task_created(doc, method):
     print("in create .....")
+    if doc.is_group:
+        return
     """Send email when task is created"""
     for row in doc.custom_assigned_to:
         emp_name = frappe.db.get_value("Employee", row.employee, "employee_name")
@@ -46,7 +48,9 @@ def task_updated(doc, method):
     # ❌ Do NOT send update mail on creation
     if doc.flags.in_insert:
         return
-
+    
+    if doc.is_group:
+        return
 
     # Get logged-in user’s employee ID
     logged_user = frappe.session.user
