@@ -7,7 +7,6 @@ from frappe.utils import nowdate
 from frappe.utils import get_url_to_form
 
 
-
 class TaskApproval(Document):
 
     def on_update(doc, method=None):
@@ -20,14 +19,16 @@ class TaskApproval(Document):
             next_approval = frappe.db.get_value(
                 "Task Approval",
                 {"task": doc.task, "approval_level": next_level},
-                "name",
+                ["name","approver"], as_dict=True
             )
 
             if next_approval:
                 frappe.db.set_value("Task Approval", next_approval, "workflow_state", "Pending")
                 frappe.msgprint(f"Next approval level ({next_level}) is now set to Pending.")
-                emp_name = frappe.db.get_value("Employee", doc.approver, ["employee_name","user_id"])
-                link = get_url_to_form("Task Approval", doc.name)
+
+
+                emp_name = frappe.db.get_value("Employee", next_approval.approver, ["employee_name","user_id"],as_dict=True)
+                link = get_url_to_form("Task Approval", next_approval.name)
 
                 msg = f"""
                 <p>Hi {emp_name.employee_name},</p>
@@ -37,7 +38,7 @@ class TaskApproval(Document):
 
                 email = frappe.db.get_value("User", emp_name.user_id, "email")
                 print("email ....", email)
-                
+  
                 if email:
                     frappe.sendmail(
                         recipients=[email],
@@ -60,6 +61,27 @@ class TaskApproval(Document):
             if approvals and all(s == "Approved" for s in states):
                 frappe.db.set_value("Task", doc.task, "workflow_state", "Approved")
                 on_update_task_approval(doc, method=None)
+                
+                task_doc = frappe.get_doc("Task", doc.task)
+                for row in task_doc.custom_assigned_to:
+
+                    emp_name = frappe.db.get_value("Employee", row.employee, ["employee_name","user_id"],as_dict=True)
+                    link = get_url_to_form("Task", task_doc.name)
+
+                    msg = f"""
+                    <p>Hi {emp_name.employee_name},</p>
+                    <p>Your task <b>{task_doc.subject}</b> has been <b>Approved</b>.</p>
+                    <p><a href="{link}">Click here</a> to view the task.</p>
+                    """
+
+                    email = frappe.db.get_value("User", emp_name.user_id, "email")
+    
+                    if email:
+                        frappe.sendmail(
+                            recipients=[email],
+                            subject=f"{task_doc.subject} Task Approved",
+                            message=msg
+                        )
 
 
         if doc.workflow_state == "Rejected":
@@ -82,6 +104,26 @@ class TaskApproval(Document):
 
             frappe.db.set_value("Task", doc.task, "workflow_state", "Returned")
             frappe.db.set_value("Task", doc.task, "status", "Open")
+
+            task_doc = frappe.get_doc("Task", doc.task)
+            for row in task_doc.custom_assigned_to:
+                emp_name = frappe.db.get_value("Employee", row.employee,  ["employee_name","user_id"],as_dict=True)
+                link = get_url_to_form("Task", task_doc.name)
+
+                msg = f"""
+                <p>Hi {emp_name.employee_name},</p>
+                <p>Your task <b>{task_doc.subject}</b> has been <b>Returened</b>.</p>
+                <p><a href="{link}">Click here</a> to view the task.</p>
+                """
+
+                email = frappe.db.get_value("User", emp_name.user_id, "email")
+
+                if email:
+                    frappe.sendmail(
+                        recipients=[email],
+                        subject=f"{task_doc.subject} Task Returened",
+                        message=msg
+                    )
 
             frappe.msgprint(f"All other pending approvals for this task have been discarded.")
 

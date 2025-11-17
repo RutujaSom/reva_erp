@@ -59,29 +59,6 @@ def task_updated(doc, method):
     if doc.workflow_state == "Pending":
         return
 
-    if doc.workflow_state in ["Completed", "Returned"]:
-        for row in doc.custom_assigned_to:
-
-            # ❌ Skip sending mail to the same employee who is updating
-            if row.employee == logged_employee:
-                continue
-
-            emp_name = frappe.db.get_value("Employee", row.employee, "employee_name")
-            link = get_url_to_form("Task", doc.name)
-
-            msg = f"""
-            <p>Hi {emp_name},</p>
-            <p>Your task <b>{doc.subject}</b> has been <b>{doc.status}</b>.</p>
-            <p><a href="{link}">Click here</a> to view the task.</p>
-            """
-
-            send_mail_to_employee(
-                row.employee,
-                f"Task {doc.status}: {doc.subject}",
-                msg
-            )
-        return
-
     # -------------------------------
     # CASE 2: Normal Update
     # -------------------------------
