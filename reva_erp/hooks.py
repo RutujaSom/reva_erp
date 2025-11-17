@@ -107,8 +107,17 @@ scheduler_events = {
     "cron": {
         "0/2 * * * *": [
             "reva_erp.api.task.auto_close_incomplete_working_tasks"
+        ],
+        # "0 8 * * *": [  # Every day at 08:00 AM
+        #     "reva_erp.api.task_event.send_daily_task_summary"
+        # ]
+
+        "15 16 * * *": [
+            "reva_erp.api.task_event.send_daily_task_summary"
         ]
+
     }
+    
 }
 
 permission_query_conditions = {

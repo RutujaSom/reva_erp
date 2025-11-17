@@ -85,3 +85,103 @@ def task_updated(doc, method):
             msg
         )
 
+
+
+
+
+
+import frappe
+from frappe.utils import nowdate
+
+def send_daily_task_summary():
+    print("in task summary .....")
+    """
+    Sends daily open & overdue task count at 08:00 AM to each employee.
+    Skips parent/group tasks.
+    """
+
+    today = nowdate()
+
+    # Fetch all active employees
+    employees = frappe.db.get_all(
+        "Employee",
+        filters={"status": "Active"},
+        fields=["name", "employee_name", "user_id"]
+    )
+
+    for emp in employees:
+
+        if not emp.user_id:
+            continue
+
+        # Get user email
+        email = frappe.db.get_value("User", emp.user_id, "email")
+        if not email:
+            continue
+
+        # --------------------------------------
+        # OPEN TASKS
+        # --------------------------------------
+        open_tasks = frappe.db.sql("""
+            SELECT t.name
+            FROM `tabTask` t
+            JOIN `tabTask Employee` ta ON ta.parent = t.name
+            WHERE ta.employee = %s
+              AND t.status = 'Open'
+              AND IFNULL(t.is_group, 0) = 0
+        """, (emp.name,), as_dict=True)
+
+        open_count = len(open_tasks)
+
+        # --------------------------------------
+        # OVERDUE TASKS (Open + End Date < Today)
+        # --------------------------------------
+        overdue_tasks = frappe.db.sql("""
+            SELECT t.name
+            FROM `tabTask` t
+            JOIN `tabTask Employee` ta ON ta.parent = t.name
+            WHERE ta.employee = %s
+              AND t.status = 'Overdue'
+              AND IFNULL(t.is_group, 0) = 0
+        """, (emp.name), as_dict=True)
+
+        overdue_count = len(overdue_tasks)
+
+        # If no tasks at all – skip sending email
+        if open_count == 0 and overdue_count == 0:
+            continue
+
+        # --------------------------------------
+        # EMAIL CONTENT
+        # --------------------------------------
+        message = f"""
+            <p>Hi <b>{emp.employee_name}</b>,</p>
+
+            <p>Here is your daily task summary:</p>
+
+            <ul>
+                <li><b>{open_count}</b> Open Task(s)</li>
+        """
+
+        # Add overdue section ONLY if overdue tasks exist
+        if overdue_count > 0:
+            message += f"""
+                <li><b>{overdue_count}</b> Overdue Task(s)</li>
+            """
+
+        # Close list
+        message += """
+            </ul>
+            <p>Please check ERPNext for details.</p>
+            <br>
+            <p>Regards,<br>Reva Process Technologies</p>
+        """
+
+        subject = "Daily Task Summary — Open Tasks"
+
+        # Send mail
+        frappe.sendmail(
+            recipients=[email],
+            subject=subject,
+            message=message,
+        )
