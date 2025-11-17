@@ -17,26 +17,29 @@ def send_mail_to_employee(employee_id, subject, message):
 #  TASK CREATED
 # -----------------------------
 def task_created(doc, method):
-    print("in create .....")
+    print("in create .....", doc, doc.is_group)
     if doc.is_group:
         return
     """Send email when task is created"""
-    for row in doc.custom_assigned_to:
-        emp_name = frappe.db.get_value("Employee", row.employee, "employee_name")
-        link = get_url_to_form("Task", doc.name)
+    print("doc.custom_assigned_to ....",len(doc.custom_assigned_to))
+    if len(doc.custom_assigned_to) == 1:
+        for row in doc.custom_assigned_to:
+            print("row .....",row)
+            emp_name = frappe.db.get_value("Employee", row.employee, "employee_name")
+            link = get_url_to_form("Task", doc.name)
 
-        msg = f"""
-        <p>Hi {emp_name},</p>
-        <p>A new task <b>{doc.subject}</b> has been assigned to you.</p>
-        <p><a href="{link}">Click here</a> to view the task.</p>
-        """
-        print("msg ....",msg)
+            msg = f"""
+            <p>Hi {emp_name},</p>
+            <p>A new task <b>{doc.subject}</b> has been assigned to you.</p>
+            <p><a href="{link}">Click here</a> to view the task.</p>
+            """
+            print("msg ....",msg)
 
-        send_mail_to_employee(
-            row.employee,
-            f"New Task Assigned: {doc.subject}",
-            msg
-        )
+            send_mail_to_employee(
+                row.employee,
+                f"New Task Assigned: {doc.subject}",
+                msg
+            )
 
 # -----------------------------
 #  TASK UPDATED (but NOT when approved or returned)
