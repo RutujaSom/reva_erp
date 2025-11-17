@@ -4,6 +4,8 @@
 import frappe
 from frappe.model.document import Document
 from frappe.utils import nowdate
+from frappe.utils import get_url_to_form
+
 
 
 class TaskApproval(Document):
@@ -24,6 +26,24 @@ class TaskApproval(Document):
             if next_approval:
                 frappe.db.set_value("Task Approval", next_approval, "workflow_state", "Pending")
                 frappe.msgprint(f"Next approval level ({next_level}) is now set to Pending.")
+                emp_name = frappe.db.get_value("Employee", doc.approver, ["employee_name","user_id"])
+                link = get_url_to_form("Task Approval", doc.name)
+
+                msg = f"""
+                <p>Hi {emp_name.employee_name},</p>
+                <p>A task is awaiting your approval.</p>
+                <p><a href="{link}">Click here</a> to review.</p>
+                """
+
+                email = frappe.db.get_value("User", emp_name.user_id, "email")
+                print("email ....", email)
+                
+                if email:
+                    frappe.sendmail(
+                        recipients=[email],
+                        subject="Task Approval Pending",
+                        message=msg
+                    )
             else:
                 frappe.msgprint("✅ All approvals completed — no next level.")
 

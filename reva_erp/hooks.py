@@ -119,6 +119,10 @@ permission_query_conditions = {
 
 
 doc_events = {
+    "Task": {
+        "after_insert": "reva_erp.api.task_event.task_created",
+        "on_update": "reva_erp.api.task_event.task_updated"
+    },
     "Supplier": {
         "after_insert": "reva_erp.api.supplier_creation_file.create_user_for_supplier",
         "on_update": "reva_erp.api.supplier_creation_file.handle_supplier_approval"
@@ -127,6 +131,7 @@ doc_events = {
         "on_update": "reva_erp.api.supplier_quotaion.supplier_quotation_status_update"
     }
 }
+
 
 
 
