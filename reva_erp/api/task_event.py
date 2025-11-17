@@ -50,44 +50,39 @@ def task_updated(doc, method):
         return
     
     if doc.is_group:
-        return
 
-    # Get logged-in user’s employee ID
-    logged_user = frappe.session.user
-    logged_employee = frappe.db.get_value("Employee", {"user_id": logged_user}, "name")
+        # Get logged-in user’s employee ID
+        logged_user = frappe.session.user
+        logged_employee = frappe.db.get_value("Employee", {"user_id": logged_user}, "name")
 
-    # -------------------------------
-    # CASE 1: Completed / Returned
-    # -------------------------------
+        # -------------------------------
+        # CASE 1: Completed / Returned
+        # -------------------------------
 
-    if doc.workflow_state == "Pending":
-        return
+        if doc.workflow_state == "Pending":
+            return
 
-    # -------------------------------
-    # CASE 2: Normal Update
-    # -------------------------------
+        # -------------------------------
+        # CASE 2: Normal Update
+        # -------------------------------
 
-    for row in doc.custom_assigned_to:
-        print('logged_employee ....',logged_employee,' .row.employee .....',row.employee)
+        for row in doc.custom_assigned_to:
+            print('logged_employee ....',logged_employee,' .row.employee .....',row.employee)
 
-        # ❌ Skip email to the user performing update
-        if row.employee == logged_employee:
-            continue
+            emp_name = frappe.db.get_value("Employee", row.employee, "employee_name")
+            link = get_url_to_form("Task", doc.name)
 
-        emp_name = frappe.db.get_value("Employee", row.employee, "employee_name")
-        link = get_url_to_form("Task", doc.name)
+            msg = f"""
+            <p>Hi {emp_name},</p>
+            <p>The task <b>{doc.subject}</b> has been updated.</p>
+            <p><a href="{link}">Click here</a> to view changes.</p>
+            """
 
-        msg = f"""
-        <p>Hi {emp_name},</p>
-        <p>The task <b>{doc.subject}</b> has been updated.</p>
-        <p><a href="{link}">Click here</a> to view changes.</p>
-        """
-
-        send_mail_to_employee(
-            row.employee,
-            f"Task Updated: {doc.subject}",
-            msg
-        )
+            send_mail_to_employee(
+                row.employee,
+                f"Task Updated: {doc.subject}",
+                msg
+            )
 
 
 
