@@ -90,19 +90,14 @@ def task_updated(doc, method):
 
 
 
-
-
 import frappe
 from frappe.utils import nowdate
 
 def send_daily_task_summary():
     print("in task summary .....")
-    """
-    Sends daily open & overdue task count at 08:00 AM to each employee.
-    Skips parent/group tasks.
-    """
 
     today = nowdate()
+    subject = f"Daily Task Summary – {today}"
 
     # Fetch all active employees
     employees = frappe.db.get_all(
@@ -121,67 +116,104 @@ def send_daily_task_summary():
         if not email:
             continue
 
-        # --------------------------------------
-        # OPEN TASKS
-        # --------------------------------------
+        # --------- OPEN TASKS ----------
         open_tasks = frappe.db.sql("""
-            SELECT t.name
+            SELECT t.name, t.subject, t.project, t.priority, t.status, t.exp_end_date AS due_date
             FROM `tabTask` t
             JOIN `tabTask Employee` ta ON ta.parent = t.name
             WHERE ta.employee = %s
-              AND t.status = 'Open'
-              AND IFNULL(t.is_group, 0) = 0
-        """, (emp.name,), as_dict=True)
+            AND t.status = 'Open'
+            AND t.exp_start_date <= %s
+            AND IFNULL(t.is_group, 0) = 0
+        """, (emp.name, today), as_dict=True)
 
         open_count = len(open_tasks)
 
-        # --------------------------------------
-        # OVERDUE TASKS (Open + End Date < Today)
-        # --------------------------------------
+        # --------- OVERDUE TASKS ----------
         overdue_tasks = frappe.db.sql("""
-            SELECT t.name
+            SELECT t.name, t.subject, t.project, t.priority, t.status, t.exp_end_date AS due_date
             FROM `tabTask` t
             JOIN `tabTask Employee` ta ON ta.parent = t.name
             WHERE ta.employee = %s
               AND t.status = 'Overdue'
               AND IFNULL(t.is_group, 0) = 0
-        """, (emp.name), as_dict=True)
+        """, (emp.name,), as_dict=True)
 
         overdue_count = len(overdue_tasks)
 
-        # If no tasks at all – skip sending email
+        print("open_count", open_count, "overdue_count", overdue_count)
+
+        # Skip sending if no tasks
         if open_count == 0 and overdue_count == 0:
             continue
 
-        # --------------------------------------
-        # EMAIL CONTENT
-        # --------------------------------------
+        # -------------------------------------------------
+        # BUILD CLEAN HTML EMAIL
+        # -------------------------------------------------
+
         message = f"""
-            <p>Hi <b>{emp.employee_name}</b>,</p>
+        <div style="font-family: Arial, sans-serif; font-size: 14px; color: #333;">
+        
+            <h3>Daily Task Summary — {today}</h3>
 
-            <p>Here is your daily task summary:</p>
+            <p>Hi <strong>{emp.employee_name}</strong>,</p>
 
-            <ul>
-                <li><b>{open_count}</b> Open Task(s)</li>
+            <p>Here is your task summary for today:</p>
+
+            <hr>
+
+            <!-- OPEN TASKS -->
+            <h4>Open Tasks ({open_count})</h4>
         """
 
-        # Add overdue section ONLY if overdue tasks exist
+        # Add OPEN tasks:
+        if open_count > 0:
+            message += "<ul>"
+            for t in open_tasks:
+                task_link = frappe.utils.get_url_to_form("Task", t.name)
+                message += f"""
+                <li>
+                    <strong>{t.subject}</strong> <br>
+                    Project: {t.project or '-'} <br>
+                    Priority: {t.priority or '-'} <br>
+                    Task ID: <a href="{task_link}">{t.name}</a>
+                </li><br>
+                """
+            message += "</ul>"
+        else:
+            message += "<p>No open tasks.</p>"
+
+        message += "<hr>"
+
+        # Add OVERDUE tasks:
+        message += f"<h4 style='color:red;'>Overdue Tasks ({overdue_count})</h4>"
+
         if overdue_count > 0:
-            message += f"""
-                <li><b>{overdue_count}</b> Overdue Task(s)</li>
-            """
+            message += "<ul>"
+            for t in overdue_tasks:
+                task_link = frappe.utils.get_url_to_form("Task", t.name)
+                message += f"""
+                <li>
+                    <strong>{t.subject}</strong> 
+                    Project: {t.project or '-'} <br>
+                    Priority: {t.priority or '-'} <br>
+                    Task ID: <a href="{task_link}">{t.name}</a><br>
+                </li><br>
+                """
+            message += "</ul>"
+        else:
+            message += "<p>No overdue tasks. Great job! 🎉</p>"
 
-        # Close list
+        # Suggested Section
         message += """
-            </ul>
-            <p>Please check ERPNext for details.</p>
-            <br>
-            <p>Regards,<br>Reva Process Technologies</p>
+            <hr> <br><br>
+
+            <p>Regards,<br>
+            <strong>Reva Process Technologies</strong></p>
+        </div>
         """
 
-        subject = "Daily Task Summary — Open Tasks"
-
-        # Send mail
+        # Send email
         frappe.sendmail(
             recipients=[email],
             subject=subject,
