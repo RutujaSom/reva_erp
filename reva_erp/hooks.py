@@ -112,7 +112,7 @@ scheduler_events = {
             "reva_erp.api.task_event.send_daily_task_summary"
         ],
 
-        # "15 16 * * *": [
+        # "25 11 * * *": [
         #     "reva_erp.api.task_event.send_daily_task_summary"
         # ]
 
