@@ -101,7 +101,7 @@ def register_supplier(data):
         "doctype": "Contact",
         "first_name": supplier_name,
         "email_ids": [{"email_id": email_id, "is_primary": 1}] if email_id else [],
-        "phone_nos": [{"phone": mobile_no, "is_primary_phone": 1}] if mobile_no else [],
+        "phone_nos": [{"phone": mobile_no, "is_primary_phone": 1, "is_primary_mobile_no": 1}] if mobile_no else [],
         "links": [{
             "link_doctype": "Supplier",
             "link_name": supplier.name
@@ -112,6 +112,14 @@ def register_supplier(data):
     # ----------- Step 5: Update Supplier with Address & Contact -----------
     supplier.supplier_primary_address = address.name
     supplier.supplier_primary_contact = contact.name
+
+    from frappe.contacts.doctype.address.address import get_address_display
+
+    address_display = get_address_display(address.name)
+    supplier.primary_address= address_display
+
+    # Read-only field update → must use ignore_permissions=True
+    supplier.db_set("primary_address", address_display, update_modified=False)
     supplier.save(ignore_permissions=True)
 
     frappe.set_user("Guest")
