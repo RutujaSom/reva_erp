@@ -15,6 +15,7 @@ fixtures = [
                 "Terms and Conditions", "Employee",
                 "Timesheet Detail",
                 "Supplier Quotation", "Supplier",
+                "Item"
             ]]
         ]
     },
