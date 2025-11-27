@@ -74,8 +74,7 @@ def get(doctype, txt=None, limit_start=0, limit=20, pathname=None, **kwargs):
 		result.append(rendered_row)
 
 	from frappe.utils.response import json_handler
-	print()
-	print("result .....",result)
+	
 	return {
 		"raw_result": json.dumps(raw_result, default=json_handler),
 		"result": result,
