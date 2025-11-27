@@ -47,13 +47,13 @@
   "doctype_event": "Before Insert",
   "enable_rate_limit": 0,
   "event_frequency": "All",
-  "modified": "2025-10-06 12:28:25.883561",
+  "modified": "2025-11-27 12:05:44.448239",
   "module": null,
   "name": "Supplier filtered records",
   "rate_limit_count": 5,
   "rate_limit_seconds": 86400,
   "reference_doctype": null,
-  "script": "def rfq_suppliers_api(supplier_group):\n    suppliers = frappe.get_all(\n        \"Supplier\",\n        filters={\"supplier_group\": supplier_group},\n        fields=[\"name\", \"supplier_name\"]\n    )\n    frappe.response['message'] = suppliers\n    \n\nsupplier_group = frappe.request.form.get(\"supplier_group\")\nrfq_suppliers_api(supplier_group)\n\n",
+  "script": "def rfq_suppliers_api(supplier_group):\n    suppliers = frappe.get_all(\n        \"Supplier\",\n        filters={\"supplier_group\": supplier_group, \"workflow_state\":\"Approved\"},\n        fields=[\"name\", \"supplier_name\",\"email_id\",\"mobile_no\",\"supplier_primary_contact\"]\n    )\n    frappe.response['message'] = suppliers\n    \n\nsupplier_group = frappe.request.form.get(\"supplier_group\")\nrfq_suppliers_api(supplier_group)\n\n",
   "script_type": "API"
  },
  {
