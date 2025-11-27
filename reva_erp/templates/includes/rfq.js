@@ -161,7 +161,8 @@ rfq = class rfq {
 			let has_commercial_or_unpriced = false;
 
 			$('#supplier-attachments-body tr').each(function () {
-				const type = ($(this).data('type') || "").trim().toLowerCase();
+				const type = ($(this).data('type') || "").trim();
+				const type_1 = ($(this).data('type') || "").trim().toLowerCase();
 				const file_input = $(this).find('.supplier-file')[0];
 				const remark = $(this).data('remark') || "";
 
@@ -172,10 +173,10 @@ rfq = class rfq {
 						remark: remark
 					});
 
-					if (type === "technical") {
+					if (type_1 === "technical") {
 						has_technical_attachment = true;
 					}
-					if (type === "commercial" || type === "unpriced") {
+					if (type_1 === "commercial" || type_1 === "unpriced") {
 						has_commercial_or_unpriced = true;
 					}
 				}
