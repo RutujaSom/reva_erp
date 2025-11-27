@@ -3,21 +3,23 @@ import os
 import PyPDF2
 from PIL import Image
 from frappe.utils.file_manager import get_file_path
-
+from datetime import datetime
 
 @frappe.whitelist()
 def download_po_pdf(purchase_order_name):
     po_name = purchase_order_name
-    print("in ic  ....")
 
     # --------------------------------------------
     # 0️⃣  INIT
     # --------------------------------------------
+
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     po_doc = frappe.get_doc("Purchase Order", po_name)
-    print("po_doc ...",po_doc)
     temp_dir = frappe.get_site_path("public", "files")
 
-    merged_pdf_path = os.path.join(temp_dir, f"{po_name}_merged.pdf")
+    # merged_pdf_path = os.path.join(temp_dir, f"{po_name}_merged.pdf")
+    merged_pdf_path = os.path.join(temp_dir, f"PO_{timestamp}_merged.pdf")
+    print("merged_pdf_path ...",merged_pdf_path)
     merger = PyPDF2.PdfMerger()
 
     # --------------------------------------------
@@ -30,7 +32,8 @@ def download_po_pdf(purchase_order_name):
         as_pdf=True
     )
 
-    main_pdf_path = os.path.join(temp_dir, f"{po_name}_form.pdf")
+    # main_pdf_path = os.path.join(temp_dir, f"{po_name}_form.pdf")
+    main_pdf_path = os.path.join(temp_dir, f"PO_{timestamp}_form.pdf")
     with open(main_pdf_path, "wb") as f:
         f.write(pdf_bytes)
 
@@ -69,7 +72,7 @@ def download_po_pdf(purchase_order_name):
     # 4️⃣  COLLECT ALL ATTACHMENTS FROM RFQs
     # --------------------------------------------
     all_attachments = []
-    print("rfq_list ....",rfq_list)
+
     for rfq_name in rfq_list:
         rfq_doc = frappe.get_doc("Request for Quotation", rfq_name)
 
@@ -112,7 +115,9 @@ def download_po_pdf(purchase_order_name):
 
     merger.close()
 
-    return f"/files/{po_name}_merged.pdf"
+    # return f"/files/{po_name}_merged.pdf"
+    return f"/files/PO_{timestamp}_merged.pdf"
+
 
     # with open(merged_pdf_path, "wb") as f:
     #     merger.write(f)
