@@ -111,17 +111,17 @@ scheduler_events = {
 
          # Sync device records every 10 minutes
         "*/10 * * * *": [
-            "reva_erp.api.device_attendance.sync_device_records"
+            "reva_erp.api.attendance.sync_device_records"
         ],
 
         # Create attendance daily at 12:10 AM
         "0 * * * *": [
-            "reva_erp.api.device_attendance.generate_last_15_days_attendance"
+            "reva_erp.api.attendance.generate_last_15_days_attendance"
         ],
 
         # # Every 2 hours
         # "0 */2 * * *": [
-        #     "reva_erp.api.device_attendance.generate_last_15_days_attendance"
+        #     "reva_erp.api.attendance.generate_last_15_days_attendance"
         # ]
 
     }
