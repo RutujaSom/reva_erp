@@ -112,13 +112,11 @@ def has_permission(doc, user=None):
 
 @frappe.whitelist(allow_guest=True)
 def auto_close_incomplete_working_tasks():
-    print("each hould  .......")
-    """
-    Scheduler function to auto-update incomplete Timesheets of 'Working' Tasks
-    at the employee's shift end.
-    """
+    print("Scheduler running at 8 PM ...")
 
-    # Get all Tasks in Working status
+    from frappe.utils import today, now_datetime, get_datetime
+
+    # Fetch all Tasks in Working status
     working_tasks = frappe.get_all(
         "Task",
         filters={"status": "Working"},
@@ -133,29 +131,7 @@ def auto_close_incomplete_working_tasks():
             if not emp:
                 continue
 
-            # Get today's shift assignment for employee
-            shift_assign = frappe.get_all(
-                "Shift Assignment",
-                filters={"employee": emp, "attendance_date": today()},
-                fields=["shift"]
-            )
-            if not shift_assign:
-                continue
-
-            shift_name = shift_assign[0].shift
-
-            # Get shift end time from Shift Type
-            shift = frappe.get_doc("Shift Type", shift_name)
-            shift_end_time = shift.end_time  # 'HH:MM:SS'
-
-            # Convert to datetime today
-            shift_end_dt = get_datetime(f"{today()} {shift_end_time}")
-
-            # Skip if current time < shift end
-            if now_datetime() < shift_end_dt:
-                continue
-
-            # Find Timesheets linked to this task for this employee
+            # Update Timesheets linked to this task for this employee
             timesheets = frappe.get_all(
                 "Timesheet",
                 filters={"employee": emp},
@@ -168,26 +144,34 @@ def auto_close_incomplete_working_tasks():
 
                 for log in ts_doc.time_logs:
                     if log.task == task_doc.name and not log.completed:
-                        log.to_time = shift_end_dt
+
+                        # Close log at time of scheduler run (8 PM)
+                        end_dt = now_datetime()
+
+                        log.to_time = end_dt
                         log.completed = True
 
                         # Calculate hours
                         if log.from_time:
                             from_dt = get_datetime(log.from_time)
-                            to_dt = get_datetime(log.to_time)
-                            diff_hours = (to_dt - from_dt).total_seconds() / 3600
+                            diff_hours = (end_dt - from_dt).total_seconds() / 3600
                             log.hours = round(diff_hours, 2)
 
                         updated = True
 
                 if updated:
-                    ts_doc.save()
-                    frappe.db.commit()
-                    frappe.log_error(
-                        message=f"Incomplete Timesheet for Task {task_doc.name} auto-updated to shift end for employee {emp}.",
-                        title="Auto Shift End Timesheet Update"
-                    )
+                    ts_doc.save(ignore_permissions=True)
 
+            # Stop the task
+            task_doc.status = "Stopped"
+            task_doc.save(ignore_permissions=True)
+
+            frappe.db.commit()
+
+            frappe.log_error(
+                f"Task {task_doc.name} auto-closed at 8 PM for employee {emp}",
+                "Auto Task Close"
+            )
 
 
 def execute():

@@ -101,24 +101,30 @@ app_include_js = [
 
 
 scheduler_events = {
-    "hourly": [
-        "reva_erp.api.attendance.fetch_attendance_from_middleware",
-        # "reva_erp.api.task.auto_close_incomplete_working_tasks"
-    ],
     "cron": {
-        "0/2 * * * *": [
+        "0 20 * * *": [
             "reva_erp.api.task.auto_close_incomplete_working_tasks"
         ],
         "0 8 * * *": [  # Every day at 08:00 AM
             "reva_erp.api.task_event.send_daily_task_summary"
         ],
 
-        # "25 11 * * *": [
-        #     "reva_erp.api.task_event.send_daily_task_summary"
+         # Sync device records every 10 minutes
+        "*/10 * * * *": [
+            "reva_erp.api.device_attendance.sync_device_records"
+        ],
+
+        # Create attendance daily at 12:10 AM
+        "0 * * * *": [
+            "reva_erp.api.device_attendance.generate_last_15_days_attendance"
+        ],
+
+        # # Every 2 hours
+        # "0 */2 * * *": [
+        #     "reva_erp.api.device_attendance.generate_last_15_days_attendance"
         # ]
 
     }
-    
 }
 
 permission_query_conditions = {
