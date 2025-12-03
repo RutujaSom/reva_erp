@@ -10,6 +10,7 @@
   "event",
   "io_status",
   "in_out",
+  "added_in_attendance",
   "column_break_ixxu",
   "device_ser_no",
   "record_time",
@@ -75,17 +76,23 @@
   },
   {
    "fieldname": "attendance_id",
-   "fieldtype": "Data",
+   "fieldtype": "Int",
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Attendance Id",
    "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "added_in_attendance",
+   "fieldtype": "Check",
+   "label": "Added In Attendance"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-10-13 18:05:04.710080",
+ "modified": "2025-12-03 09:41:34.747657",
  "modified_by": "Administrator",
  "module": "Reva Erp Next",
  "name": "Bio Matric Attendance",
