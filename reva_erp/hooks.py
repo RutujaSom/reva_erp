@@ -114,16 +114,16 @@ scheduler_events = {
             "reva_erp.api.attendance.sync_device_records"
         ],
 
-        # Create attendance daily at 12:10 AM
-        "0 * * * *": [
-            "reva_erp.api.attendance.generate_last_15_days_attendance"
-        ],
-
-        # # Every 2 hours
-        # "0 */2 * * *": [
+        # # Create attendance daily at 12:10 AM
+        # "0 * * * *": [
         #     "reva_erp.api.attendance.generate_last_15_days_attendance"
-        # ]
+        # ],
 
+        # Run both attendance methods every hour at minute 0
+        "0 * * * *": [
+            "reva_erp.api.attendance.generate_last_15_days_attendance",
+            "reva_erp.api.attendance.create_employee_checkin_from_bio"
+        ]
     }
 }
 

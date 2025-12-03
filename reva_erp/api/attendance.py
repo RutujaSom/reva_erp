@@ -3,10 +3,82 @@ from datetime import datetime, timedelta
 import pyodbc
 
 
+# @frappe.whitelist()
+# def sync_device_records():
+#     try:
+#         # SQL Server connection
+#         conn = pyodbc.connect(
+#             'DRIVER={ODBC Driver 17 for SQL Server};'
+#             'SERVER=114.29.233.189;'
+#             'DATABASE=deviceManagement;'
+#             'UID=sa;'
+#             'PWD=dsspl@123;'
+#         )
+
+#         cursor = conn.cursor()
+#         cursor.execute("SELECT * FROM records")
+
+#         rows = cursor.fetchall()
+#         columns = [column[0] for column in cursor.description]
+
+#         inserted_count = 0
+#         skipped_count = 0
+
+#         for row in rows:
+#             rec = dict(zip(columns, row))
+
+#             attendance_id = rec.get("id")
+
+#             # Skip if this attendance ID already exists
+#             if frappe.db.exists("Bio Matric Attendance", {"attendance_id": str(attendance_id)}):
+#                 skipped_count += 1
+#                 continue
+
+#             # Create new Frappe Doc
+#             doc = frappe.new_doc("Bio Matric Attendance")
+#             doc.attendance_id = rec.get("id")
+#             doc.device_ser_no = rec.get("device_serial_num")
+#             doc.enroll_id = rec.get("enroll_id")
+#             doc.event = rec.get("event")
+#             doc.flag = rec.get("flag")
+#             doc.io_status = rec.get("io_status")
+#             doc.in_out = rec.get("in_out")
+#             doc.mode = rec.get("mode")
+#             doc.record_time = rec.get("records_time")
+#             doc.temperature = rec.get("temperature")
+#             doc.save(ignore_permissions=True)
+
+#             inserted_count += 1
+
+#         frappe.db.commit()
+
+#         return {
+#             "status": "success",
+#             "inserted": inserted_count,
+#             "skipped_existing": skipped_count
+#         }
+
+#     except Exception as e:
+#         frappe.log_error(str(e), "SQL Server Sync Error")
+#         return {"error": str(e)}
+
+
+
 @frappe.whitelist()
 def sync_device_records():
     try:
-        # SQL Server connection
+        # 1️⃣ Get last saved attendance ID from Frappe
+        last_att_id = frappe.db.get_value(
+            "Bio Matric Attendance",
+            filters={},
+            fieldname="attendance_id",
+            order_by="attendance_id DESC"
+        )
+
+        # If no record found, set to 0
+        last_att_id = int(last_att_id) if last_att_id else 0
+
+        # 2️⃣ SQL Server connection
         conn = pyodbc.connect(
             'DRIVER={ODBC Driver 17 for SQL Server};'
             'SERVER=114.29.233.189;'
@@ -16,25 +88,24 @@ def sync_device_records():
         )
 
         cursor = conn.cursor()
-        cursor.execute("SELECT * FROM records")
+
+        # 3️⃣ Fetch only NEW records
+        query = f"""
+            SELECT * FROM records
+            WHERE id > {last_att_id}
+            ORDER BY id ASC
+        """
+        cursor.execute(query)
 
         rows = cursor.fetchall()
         columns = [column[0] for column in cursor.description]
 
         inserted_count = 0
-        skipped_count = 0
 
+        # 4️⃣ Insert new records
         for row in rows:
             rec = dict(zip(columns, row))
 
-            attendance_id = rec.get("id")
-
-            # Skip if this attendance ID already exists
-            if frappe.db.exists("Bio Matric Attendance", {"attendance_id": str(attendance_id)}):
-                skipped_count += 1
-                continue
-
-            # Create new Frappe Doc
             doc = frappe.new_doc("Bio Matric Attendance")
             doc.attendance_id = rec.get("id")
             doc.device_ser_no = rec.get("device_serial_num")
@@ -55,13 +126,12 @@ def sync_device_records():
         return {
             "status": "success",
             "inserted": inserted_count,
-            "skipped_existing": skipped_count
+            "last_attendance_id": last_att_id
         }
 
     except Exception as e:
         frappe.log_error(str(e), "SQL Server Sync Error")
         return {"error": str(e)}
-
 
 
 
@@ -141,14 +211,12 @@ def generate_daily_attendance():
 
 
 
-
-
 @frappe.whitelist(allow_guest=True)
 def generate_last_15_days_attendance():
 
     # Calculate date range
     end_date = datetime.today()
-    start_date = end_date - timedelta(days=15)
+    start_date = end_date - timedelta(days=2)
 
     created = 0
     updated = 0
@@ -229,3 +297,62 @@ def generate_last_15_days_attendance():
         "created": created,
         "updated": updated
     }
+
+
+
+
+@frappe.whitelist()
+def create_employee_checkin_from_bio():
+    try:
+        # 1️⃣ Fetch only NEW biometric entries (added_in_attendance = 0)
+        bio_records = frappe.db.get_all(
+            "Bio Matric Attendance",
+            filters={"added_in_attendance": 0},
+            fields="*",
+            order_by="record_time ASC"
+        )
+
+        created_count = 0
+
+        for rec in bio_records:
+
+            # 2️⃣ Map enroll_id → Employee
+            employee_id = frappe.db.get_value(
+                "Employee",
+                {"custom_attendance_id": rec.get("enroll_id")},
+                ["name", "employee_name"],as_dict=True
+            )
+
+            if not employee_id:
+                continue  # No employee mapping → skip
+
+
+            # 5️⃣ Create new Employee Checkin
+            checkin_doc = frappe.new_doc("Employee Checkin")
+            checkin_doc.employee = employee_id.name
+            checkin_doc.employee_name = employee_id.employee_name
+            checkin_doc.time = rec.get("record_time")
+            # checkin_doc.log_type = log_type
+            checkin_doc.device_id = rec.get("device_ser_no")
+            checkin_doc.save(ignore_permissions=True)
+
+            created_count += 1
+
+            # 6️⃣ Mark biometric record as processed
+            frappe.db.set_value(
+                "Bio Matric Attendance",
+                rec.name,
+                "added_in_attendance",
+                1
+            )
+
+        frappe.db.commit()
+
+        return {
+            "status": "success",
+            "employee_checkins_created": created_count
+        }
+
+    except Exception as e:
+        frappe.log_error(str(e), "Employee Checkin Sync Error")
+        return {"error": str(e)}
