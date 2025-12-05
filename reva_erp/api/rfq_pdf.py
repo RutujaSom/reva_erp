@@ -4,15 +4,17 @@ import os
 import PyPDF2
 from PIL import Image
 from frappe.utils.file_manager import get_file_path
+from datetime import datetime
 
 
 @frappe.whitelist(allow_guest=True)
 def download_rfq_pdf(rfq_name):
     print("in  ......")
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     doc = frappe.get_doc("Request for Quotation", rfq_name)
     temp_dir = frappe.get_site_path("public", "files")
 
-    merged_pdf_path = os.path.join(temp_dir, f"{rfq_name}_merged.pdf")
+    merged_pdf_path = os.path.join(temp_dir, f"{rfq_name}_{timestamp}_merged.pdf")
     merger = PyPDF2.PdfMerger()
 
     # --------------------------------------------------
@@ -83,7 +85,7 @@ def download_rfq_pdf(rfq_name):
 
     merger.close()
 
-    return f"/files/{rfq_name}_merged.pdf"
+    return f"/files/{rfq_name}_{timestamp}_merged.pdf"
 
 
 # -----------------------------------------------
