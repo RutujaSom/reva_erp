@@ -155,6 +155,33 @@ rfq = class rfq {
 	submit_rfq() {
 		$('.btn-primary').click(function () {  // "Make Quotation" button
 
+			// ----------------------------------------
+			// 1️⃣ Validate Model for All Items
+			// ----------------------------------------
+			let model_missing = false;
+
+			$(".rfq-item").each(function () {
+				let model_val = $(this).find(".rfq-model").val().trim();
+
+				// If any model is missing, stop submission
+				if (!model_val) {
+					model_missing = true;
+					$(this).find(".rfq-model").focus();   // highlight the empty model field
+					return false;  // break loop
+				}
+			});
+
+			if (model_missing) {
+				frappe.msgprint({
+					title: "Missing Model",
+					message: "Please enter Model for all items before submitting the quotation.",
+					indicator: "red"
+				});
+				return;
+			}
+
+
+
 			// Collect attachments
 			let attachments = [];
 			let has_technical_attachment = false;
@@ -225,8 +252,6 @@ rfq = class rfq {
 
 							// Get matching doc item using idx
 							let item = doc.items.find(i => i.idx === idx);
-
-							alert('$(this).find(".rfq-model").val() ....'+$(this).find(".rfq-model").val())
 
 							if (item) {
 								item_updates.push({

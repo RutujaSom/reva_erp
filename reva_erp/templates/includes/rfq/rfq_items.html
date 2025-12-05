@@ -11,12 +11,7 @@
 
 		<!-- Tag No -->
 		<div class="col-sm-2 col-4 text-right">
-			<!-- <input type="text" readonly class="form-control rfq-tag-no text-right"
-				   style="margin-top: 5px;"
-				   value="{{ d.custom_tag_no or '' }}"
-				   data-idx="{{ d.idx }}"> -->
-
-				   <span class="rfq-tag-no" data-idx="{{ d.idx }}">{{ d.custom_tag_no or '' }}</span>
+			<span class="rfq-tag-no" data-idx="{{ d.idx }}">{{ d.custom_tag_no or '' }}</span>
 		</div>
 
 		<!-- Qty -->
@@ -42,7 +37,7 @@
 
 		<!-- Model -->
 		<div class="col-sm-2 col-4 text-right">
-			<input type="text" class="form-control rfq-model text-right"
+			<input type="text" class="form-control rfq-model text-right" required
 				   style="margin-top: 5px;"
 				   value="{{ d.custom_model or '' }}"
 				   data-idx="{{ d.idx }}">
