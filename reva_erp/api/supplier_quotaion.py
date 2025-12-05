@@ -33,48 +33,6 @@ def supplier_quotation_status_update(doc, method):
 
 
 
-# import frappe
-# from frappe.utils import nowdate
-
-# @frappe.whitelist(allow_guest=False)
-# def add_attachments_to_quotation(docname, attachments=None, data=None):
-#     print("in function .......",attachments)
-#     print()
-#     print("data ....",data)
-#     """
-#     Add attachments to existing Supplier Quotation's child table `custom_addendum`.
-#     attachments: list of dicts with keys:
-#         attachment_type, remark, file_url
-#     """
-    
-#     if not attachments:
-#         return
-
-#     # Convert string to list if passed from JS
-#     import json
-#     if isinstance(attachments, str):
-#         attachments = json.loads(attachments)
-
-#     # Fetch Supplier Quotation
-#     sq = frappe.get_doc("Supplier Quotation", docname)
-
-#     for att in attachments:
-#         print("att .....",attachments)
-#         # Add row to child table
-#         sq.append("custom_addendum", {
-#             "attachment_type": att.get("attachment_type"),
-#             "remark": att.get("remark"),
-#             "attachment": att.get("file_url"),
-#             "date": nowdate()
-#         })
-
-#     sq.save(ignore_permissions=True)
-#     frappe.db.commit()
-#     return True
-
-
-
-
 import frappe
 from frappe.utils import nowdate
 
@@ -126,3 +84,43 @@ def add_attachments_to_quotation():
 
     return {"message": "Attachments added successfully"}
 
+
+
+
+
+import frappe
+
+@frappe.whitelist()
+def update_sq_item_fields(docname, items):
+    print("in update ....", docname, 'items ....',items)
+    """
+    Update only tag_no and model for Supplier Quotation Items
+    items = [
+        {"item_code": "X", "tag_no": "123", "model": "ABCD"},
+        ...
+    ]
+    """
+
+    if not docname:
+        frappe.throw("Missing Supplier Quotation name")
+
+    sq = frappe.get_doc("Supplier Quotation", docname)
+
+    # Convert JSON string to list
+    import json
+    items = json.loads(items)
+
+    # Create lookup for easy match
+    item_map = {i["item_code"]: i for i in items}
+
+    for row in sq.items:
+        if row.item_code in item_map:
+            data = item_map[row.item_code]
+
+            row.custom_tag_no = data.get("tag_no")
+            row.custom_model = data.get("model")
+
+    sq.save(ignore_permissions=True)
+    frappe.db.commit()
+
+    return {"message": "Tag No & Model updated successfully"}

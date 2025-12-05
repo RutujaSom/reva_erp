@@ -3,28 +3,57 @@
 {% for d in doc.items %}
 <div class="rfq-item">
 	<div class="row">
-		<div class="col-sm-5 col-12" style="margin-bottom: 10px;margin-top: 5px;">
+
+		<!-- Items -->
+		<div class="col-sm-3 col-12" style="margin-bottom: 10px;margin-top: 5px;">
 			{{ item_name_and_description(d, doc) }}
 		</div>
-		<!-- <div class="col-sm-2 col-2" style="margin-bottom: 10px;">
-			<textarea type="text" style="margin-top: 5px;" class="input-with-feedback form-control rfq-offer_detail" ></textarea>
-		</div> -->
+
+		<!-- Tag No -->
 		<div class="col-sm-2 col-4 text-right">
-				<input type="text" class="form-control text-right rfq-qty" style="margin-top: 5px;display: inline-block"
-				value = "{{ d.get_formatted('qty') }}"
-				data-idx="{{ d.idx }}">
-				<p class="text-muted small" style="margin-top: 10px;">
-					{{_("UOM") + ":"+ d.uom}}
-				</p>
+			<!-- <input type="text" readonly class="form-control rfq-tag-no text-right"
+				   style="margin-top: 5px;"
+				   value="{{ d.custom_tag_no or '' }}"
+				   data-idx="{{ d.idx }}"> -->
+
+				   <span class="rfq-tag-no" data-idx="{{ d.idx }}">{{ d.custom_tag_no or '' }}</span>
 		</div>
+
+		<!-- Qty -->
+		<div class="col-sm-1 col-4 text-right">
+			<input type="text" class="form-control text-right rfq-qty"
+				   style="margin-top: 5px;"
+				   value="{{ d.get_formatted('qty') }}"
+				   data-idx="{{ d.idx }}">
+			<p class="text-muted small" style="margin-top: 10px;">
+				{{ _("UOM") + ":" + d.uom }}
+			</p>
+		</div>
+
+		<!-- Rate -->
 		<div class="col-sm-2 col-4 text-right">
 			<input type="text" class="form-control text-right rfq-rate"
-				style="margin-top: 5px;display: inline-block" value="0.00"
-				data-idx="{{ d.idx }}">
+				   style="margin-top: 5px;"
+				   value="0.00"
+				   data-idx="{{ d.idx }}">
 		</div>
-        <div class="col-sm-3 col-4 text-right" style="padding-top: 9px;">
-           {{doc.currency_symbol}} <span class="rfq-amount" data-idx="{{ d.idx }}">0.00</span>
-        </div>
+
+		
+
+		<!-- Model -->
+		<div class="col-sm-2 col-4 text-right">
+			<input type="text" class="form-control rfq-model text-right"
+				   style="margin-top: 5px;"
+				   value="{{ d.custom_model or '' }}"
+				   data-idx="{{ d.idx }}">
 		</div>
+
+		<!-- Amount -->
+		<div class="col-sm-1 col-4 text-right" style="padding-top: 9px;">
+		   {{ doc.currency_symbol }}
+		   <span class="rfq-amount" data-idx="{{ d.idx }}">0.00</span>
+		</div>
+
 	</div>
+</div>
 {% endfor %}

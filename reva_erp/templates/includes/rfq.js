@@ -216,13 +216,47 @@ rfq = class rfq {
 					if (r.message) {
 						const quotation_name = r.message;
 
-						// Upload attachments after quotation creation
-						if (attachments.length > 0) {
-							add_attachments_to_quotation(quotation_name, attachments);
-						} else {
-							frappe.msgprint("Quotation created successfully.");
-							window.location.href = "/supplier-quotations/" + encodeURIComponent(quotation_name);
-						}
+
+						let sq_name = r.message;
+						let item_updates = [];
+
+						$(".rfq-item").each(function () {
+							let idx = $(this).find(".rfq-tag-no").data("idx");
+
+							// Get matching doc item using idx
+							let item = doc.items.find(i => i.idx === idx);
+
+							alert('$(this).find(".rfq-model").val() ....'+$(this).find(".rfq-model").val())
+
+							if (item) {
+								item_updates.push({
+									item_code: item.item_code,
+									tag_no: item.custom_tag_no,
+									model: $(this).find(".rfq-model").val() || ""
+								});
+							}
+						});
+
+
+						frappe.call({
+							type: "POST",
+							method: "reva_erp.api.supplier_quotaion.update_sq_item_fields",
+							args: {
+								docname: sq_name,
+								items: JSON.stringify(item_updates)
+							},
+							callback: function() {
+								// Upload attachments after quotation creation
+								if (attachments.length > 0) {
+									add_attachments_to_quotation(quotation_name, attachments);
+								} else {
+									frappe.msgprint("Quotation created successfully.");
+									window.location.href = "/supplier-quotations/" + encodeURIComponent(quotation_name);
+								}
+							}
+						});
+							
+
 					} else {
 						frappe.msgprint("Failed to create quotation. Please try again.");
 					}

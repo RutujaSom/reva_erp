@@ -59,11 +59,15 @@
 	<div id="order-container">
 		<div id="rfq-items">
 			<div class="row cart-item-header">
-				<div class="col-sm-5 col-12">{{ _("Items") }}</div>
-				<div class="col-sm-2 col-4 text-right">{{ _("Qty") }}</div>
-				<div class="col-sm-2 col-4 text-right">{{ _("Rate") }}</div>
-				<div class="col-sm-3 col-4 text-right">{{ _("Amount") }}</div>
-			</div>
+                <div class="col-sm-3 col-12">{{ _("Items") }}</div>
+                <div class="col-sm-2 col-4 text-right">{{ _("Tag No") }}</div>
+                <div class="col-sm-1 col-4 text-right">{{ _("Qty") }}</div>
+                <div class="col-sm-2 col-4 text-right">{{ _("Rate") }}</div>
+                
+                <div class="col-sm-2 col-4 text-right">{{ _("Model") }}</div>
+                <div class="col-sm-1 col-4 text-right">{{ _("Amount") }}</div>
+            </div>
+
 			<hr>
             {% if doc.items %}
             <div class="rfq-items">
@@ -176,7 +180,7 @@
         </div>
         <div class="form-group mb-3">
           <label for="attachmentRemark">Remark</label>
-          <input type="text" id="attachmentRemark" class="form-control" placeholder="Remark">
+          <input type="text" id="attachmentRemark" class="form-control" style="height: auto;" placeholder="Remark">
         </div>
       </div>
       <div class="modal-footer">
