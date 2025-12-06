@@ -10,7 +10,6 @@ from erpnext.controllers.website_list_for_contact import get_customers_suppliers
 
 
 def get_context(context):
-	print("in cin ......")
 	context.no_cache = 1
 	context.show_sidebar = True
 	context.doc = frappe.get_doc(frappe.form_dict.doctype, frappe.form_dict.name)
