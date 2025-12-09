@@ -154,12 +154,13 @@ from datetime import datetime
 def download_po_pdf(purchase_order_name):
 
     po_name = purchase_order_name
+    po_name_1 = purchase_order_name.replace("/", "-")
 
     # --------------------------------------------
     # 0️⃣ INIT
     # --------------------------------------------
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    output_filename = f"PO_{po_name}_{timestamp}.pdf"
+    output_filename = f"PO_{po_name_1}_{timestamp}.pdf"
 
     site_path = frappe.get_site_path()
     pdf_folder = os.path.join(site_path, "public", "files")
@@ -184,7 +185,7 @@ def download_po_pdf(purchase_order_name):
     #  2️⃣ ADD TERMS & CONDITIONS PDF
     # --------------------------------------------
     try:
-        tc_path = get_file_path("REVA PO Terms and Condition.pdf")
+        tc_path = get_file_path("REVA Terms and Condition.pdf")
         merger.append(tc_path)
     except Exception:
         frappe.throw("Terms & Conditions PDF not found in File List.")

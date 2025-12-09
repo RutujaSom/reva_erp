@@ -26,8 +26,8 @@ def process_supplier_quotations(approve=None, reject=None):
             doc.workflow_state = "Approved"
             doc.save(ignore_permissions=True)
             # Submit if needed
-            # if doc.docstatus == 0:
-            #     doc.submit()
+             if doc.docstatus == 0:
+                 doc.submit()
             success_approved.append(name)
         except Exception as e:
             frappe.log_error(frappe.get_traceback(), f"Error approving Supplier Quotation {name}")
