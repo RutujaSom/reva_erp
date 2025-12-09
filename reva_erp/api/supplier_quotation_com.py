@@ -24,10 +24,14 @@ def process_supplier_quotations(approve=None, reject=None):
             doc = frappe.get_doc("Supplier Quotation", name)
             # Update workflow state to Approved
             doc.workflow_state = "Approved"
+            user_id = frappe.session.user
+            full_name = frappe.db.get_value("User", user_id, "full_name")
+
+            doc.approved_by = full_name
             doc.save(ignore_permissions=True)
             # Submit if needed
-            # if doc.docstatus == 0:
-            #     doc.submit()
+            if doc.docstatus == 0:
+                doc.submit()
             success_approved.append(name)
         except Exception as e:
             frappe.log_error(frappe.get_traceback(), f"Error approving Supplier Quotation {name}")
@@ -71,7 +75,6 @@ import frappe
 
 @frappe.whitelist()
 def get_supplier_quotation_comparison(filters=None):
-    print("in func ...............////////////////")
     import json
     filters = json.loads(filters) if isinstance(filters, str) else (filters or {})
 
@@ -115,7 +118,7 @@ def get_supplier_quotation_comparison(filters=None):
         conditions_sql = ""
     else:
         conditions_sql = "WHERE " + " AND ".join(conditions)
-    print("conditions_sql ......",conditions_sql)
+
     query = f"""
         SELECT
             sq.name AS quotation,
@@ -138,37 +141,5 @@ def get_supplier_quotation_comparison(filters=None):
         ORDER BY sq.transaction_date DESC
     """
 
-
-#     query = f"""
-#     SELECT
-#         sq_item.item_code AS item_code,
-#         item.item_name AS item_name,
-#         sq.supplier AS supplier_name,
-#         sq.name AS quotation,
-#         sq_item.qty AS qty,
-#         sq_item.rate AS price,
-#         sq_item.uom AS uom,
-#         sq.price_list_currency AS price_list_currency,
-#         sq.currency AS currency,
-#         sq_item.stock_uom AS stock_uom,
-#         (sq_item.qty * sq_item.rate) AS base_amount,
-#         sq_item.base_rate AS base_rate,
-#         sq.request_for_quotation AS request_for_quotation,
-#         sq.valid_till AS valid_till,
-#         COALESCE(sq_item.lead_time_days, 0) AS lead_time_days,
-#         (sq_item.rate / NULLIF(sq_item.conversion_factor, 0)) AS price_per_unit
-#     FROM
-#         `tabSupplier Quotation` sq
-#     JOIN
-#         `tabSupplier Quotation Item` sq_item ON sq.name = sq_item.parent
-#     LEFT JOIN
-#         `tabItem` item ON sq_item.item_code = item.name
-#     {conditions_sql}
-#     ORDER BY
-#         sq.transaction_date DESC
-# """
-
-
     data = frappe.db.sql(query, values, as_dict=True)
-    print("data .....",data)
     return data

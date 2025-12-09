@@ -226,5 +226,24 @@
   "reference_doctype": "Employee",
   "script": "\n# emp_name = frappe.get_value(\"Employee\", {\"user_id\": frappe.session.user}, \"name\", ignore_permissions=True)\nemp = frappe.get_all(\"Employee\", filters={\"user_id\": frappe.session.user}, fields=[\"name\"])\nif emp:\n    emp_name = emp[0].name\nelse:\n    emp_name = None\n\nfrappe.msgprint(f\".....emp .....{emp_name}\")\nfrappe.response['message'] = emp_name\n",
   "script_type": "API"
+ },
+ {
+  "allow_guest": 0,
+  "api_method": null,
+  "cron_format": null,
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Server Script",
+  "doctype_event": "Before Submit",
+  "enable_rate_limit": 0,
+  "event_frequency": "All",
+  "modified": "2025-12-09 18:06:52.794965",
+  "module": "Reva Erp Next",
+  "name": "Update PO approver",
+  "rate_limit_count": 5,
+  "rate_limit_seconds": 86400,
+  "reference_doctype": "Purchase Order",
+  "script": "if doc.workflow_state == \"Approved\":\n    \n    user_id = frappe.session.user\n    full_name = frappe.db.get_value(\"User\", user_id, \"full_name\")\n    doc.custom_approved_by = full_name\n    \n    ",
+  "script_type": "DocType Event"
  }
 ]

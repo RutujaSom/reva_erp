@@ -9,7 +9,6 @@ from datetime import datetime
 
 @frappe.whitelist(allow_guest=True)
 def download_rfq_pdf(rfq_name):
-    print("in  ......")
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     doc = frappe.get_doc("Request for Quotation", rfq_name)
     temp_dir = frappe.get_site_path("public", "files")

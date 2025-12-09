@@ -112,7 +112,6 @@ def has_permission(doc, user=None):
 
 @frappe.whitelist(allow_guest=True)
 def auto_close_incomplete_working_tasks():
-    print("Scheduler running at 8 PM ...")
 
     from frappe.utils import today, now_datetime, get_datetime
 
