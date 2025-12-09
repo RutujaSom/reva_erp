@@ -54,7 +54,7 @@ def add_attachments_to_quotation():
             break
 
         file = frappe.request.files[file_key]
-        print("file ....",file)
+       # print("file ....",file)
         attachment_type = frappe.form_dict.get(f"attachment_type_{idx}")
         remark = frappe.form_dict.get(f"remark_{idx}")
 
@@ -92,7 +92,7 @@ import frappe
 
 @frappe.whitelist()
 def update_sq_item_fields(docname, items):
-    print("in update ....", docname, 'items ....',items)
+   # print("in update ....", docname, 'items ....',items)
     """
     Update only tag_no and model for Supplier Quotation Items
     items = [

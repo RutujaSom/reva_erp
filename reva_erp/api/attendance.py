@@ -80,11 +80,13 @@ def sync_device_records():
 
         # 2️⃣ SQL Server connection
         conn = pyodbc.connect(
-            'DRIVER={ODBC Driver 17 for SQL Server};'
+            'DRIVER={ODBC Driver 18 for SQL Server};'
             'SERVER=114.29.233.189;'
             'DATABASE=deviceManagement;'
             'UID=sa;'
             'PWD=dsspl@123;'
+            'Encrypt=no;'
+            'TrustServerCertificate=yes;'
         )
 
         cursor = conn.cursor()
@@ -104,7 +106,13 @@ def sync_device_records():
 
         # 4️⃣ Insert new records
         for row in rows:
+            # Skip if this attendance ID already exists
             rec = dict(zip(columns, row))
+            attendance_id = rec.get("id")
+            if frappe.db.exists("Bio Matric Attendance", {"attendance_id": attendance_id}):
+                skipped_count += 1
+                continue
+            #rec = dict(zip(columns, row))
 
             doc = frappe.new_doc("Bio Matric Attendance")
             doc.attendance_id = rec.get("id")
@@ -334,7 +342,8 @@ def create_employee_checkin_from_bio():
             checkin_doc.time = rec.get("record_time")
             # checkin_doc.log_type = log_type
             checkin_doc.device_id = rec.get("device_ser_no")
-            checkin_doc.save(ignore_permissions=True)
+            checkin_doc.insert(ignore_permissions=True)
+            print("checkin_doc.save",checkin_doc, '.....',rec.get('name'))
 
             created_count += 1
 
@@ -345,6 +354,7 @@ def create_employee_checkin_from_bio():
                 "added_in_attendance",
                 1
             )
+            print('in bio')
 
         frappe.db.commit()
 
@@ -355,4 +365,95 @@ def create_employee_checkin_from_bio():
 
     except Exception as e:
         frappe.log_error(str(e), "Employee Checkin Sync Error")
+        return {"error": str(e)}
+
+
+
+
+
+
+
+
+
+
+
+
+
+@frappe.whitelist()
+def sync_device_records():
+    try:
+        # 0️⃣ Init counters
+        inserted_count = 0
+        skipped_count = 0
+
+        # 1️⃣ Get last saved attendance ID correctly
+        last_att_id = frappe.db.sql("""
+            SELECT MAX(attendance_id) FROM `tabBio Matric Attendance`
+        """)[0][0]
+
+        last_att_id = int(last_att_id) if last_att_id else 0
+
+        # 2️⃣ Connect SQL server
+        conn = pyodbc.connect(
+            'DRIVER={ODBC Driver 18 for SQL Server};'
+            'SERVER=114.29.233.189;'
+            'DATABASE=deviceManagement;'
+            'UID=sa;'
+            'PWD=dsspl@123;'
+            'Encrypt=no;'
+            'TrustServerCertificate=yes;'
+        )
+        cursor = conn.cursor()
+
+        # 3️⃣ Fetch NEW records only
+        cursor.execute("""
+            SELECT id, device_serial_num, enroll_id, event, flag,
+                   io_status, in_out, mode, records_time, temperature
+            FROM records
+            WHERE id > ?
+            ORDER BY id ASC
+        """, (last_att_id,))
+
+        rows = cursor.fetchall()
+
+        for row in rows:
+
+            attendance_id = row.id
+
+            # 4️⃣ Double-check duplicate BEFORE insertion
+            if frappe.db.exists(
+                "Bio Matric Attendance",
+                {"attendance_id": attendance_id}
+            ):
+                skipped_count += 1
+                continue
+
+            # 5️⃣ Insert new record
+            doc = frappe.new_doc("Bio Matric Attendance")
+            doc.attendance_id = row.id
+            doc.device_ser_no = row.device_serial_num
+            doc.enroll_id = row.enroll_id
+            doc.event = row.event
+            doc.flag = row.flag
+            doc.io_status = row.io_status
+            doc.in_out = row.in_out
+            doc.mode = row.mode
+            doc.record_time = row.records_time
+            doc.temperature = row.temperature
+            doc.save(ignore_permissions=True)
+
+            inserted_count += 1
+            print("data .....")
+
+        frappe.db.commit()
+
+        return {
+            "status": "success",
+            "inserted": inserted_count,
+            "skipped": skipped_count,
+            "last_attendance_id_used": last_att_id
+        }
+
+    except Exception as e:
+        frappe.log_error(str(e), "SQL Server Sync Error")
         return {"error": str(e)}
