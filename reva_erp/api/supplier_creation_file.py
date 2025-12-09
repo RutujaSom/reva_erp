@@ -5,7 +5,6 @@ import random
 
 """Send mail o supplier for at the time od creatiion"""
 def after_supplier_insert(self):
-   # print('after_supplier_insert .....',self.workflow_state)
     # Get supplier email (assuming you have an email field)
     supplier_email = self.email_id  # replace with your actual fieldname
     if supplier_email:
@@ -26,7 +25,6 @@ def after_supplier_insert(self):
 
 
 def after_supplier_approved(self):
-    #print('after_supplier_approved .....',self.workflow_state)
     """
         Trigger custom logic after Supplier document is updated post submission.
         Handles creation of User accounts and notification emails based on workflow state.
@@ -157,7 +155,6 @@ def create_user_for_supplier(doc, method):
 
 
 def handle_supplier_approval(doc, method):
-   # print("in handle_supplier_approval .....", doc.workflow_state)
     """When supplier is approved, remove 'Pre Supplier' role and all module access permissions."""
 
     # ✅ Only act when supplier is marked approved

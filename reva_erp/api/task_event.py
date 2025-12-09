@@ -5,7 +5,6 @@ def send_mail_to_employee(employee_id, subject, message):
     """Utility to send email to employee's linked user"""
     emp_data = frappe.db.get_value("Employee", employee_id, "user_id")
     email = frappe.db.get_value("User", emp_data, "email")
-    print("email ....", email)
     if email:
         frappe.sendmail(
             recipients=[email],
@@ -17,14 +16,11 @@ def send_mail_to_employee(employee_id, subject, message):
 #  TASK CREATED
 # -----------------------------
 def task_created(doc, method):
-    print("in create .....", doc, doc.is_group)
     if doc.is_group:
         return
     """Send email when task is created"""
-    print("doc.custom_assigned_to ....",len(doc.custom_assigned_to))
     if len(doc.custom_assigned_to) == 1:
         for row in doc.custom_assigned_to:
-            print("row .....",row)
             emp_name = frappe.db.get_value("Employee", row.employee, "employee_name")
             link = get_url_to_form("Task", doc.name)
 
@@ -33,7 +29,6 @@ def task_created(doc, method):
             <p>A new task <b>{doc.subject}</b> has been assigned to you.</p>
             <p><a href="{link}">Click here</a> to view the task.</p>
             """
-            print("msg ....",msg)
 
             send_mail_to_employee(
                 row.employee,
@@ -46,7 +41,6 @@ def task_created(doc, method):
 # -----------------------------
 
 def task_updated(doc, method):
-    print("in update ..klamo .....")
 
     # ❌ Do NOT send update mail on creation
     if doc.flags.in_insert:
@@ -70,7 +64,6 @@ def task_updated(doc, method):
         # -------------------------------
 
         for row in doc.custom_assigned_to:
-            print('logged_employee ....',logged_employee,' .row.employee .....',row.employee)
 
             emp_name = frappe.db.get_value("Employee", row.employee, "employee_name")
             link = get_url_to_form("Task", doc.name)
@@ -94,7 +87,6 @@ import frappe
 from frappe.utils import nowdate
 
 def send_daily_task_summary():
-    print("in task summary .....")
 
     today = nowdate()
     subject = f"Daily Task Summary – {today}"
@@ -140,8 +132,6 @@ def send_daily_task_summary():
         """, (emp.name,), as_dict=True)
 
         overdue_count = len(overdue_tasks)
-
-        print("open_count", open_count, "overdue_count", overdue_count)
 
         # Skip sending if no tasks
         if open_count == 0 and overdue_count == 0:

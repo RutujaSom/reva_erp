@@ -15,7 +15,7 @@ fixtures = [
                 "Terms and Conditions", "Employee",
                 "Timesheet Detail",
                 "Supplier Quotation", "Supplier",
-                "Item",
+                "Item", "Purchase Order",
                 "Request for Quotation Item", "Supplier Quotation Item",
             ]]
         ]
@@ -64,7 +64,8 @@ fixtures = [
                 "Auto Create Child Tasks For Task",
                 "Send Task For Approval",
                 "Validate Task Status",
-                "employee list"
+                "employee list",
+                "Update PO approver",
                 
             ]]
 		]
