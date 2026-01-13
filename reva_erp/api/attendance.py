@@ -2,148 +2,6 @@ import frappe
 from datetime import datetime, timedelta
 import pyodbc
 
-
-# @frappe.whitelist()
-# def sync_device_records():
-#     try:
-#         # SQL Server connection
-#         conn = pyodbc.connect(
-#             'DRIVER={ODBC Driver 17 for SQL Server};'
-#             'SERVER=114.29.233.189;'
-#             'DATABASE=deviceManagement;'
-#             'UID=sa;'
-#             'PWD=dsspl@123;'
-#         )
-
-#         cursor = conn.cursor()
-#         cursor.execute("SELECT * FROM records")
-
-#         rows = cursor.fetchall()
-#         columns = [column[0] for column in cursor.description]
-
-#         inserted_count = 0
-#         skipped_count = 0
-
-#         for row in rows:
-#             rec = dict(zip(columns, row))
-
-#             attendance_id = rec.get("id")
-
-#             # Skip if this attendance ID already exists
-#             if frappe.db.exists("Bio Matric Attendance", {"attendance_id": str(attendance_id)}):
-#                 skipped_count += 1
-#                 continue
-
-#             # Create new Frappe Doc
-#             doc = frappe.new_doc("Bio Matric Attendance")
-#             doc.attendance_id = rec.get("id")
-#             doc.device_ser_no = rec.get("device_serial_num")
-#             doc.enroll_id = rec.get("enroll_id")
-#             doc.event = rec.get("event")
-#             doc.flag = rec.get("flag")
-#             doc.io_status = rec.get("io_status")
-#             doc.in_out = rec.get("in_out")
-#             doc.mode = rec.get("mode")
-#             doc.record_time = rec.get("records_time")
-#             doc.temperature = rec.get("temperature")
-#             doc.save(ignore_permissions=True)
-
-#             inserted_count += 1
-
-#         frappe.db.commit()
-
-#         return {
-#             "status": "success",
-#             "inserted": inserted_count,
-#             "skipped_existing": skipped_count
-#         }
-
-#     except Exception as e:
-#         frappe.log_error(str(e), "SQL Server Sync Error")
-#         return {"error": str(e)}
-
-
-
-@frappe.whitelist()
-def sync_device_records():
-    try:
-        # 1️⃣ Get last saved attendance ID from Frappe
-        last_att_id = frappe.db.get_value(
-            "Bio Matric Attendance",
-            filters={},
-            fieldname="attendance_id",
-            order_by="attendance_id DESC"
-        )
-
-        # If no record found, set to 0
-        last_att_id = int(last_att_id) if last_att_id else 0
-
-        # 2️⃣ SQL Server connection
-        conn = pyodbc.connect(
-            'DRIVER={ODBC Driver 18 for SQL Server};'
-            'SERVER=114.29.233.189;'
-            'DATABASE=deviceManagement;'
-            'UID=sa;'
-            'PWD=dsspl@123;'
-            'Encrypt=no;'
-            'TrustServerCertificate=yes;'
-        )
-
-        cursor = conn.cursor()
-
-        # 3️⃣ Fetch only NEW records
-        query = f"""
-            SELECT * FROM records
-            WHERE id > {last_att_id}
-            ORDER BY id ASC
-        """
-        cursor.execute(query)
-
-        rows = cursor.fetchall()
-        columns = [column[0] for column in cursor.description]
-
-        inserted_count = 0
-
-        # 4️⃣ Insert new records
-        for row in rows:
-            # Skip if this attendance ID already exists
-            rec = dict(zip(columns, row))
-            attendance_id = rec.get("id")
-            if frappe.db.exists("Bio Matric Attendance", {"attendance_id": attendance_id}):
-                skipped_count += 1
-                continue
-            #rec = dict(zip(columns, row))
-
-            doc = frappe.new_doc("Bio Matric Attendance")
-            doc.attendance_id = rec.get("id")
-            doc.device_ser_no = rec.get("device_serial_num")
-            doc.enroll_id = rec.get("enroll_id")
-            doc.event = rec.get("event")
-            doc.flag = rec.get("flag")
-            doc.io_status = rec.get("io_status")
-            doc.in_out = rec.get("in_out")
-            doc.mode = rec.get("mode")
-            doc.record_time = rec.get("records_time")
-            doc.temperature = rec.get("temperature")
-            doc.save(ignore_permissions=True)
-
-            inserted_count += 1
-
-        frappe.db.commit()
-
-        return {
-            "status": "success",
-            "inserted": inserted_count,
-            "last_attendance_id": last_att_id
-        }
-
-    except Exception as e:
-        frappe.log_error(str(e), "SQL Server Sync Error")
-        return {"error": str(e)}
-
-
-
-
 @frappe.whitelist()
 def generate_daily_attendance():
 
@@ -299,6 +157,13 @@ def generate_last_15_days_attendance():
                 att.save(ignore_permissions=True)
                 created += 1
 
+            today = datetime.today().date()
+            print("Processing attendance for:", emp.name, "today", today, "punch_date", punch_date)
+            # 🔥 SUBMIT ONLY FOR BACK DATES
+            if punch_date < today and att.docstatus == 0:
+                att.submit()
+                print("Submitted attendance for:", emp.name, "on", punch_date)
+                
         frappe.db.commit()
 
     return {
