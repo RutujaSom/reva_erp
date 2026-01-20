@@ -315,6 +315,9 @@ function add_attachments_to_quotation(quotation_name, attachments){
     $.ajax({
         url: "/api/method/reva_erp.api.supplier_quotaion.add_attachments_to_quotation",
         type: "POST",
+        headers: {
+            "X-Frappe-CSRF-Token": frappe.csrf_token
+        },
         data: formData,
         processData: false,
         contentType: false,
