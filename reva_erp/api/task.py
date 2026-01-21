@@ -98,6 +98,7 @@ def get_permission_query_conditions(user):
         "CEO",
         "HR",
         "HR Manager",
+        "HR User",
         "Account",
         "Accounts Manager",
         "Accounts User",

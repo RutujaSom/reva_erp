@@ -133,6 +133,7 @@ scheduler_events = {
 permission_query_conditions = {
  "Task Approval": "reva_erp.reva_erp_next.doctype.task_approval.task_approval.get_permission_query_conditions",
  "Task": "reva_erp.api.task.get_permission_query_conditions",
+ "Project": "reva_erp.api.project.get_permission_query_conditions",
 
 }
 
