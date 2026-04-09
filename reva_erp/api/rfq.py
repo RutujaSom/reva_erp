@@ -62,9 +62,6 @@ def validate_rfq_addendum_attachments(doc, method=None):
     Validate RFQ attachments from custom_addendum child table
     """
 
-    has_technical = False
-    has_commercial_or_unpriced = False
-
     for row in doc.custom_addendum:
 
         if not row.attachment:
