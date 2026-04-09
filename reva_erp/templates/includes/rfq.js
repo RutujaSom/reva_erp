@@ -186,6 +186,7 @@ rfq = class rfq {
 			let attachments = [];
 			let has_technical_attachment = false;
 			let has_commercial_or_unpriced = false;
+			let invalid_file_found = false;
 
 			$('#supplier-attachments-body tr').each(function () {
 				const type = ($(this).data('type') || "").trim();
@@ -194,6 +195,29 @@ rfq = class rfq {
 				const remark = $(this).data('remark') || "";
 
 				if (file_input && file_input.files.length > 0) {
+					const file = file_input.files[0]; // ✅ DEFINE FILE
+
+					console.log('File:', file);
+					console.log('File type:', file.type);
+
+					// ✅ Only allow image or PDF files
+					const allowed_types = [
+						"application/pdf",
+						"image/jpeg",
+						"image/png",
+						"image/jpg"
+					];
+
+					if (!allowed_types.includes(file.type)) {
+						frappe.msgprint({
+							title: "Invalid File Type",
+							message: `File "<b>${file.name}</b>" is not allowed. Only PDF and image files are accepted.`,
+							indicator: "red"
+						});
+						invalid_file_found = true;
+						return; // ❗ stop loop if invalid
+					}
+	
 					attachments.push({
 						attachment_type: type,
 						file: file_input.files[0],
@@ -208,6 +232,11 @@ rfq = class rfq {
 					}
 				}
 			});
+
+			// ⛔ Stop submission if any invalid file
+			if (invalid_file_found) {
+				return;
+			}
 
 			// ✅ Validation 1: Require at least one Technical attachment
 			if (!has_technical_attachment) {

@@ -48,3 +48,41 @@ def get_item_suppliers(item):
         fields=["supplier"]
     )
     return [s["supplier"] for s in suppliers]
+
+
+
+
+import frappe
+from frappe import _
+
+ALLOWED_EXTENSIONS = (".pdf", ".jpg", ".jpeg", ".png")
+
+def validate_rfq_addendum_attachments(doc, method=None):
+    """
+    Validate RFQ attachments from custom_addendum child table
+    """
+
+    has_technical = False
+    has_commercial_or_unpriced = False
+
+    for row in doc.custom_addendum:
+
+        if not row.attachment:
+            frappe.throw(
+                _("Attachment missing in row #{0}.").format(row.idx),
+                frappe.ValidationError
+            )
+
+        # --------------------------------------------------
+        # File extension validation
+        # --------------------------------------------------
+        file_name = row.attachment.lower()
+
+        if not file_name.endswith(ALLOWED_EXTENSIONS):
+            frappe.throw(
+                _(
+                    "Invalid file type in row #{0}. "
+                    "Only PDF and image files are allowed."
+                ).format(row.idx),
+                frappe.ValidationError
+            )
