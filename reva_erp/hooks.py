@@ -145,10 +145,14 @@ doc_events = {
     },
     "Supplier": {
         "after_insert": "reva_erp.api.supplier_creation_file.create_user_for_supplier",
-        "on_update": "reva_erp.api.supplier_creation_file.handle_supplier_approval"
+        "on_update": "reva_erp.api.supplier_creation_file.handle_supplier_approval",
+        "validate": "reva_erp.api.supplier_creation_file.validate_unique_gst",
     },
     "Supplier Quotation": {
         "on_update": "reva_erp.api.supplier_quotaion.supplier_quotation_status_update"
+    },
+    "Request for Quotation": {
+        "validate": "reva_erp.api.rfq_validation.validate_rfq_addendum_attachments"
     }
 }
 

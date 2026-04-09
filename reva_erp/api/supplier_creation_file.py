@@ -76,7 +76,6 @@ def get_supplier_for_user(user):
 
 
 
-import frappe
 
 @frappe.whitelist()
 def create_user_for_supplier(doc, method):
@@ -188,3 +187,66 @@ def handle_supplier_approval(doc, method):
     else:
         # Optional: Handle when supplier is not approved
         pass
+
+
+
+
+def validate_unique_gst(doc, method):
+    """
+    Ensure GST Number is unique across Suppliers.
+    Show ALL duplicate Supplier IDs as clickable links.
+    """
+
+    gst_no = doc.gstin  # adjust fieldname if required
+
+    if not gst_no:
+        return
+
+    suppliers = frappe.get_all(
+        "Supplier",
+        filters={
+            "gstin": gst_no,
+            "name": ["!=", doc.name]
+        },
+        pluck="name"
+    )
+
+    if suppliers:
+        links = []
+        for supplier in suppliers:
+            link = frappe.utils.get_url_to_form("Supplier", supplier)
+            links.append(f'<a href="{link}" target="_blank">{supplier}</a>')
+
+        supplier_links = "<br>".join(links)
+
+        frappe.throw(
+            (
+                f"GST Number <b>{gst_no}</b> already exists for the following Supplier(s):<br>"
+                f"<b>{supplier_links}</b>"
+            ),
+            frappe.DuplicateEntryError
+        )
+
+    for row in doc.custom_addendum:
+
+        if not row.attachment:
+            frappe.throw(
+                _("Attachment missing in row #{0}.").format(row.idx),
+                frappe.ValidationError
+            )
+
+        # --------------------------------------------------
+        # File extension validation
+        # --------------------------------------------------
+        ALLOWED_EXTENSIONS = (".pdf", ".jpg", ".jpeg", ".png")
+
+        file_name = row.attachment.lower()
+
+        if not file_name.endswith(ALLOWED_EXTENSIONS):
+            frappe.throw(
+                (
+                    "Invalid file type in row #{0}. "
+                    "Only PDF and image files are allowed."
+                ).format(row.idx),
+                frappe.ValidationError
+            )

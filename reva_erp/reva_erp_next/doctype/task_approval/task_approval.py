@@ -8,6 +8,12 @@ from frappe.utils import get_url_to_form
 
 
 class TaskApproval(Document):
+    def validate(self):
+        print("validate called...", self.workflow_state)
+        if self.workflow_state == "Rejected":
+            print("Rejection workflow state detected.", self.remark, self.discarded_by)
+            if self.remark == "" or self.remark is None:
+                frappe.throw("Please provide a remark for rejection.")
 
     def on_update(doc, method=None):
         """
@@ -88,6 +94,13 @@ class TaskApproval(Document):
             # The employee who rejected
             emp_id = doc.employee
             emp_name = doc.emp_name
+            user =  frappe.session.user
+            try:
+                logged_user = frappe.db.get_value("User", user, ["full_name","name"],as_dict=True)
+            except Exception as e:
+                print("Error fetching employee details:", e)
+                logged_user = {"full_name": "Unknown Employee", "name": None}
+
             # Find all other Task Approval records for the same task
             other_approvals = frappe.get_all(
                 "Task Approval",
@@ -100,9 +113,11 @@ class TaskApproval(Document):
 
             for approval in other_approvals:
                 frappe.db.set_value("Task Approval", approval.name, "workflow_state", "Discard")
-                frappe.db.set_value("Task Approval", approval.name, "discarded_by", f"{emp_name} [{emp_id}]")
+                frappe.db.set_value("Task Approval", approval.name, "discarded_by", f"{logged_user.full_name}")
 
             frappe.db.set_value("Task", doc.task, "workflow_state", "Returned")
+            frappe.db.set_value("Task", doc.task, "custom_discard_by", f"{logged_user.full_name}")
+            frappe.db.set_value("Task", doc.task, "custom_discarded_remark", f"{doc.remark}")
             frappe.db.set_value("Task", doc.task, "status", "Open")
 
             task_doc = frappe.get_doc("Task", doc.task)
