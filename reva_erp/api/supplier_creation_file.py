@@ -231,26 +231,3 @@ def validate_unique_gst(doc, method):
             frappe.DuplicateEntryError
         )
 
-    for row in doc.custom_addendum:
-
-        if not row.attachment:
-            frappe.throw(
-                _("Attachment missing in row #{0}.").format(row.idx),
-                frappe.ValidationError
-            )
-
-        # --------------------------------------------------
-        # File extension validation
-        # --------------------------------------------------
-        ALLOWED_EXTENSIONS = (".pdf", ".jpg", ".jpeg", ".png")
-
-        file_name = row.attachment.lower()
-
-        if not file_name.endswith(ALLOWED_EXTENSIONS):
-            frappe.throw(
-                (
-                    "Invalid file type in row #{0}. "
-                    "Only PDF and image files are allowed."
-                ).format(row.idx),
-                frappe.ValidationError
-            )
