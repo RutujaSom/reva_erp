@@ -213,8 +213,11 @@ def validate_unique_gst(doc, method):
 
     if suppliers:
         links = []
+        # base_url = frappe.utils.get_site_url().rstrip("/")
+        base_url = frappe.utils.get_site_url(frappe.local.site).rstrip("/")
+
         for supplier in suppliers:
-            link = frappe.utils.get_url_to_form("Supplier", supplier)
+            link = f'{base_url}/app/supplier/{supplier}'
             links.append(f'<a href="{link}" target="_blank">{supplier}</a>')
 
         supplier_links = "<br>".join(links)
