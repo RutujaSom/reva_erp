@@ -15,60 +15,6 @@ frappe.ui.form.on('Task Approval', {
     }
 });
 
-// List View Configuration
-frappe.listview_settings['Task Approval'] = {
-    // Set default filter to show only Pending workflow state
-    default_filters: [
-        ['workflow_state', '=', 'Pending']
-    ],
-    
-    // Customize filter options - only show Discard, Reject, Approved, and Open
-    add_fields: [
-        "workflow_state",
-        "approval_level",
-        "task",
-        "approver_name",
-        "emp_name"
-    ],
-    
-    onload(listview) {
-        // Override the filter options for workflow_state
-        listview.page.fields.workflow_state.df.options = [
-            '',
-            'Open',
-            'Pending',
-            'Approved',
-            'Rejected',
-            'Discard'
-        ];
-        
-        // Refresh the field to apply changes
-        listview.page.fields.workflow_state.refresh();
-        
-        // Set default value to Pending
-        listview.page.fields.workflow_state.set_input('Pending');
-        
-        // Apply the filter
-        listview.filter_area.clear().then(() => {
-            listview.filter_area.add('Task Approval', 'workflow_state', '=', 'Pending');
-        });
-    },
-    
-    form_render(listview, doc) {
-        // Customize indicator color based on workflow state
-        if (doc.workflow_state === 'Pending') {
-            doc._indicator_color = 'orange';
-        } else if (doc.workflow_state === 'Approved') {
-            doc._indicator_color = 'green';
-        } else if (doc.workflow_state === 'Rejected') {
-            doc._indicator_color = 'red';
-        } else if (doc.workflow_state === 'Discard') {
-            doc._indicator_color = 'gray';
-        } else {
-            doc._indicator_color = 'blue';
-        }
-    }
-};
 
 
 function fetch_task_details(frm) {
