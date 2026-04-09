@@ -152,7 +152,7 @@ doc_events = {
         "on_update": "reva_erp.api.supplier_quotaion.supplier_quotation_status_update"
     },
     "Request for Quotation": {
-        "validate": "reva_erp.api.rfq_validation.validate_rfq_addendum_attachments"
+        "validate": "reva_erp.api.rfq.validate_rfq_addendum_attachments"
     }
 }
 
