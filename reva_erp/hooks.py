@@ -44,6 +44,7 @@ fixtures = [
                 "Restrict Form Fields",
                 "Add attachment type filter in RFQ",
                 "Add Print Button",
+                "Add project filter too Employee List",
             ]]
         ]
     },
@@ -98,8 +99,11 @@ page_js = {
 }
 
 app_include_js = [
-    "/assets/reva_erp/js/supplier_portal_redirect.js"
+    # "/reva_erp/public/js/supplier_portal_redirect.js",
+    "/assets/reva_erp/js/supplier_portal_redirect.js",
 ]
+# hooks.py
+on_login = "reva_erp.api.login.on_login_redirect"
 
 
 
