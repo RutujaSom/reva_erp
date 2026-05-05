@@ -222,6 +222,7 @@ def auto_close_incomplete_working_tasks():
         filters={"status": "Working"},
         fields=["name"]
     )
+    print("working_tasks .......",working_tasks)
 
     for task in working_tasks:
         task_doc = frappe.get_doc("Task", task.name)
