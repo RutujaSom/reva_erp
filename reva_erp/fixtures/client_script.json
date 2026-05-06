@@ -108,5 +108,16 @@
   "name": "Add project filter too Employee List",
   "script": "frappe.ui.form.on('Task', {\n    project: function(frm) {\n        \n        // Clear all rows and add a blank row\n        frm.clear_table('custom_assigned_to');\n        frm.add_child('custom_assigned_to');\n        frm.refresh_field('custom_assigned_to');\n\n        frm.set_query('employee', 'custom_assigned_to', function() {\n            return get_employee_filter(frm);\n        });\n        frm.refresh_field('custom_assigned_to');\n    },\n    \n    onload: function(frm) {\n        frm.set_query('employee', 'custom_assigned_to', function() {\n            return get_employee_filter(frm);\n        });\n    },\n});\n\nfunction get_employee_filter(frm) {\n    console.log(\"in fun .......\")\n    if (!frm.doc.project) {\n        // Return a filter that matches nothing\n        return {\n            filters: {\n                name: ['like', '']\n            }\n        };\n    }\n\n    return {\n        query: 'reva_erp.api.employee.get_project_employees',\n        filters: {\n            project: frm.doc.project\n        }\n    };\n}",
   "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Task",
+  "enabled": 1,
+  "modified": "2026-05-06 19:22:14.688980",
+  "module": null,
+  "name": "Restrict Form Fields For Task Doc",
+  "script": "frappe.ui.form.on('Task', {\n    refresh(frm) {\n        // Reset read-only for all fields first\n        frm.fields_dict && Object.keys(frm.fields_dict).forEach(field => {\n            frm.set_df_property(field, 'read_only', 0);\n        });\n\n        if (frm.doc.parent_task) {\n            // Child Task logic\n            frm.fields_dict && Object.keys(frm.fields_dict).forEach(field => {\n                if (!['status', 'completed_on', 'completed_by'].includes(field)) {\n                    frm.set_df_property(field, 'read_only', 1);\n                }\n            });\n        } \n        else if (frm.doc.is_group) {\n            // Parent Task logic\n            frm.set_df_property('subject', 'read_only', 1);\n        }\n        \n        if (frm.doc.custom_discard_by){\n            frm.set_df_property('custom_discard_by', 'read_only', 1);\n        }\n        else{\n            frm.set_df_property('custom_discard_by', 'hidden', 1);\n        }\n        \n        if (frm.doc.custom_discarded_remark){\n            frm.set_df_property('custom_discarded_remark', 'read_only', 1);\n        }\n        else{\n            frm.set_df_property('custom_discarded_remark', 'hidden', 1);\n        }\n\n        // Ensure workflow action buttons are still visible\n        frappe.workflow && frappe.workflow.toggle_workflow_actions(frm);\n    }\n});\n",
+  "view": "Form"
  }
 ]
