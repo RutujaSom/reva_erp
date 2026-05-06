@@ -44,6 +44,7 @@ fixtures = [
                 "Restrict Form Fields",
                 "Add attachment type filter in RFQ",
                 "Add Print Button",
+                "Add project filter too Employee List",
             ]]
         ]
     },
@@ -98,16 +99,24 @@ page_js = {
 }
 
 app_include_js = [
-    "/assets/reva_erp/js/supplier_portal_redirect.js"
+    # "/reva_erp/public/js/supplier_portal_redirect.js",
+    "/assets/reva_erp/js/supplier_portal_redirect.js",
 ]
+# hooks.py
+on_login = "reva_erp.api.login.on_login_redirect"
 
 
 
 scheduler_events = {
     "cron": {
-        "0 20 * * *": [
+        "45 11 * * *": [
             "reva_erp.api.task.auto_close_incomplete_working_tasks"
         ],
+
+        # "10 18 * * *": [
+        #     "reva_erp.api.task.auto_close_incomplete_working_tasks"
+        # ],
+
         "0 8 * * *": [  # Every day at 08:00 AM
             "reva_erp.api.task_event.send_daily_task_summary"
         ],
@@ -116,11 +125,6 @@ scheduler_events = {
         "*/10 * * * *": [
             "reva_erp.api.attendance.sync_device_records"
         ],
-
-        # # Create attendance daily at 12:10 AM
-        # "0 * * * *": [
-        #     "reva_erp.api.attendance.generate_last_15_days_attendance"
-        # ],
 
         # Run both attendance methods every hour at minute 0
         "0 * * * *": [
