@@ -45,6 +45,7 @@ fixtures = [
                 "Add attachment type filter in RFQ",
                 "Add Print Button",
                 "Add project filter too Employee List",
+                "Restrict Form Fields For Task Doc"
             ]]
         ]
     },
