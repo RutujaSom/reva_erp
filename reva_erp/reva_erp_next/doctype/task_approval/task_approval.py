@@ -10,15 +10,16 @@ from frappe.utils import get_url_to_form
 class TaskApproval(Document):
     def validate(self):
         print("validate called...", self.workflow_state)
-        if self.workflow_state == "Rejected":
-            print("Rejection workflow state detected.", self.remark, self.discarded_by)
+        if self.workflow_state == "Discard":
+            print("Discard workflow state detected.", self.remark, self.discarded_by)
             if self.remark == "" or self.remark is None:
-                frappe.throw("Please provide a remark for rejection.")
+                frappe.throw("Please provide a remark for discard.")
 
     def on_update(doc, method=None):
         """
         When a Task Approval is approved, activate the next approval level.
         """
+        print("doc.workflow_state ......",doc.workflow_state)
         if doc.workflow_state == "Approved":
             next_level = doc.approval_level + 1
 
@@ -90,8 +91,8 @@ class TaskApproval(Document):
                         )
 
 
-        if doc.workflow_state == "Rejected":
-            # The employee who rejected
+        if doc.workflow_state == "Discard":
+            # The employee who Discard
             emp_id = doc.employee
             emp_name = doc.emp_name
             user =  frappe.session.user
