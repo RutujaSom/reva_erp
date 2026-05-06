@@ -102,8 +102,12 @@ app_include_js = [
     # "/reva_erp/public/js/supplier_portal_redirect.js",
     "/assets/reva_erp/js/supplier_portal_redirect.js",
 ]
+web_include_js = [
+    "/assets/reva_erp/js/login_project_redirect.js",
+]
 # hooks.py
 on_login = "reva_erp.api.login.on_login_redirect"
+after_request = ["reva_erp.api.login.force_project_home_page"]
 
 
 
@@ -400,4 +404,3 @@ doc_events = {
 # default_log_clearing_doctypes = {
 # 	"Logging DocType Name": 30  # days to retain logs
 # }
-
