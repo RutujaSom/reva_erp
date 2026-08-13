@@ -7,7 +7,7 @@ frappe.listview_settings["Task Approval"] = {
     },
 };
 
-const allowed_workflow_states = ["Draft", "Pending", "Approved", "Rejected"];
+const allowed_workflow_states = ["Draft", "Pending", "Approved", "Discard"];
 
 function setup_workflow_state_filter(listview) {
     patch_workflow_state_filters(listview);
