@@ -161,7 +161,7 @@
   "doctype_event": "After Save",
   "enable_rate_limit": 0,
   "event_frequency": "All",
-  "modified": "2026-05-19 12:30:26.636117",
+  "modified": "2026-05-26 11:41:26.886325",
   "module": null,
   "name": "Auto Create Child Tasks For Task",
   "rate_limit_count": 5,
