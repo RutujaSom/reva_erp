@@ -2,71 +2,6 @@ import frappe
 from frappe.utils import get_datetime, today, now_datetime
 from frappe import _
 
-# def get_permission_query_conditions(user):
-#     """Restrict Task visibility based on user role and assigned_to child table"""
-#     if not user:
-#         return ""
-
-#     roles = frappe.get_roles(user)
-
-#     # Administrator → see all tasks
-#     if "Administrator" in roles or "System Manager" in roles:
-#         return ""
-  
-#     # HR Manager → see tasks assigned to their team + themselves
-#     if "HR Manager" in roles:
-#         manager_emp = frappe.db.get_value("Employee", {"user_id": user}, "name")
-#         if manager_emp:
-#             # Get all team members
-#             employee_list = frappe.db.get_all(
-#                 "Employee",
-#                 filters={"reports_to": manager_emp},
-#                 pluck="name"
-#             )
-#             employee_list.append(manager_emp)  # include manager
-#         else:
-#             employee_list = []
-
-#         if employee_list:
-#             employees_sql = ", ".join([frappe.db.escape(emp) for emp in employee_list])
-#             # Use EXISTS subquery to check in child table
-#             return f"""
-#                 EXISTS (
-#                     SELECT 1 FROM `tabTask Employee`
-#                     WHERE `tabTask Employee`.parent = `tabTask`.name
-#                     AND `tabTask Employee`.employee IN ({employees_sql})
-#                 )
-#             """
-#         # fallback → only tasks assigned to themselves
-#         emp = frappe.db.get_value("Employee", {"user_id": user}, "name")
-#         if emp:
-#             return f"""
-#                 EXISTS (
-#                     SELECT 1 FROM `tabTask Employee`
-#                     WHERE `tabTask Employee`.parent = `tabTask`.name
-#                     AND `tabTask Employee`.employee = {frappe.db.escape(emp)}
-#                 )
-#             """
-#         return "1=0"
-
-#     # Employee → only tasks assigned to themselves
-#     if "Employee" in roles:
-#         emp = frappe.db.get_value("Employee", {"user_id": user}, "name")
-#         if emp:
-#             return f"""
-#                 EXISTS (
-#                     SELECT 1 FROM `tabTask Employee`
-#                     WHERE `tabTask Employee`.parent = `tabTask`.name
-#                     AND `tabTask Employee`.employee = {frappe.db.escape(emp)}
-#                 )
-#             """
-#         return "1=0"
-
-#     # Default deny
-#     return "1=0"
-
-
-
 
 def get_permission_query_conditions(user):
     """
@@ -195,6 +130,86 @@ def get_permission_query_conditions(user):
 
 
 
+# @frappe.whitelist(allow_guest=True)
+# def auto_close_incomplete_working_tasks():
+#     """
+#     Automatically closes all tasks with status "Working" and their associated incomplete time logs at the time of scheduler run (e.g., 8 PM).
+
+#     For each "Working" task:
+#         - Iterates through all assigned employees.
+#         - For each employee, finds all related Timesheets.
+#         - For each Timesheet, updates incomplete time logs linked to the task:
+#             - Sets the end time to the current time.
+#             - Marks the log as completed.
+#             - Calculates and updates the hours worked.
+#         - Changes the task status to "Stopped".
+#         - Saves changes and commits the transaction.
+#         - Logs the auto-closure event for auditing.
+
+#     Intended to be run as a scheduled job to ensure no "Working" tasks or time logs remain incomplete at the end of the workday.
+#     """
+
+#     from frappe.utils import today, now_datetime, get_datetime
+
+#     # Fetch all Tasks in Working status
+#     working_tasks = frappe.get_all(
+#         "Task",
+#         filters={"status": "Working"},
+#         fields=["name"]
+#     )
+#     print("working_tasks .......",working_tasks)
+
+#     for task in working_tasks:
+#         task_doc = frappe.get_doc("Task", task.name)
+
+#         for emp_row in task_doc.custom_assigned_to:
+#             emp = emp_row.employee
+#             if not emp:
+#                 continue
+
+#             # Update Timesheets linked to this task for this employee
+#             timesheets = frappe.get_all(
+#                 "Timesheet",
+#                 filters={"employee": emp},
+#                 fields=["name"]
+#             )
+
+#             for ts in timesheets:
+#                 ts_doc = frappe.get_doc("Timesheet", ts.name)
+#                 updated = False
+
+#                 for log in ts_doc.time_logs:
+#                     if log.task == task_doc.name and not log.completed:
+
+#                         # Close log at time of scheduler run (8 PM)
+#                         end_dt = now_datetime()
+
+#                         log.to_time = end_dt
+#                         log.completed = True
+
+#                         # Calculate hours
+#                         if log.from_time:
+#                             from_dt = get_datetime(log.from_time)
+#                             diff_hours = (end_dt - from_dt).total_seconds() / 3600
+#                             log.hours = round(diff_hours, 2)
+
+#                         updated = True
+
+#                 if updated:
+#                     ts_doc.save(ignore_permissions=True)
+
+#             # Stop the task
+#             task_doc.status = "Stopped"
+#             task_doc.save(ignore_permissions=True)
+
+#             frappe.db.commit()
+
+#             frappe.log_error(
+#                 f"Task {task_doc.name} auto-closed at 8 PM for employee {emp}",
+#                 "Auto Task Close"
+#             )
+
+
 @frappe.whitelist(allow_guest=True)
 def auto_close_incomplete_working_tasks():
     """
@@ -204,7 +219,8 @@ def auto_close_incomplete_working_tasks():
         - Iterates through all assigned employees.
         - For each employee, finds all related Timesheets.
         - For each Timesheet, updates incomplete time logs linked to the task:
-            - Sets the end time to the current time.
+            - Sets the end time to the employee's punch out time from Attendance.
+            - Falls back to current time if no punch out is found.
             - Marks the log as completed.
             - Calculates and updates the hours worked.
         - Changes the task status to "Stopped".
@@ -222,7 +238,7 @@ def auto_close_incomplete_working_tasks():
         filters={"status": "Working"},
         fields=["name"]
     )
-    print("working_tasks .......",working_tasks)
+    print("working_tasks .......", working_tasks)
 
     for task in working_tasks:
         task_doc = frappe.get_doc("Task", task.name)
@@ -232,7 +248,29 @@ def auto_close_incomplete_working_tasks():
             if not emp:
                 continue
 
-            # Update Timesheets linked to this task for this employee
+            # ─── Fetch employee's punch out time from today's Attendance ───
+            attendance = frappe.db.get_value(
+                "Attendance",
+                filters={
+                    "employee": emp,
+                    "attendance_date": today(),
+                    "docstatus": 1          # Only submitted attendance records
+                },
+                fieldname=["out_time"],     # Punch-out field in Attendance doctype
+                as_dict=True
+            )
+            print("attendance : ",attendance ,"  attendance.out_time ....", attendance.out_time)
+
+            if attendance and attendance.out_time:
+                end_dt = get_datetime(attendance.out_time)
+                punch_out_source = f"punch out time ({end_dt})"
+            else:
+                print(f"No punch out found for employee {emp} on {today()}. Using current time as fallback.")
+                # Fallback to current time if attendance/punch-out not found
+                end_dt = now_datetime()
+                punch_out_source = "current time (no punch out found)"
+
+            # ─── Update Timesheets linked to this task for this employee ───
             timesheets = frappe.get_all(
                 "Timesheet",
                 filters={"employee": emp},
@@ -245,9 +283,6 @@ def auto_close_incomplete_working_tasks():
 
                 for log in ts_doc.time_logs:
                     if log.task == task_doc.name and not log.completed:
-
-                        # Close log at time of scheduler run (8 PM)
-                        end_dt = now_datetime()
 
                         log.to_time = end_dt
                         log.completed = True
@@ -270,10 +305,9 @@ def auto_close_incomplete_working_tasks():
             frappe.db.commit()
 
             frappe.log_error(
-                f"Task {task_doc.name} auto-closed at 8 PM for employee {emp}",
+                f"Task {task_doc.name} auto-closed using {punch_out_source} for employee {emp}",
                 "Auto Task Close"
             )
-
 
 def execute():
     """
